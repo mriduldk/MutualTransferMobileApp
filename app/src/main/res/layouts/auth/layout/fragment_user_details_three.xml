@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayoutParent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageViewBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:padding="16dp"
+            android:src="@drawable/round_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/ar_one_sans_bold"
+            android:gravity="center"
+            android:paddingVertical="16dp"
+            android:text="School Details"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewBackButton">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="200dp">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSchoolName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/ar_one_sans_bold"
+                        android:text="School Name"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <EditText
+                        android:id="@+id/editTextUserSchoolName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text_round"
+                        android:fontFamily="@font/ar_one_sans_regular"
+                        android:gravity="top"
+                        android:hint="School Name"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:minLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/color_text_sub"
+                        android:textSize="@dimen/dim_14" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSchoolUDICECode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolName">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/ar_one_sans_bold"
+                        android:text="UDICE Code"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <EditText
+                        android:id="@+id/editTextUDICECode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text_round"
+                        android:fontFamily="@font/ar_one_sans_regular"
+                        android:gravity="top"
+                        android:hint="UDICE Code"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="12"
+                        android:minLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/color_text_sub"
+                        android:textSize="@dimen/dim_14" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textViewSchoolAddressHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/bgHeader"
+                    android:fontFamily="@font/ar_one_sans_bold"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="10dp"
+                    android:text="School Address"
+                    android:textColor="@color/color_text"
+                    android:textSize="@dimen/dim_16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolUDICECode" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSchoolAddressVillage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewSchoolAddressHeader">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/ar_one_sans_bold"
+                        android:text="Village / Town / Ward"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <EditText
+                        android:id="@+id/editTextSchoolAddressVillage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text_round"
+                        android:fontFamily="@font/ar_one_sans_regular"
+                        android:gravity="top"
+                        android:hint="Village / Town"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:minLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/color_text_sub"
+                        android:textSize="@dimen/dim_14" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSchoolAddressDistrict"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="4dp"
+                    app:layout_constraintEnd_toStartOf="@id/linearLayoutSchoolAddressBlock"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressVillage">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/ar_one_sans_bold"
+                        android:text="District"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerSchoolAddressDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_edit_text_round"
+                        android:fontFamily="@font/ar_one_sans_regular"
+                        android:gravity="top"
+                        android:hint="District"
+                        android:minLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/color_text_sub"
+                        android:textSize="@dimen/dim_14" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSchoolAddressBlock"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/linearLayoutSchoolAddressDistrict"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressVillage">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/ar_one_sans_bold"
+                        android:text="Block"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerSchoolAddressBlock"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_edit_text_round"
+                        android:fontFamily="@font/ar_one_sans_regular"
+                        android:gravity="top"
+                        android:hint="Block"
+                        android:minLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/color_text_sub"
+                        android:textSize="@dimen/dim_14" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSchoolAddressState"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="4dp"
+                    app:layout_constraintEnd_toStartOf="@id/linearLayoutSchoolAddressPin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressBlock">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/ar_one_sans_bold"
+                        android:text="State"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerSchoolAddressState"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_edit_text_round"
+                        android:fontFamily="@font/ar_one_sans_regular"
+                        android:minLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/color_text_sub"
+                        android:textSize="@dimen/dim_14" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSchoolAddressPin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/linearLayoutSchoolAddressState"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressBlock">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/ar_one_sans_bold"
+                        android:text="PIN"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <EditText
+                        android:id="@+id/editTextSchoolAddressPin"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_edit_text_round"
+                        android:fontFamily="@font/ar_one_sans_regular"
+                        android:gravity="top"
+                        android:hint="PIN"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:minLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/color_text_sub"
+                        android:textSize="@dimen/dim_14" />
+
+                </LinearLayout>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkboxAmalgamated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="Is your school amalgamated ?"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/ar_one_sans_medium"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressPin"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/checkboxAmalgamated">
+
+                    <ImageView
+                        android:id="@+id/imageViewHelpIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/round_help_outline_24"
+                        app:tint="@color/red" />
+
+                    <TextView
+                        android:id="@+id/textViewBlockNotFound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/imageViewHelpIcon"
+                        android:fontFamily="@font/ar_one_sans_semi_bold"
+                        android:text="Block not found?"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/dim_16" />
+
+                    <TextView
+                        android:id="@+id/textViewBlockNotFoundFeedback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_toEndOf="@id/textViewBlockNotFound"
+                        android:fontFamily="@font/ar_one_sans_semi_bold"
+                        android:text="Send feedback."
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dim_16" />
+
+
+                </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSaveAndProceed"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_56sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="16dp"
+        android:backgroundTint="@color/color_1"
+        android:fontFamily="@font/ar_one_sans_semi_bold"
+        android:text="Save &amp; Proceed"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.5"
+            android:background="@color/white" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorAccent" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

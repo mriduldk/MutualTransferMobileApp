@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+
+    <!-- Diagonal cut shape -->
+    <path
+        android:fillColor="#C86B8A"
+        android:pathData="M 0 0 H 72 C 62 0 52 -5 52 -16 V -34 C 52 -37 50 -39 47 -39 H 0 C -4 -39 -6 -38 -6 -34 V -6 C -6 -2 -4 0 0 0" />
+
+</vector>
+

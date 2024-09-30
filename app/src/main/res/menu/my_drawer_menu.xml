@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Home"
+        android:id="@+id/nav_menu_home"
+        android:icon="@drawable/ic_home"
+        />
+    <item
+        android:title="Profile"
+        android:id="@+id/nav_menu_profile"
+        android:icon="@drawable/ic_profile"/>
+    <item
+        android:title="Saved Profiles"
+        android:id="@+id/nav_menu_saved_profiles"
+        android:icon="@drawable/ic_saved_profile"/>
+    <item
+        android:title="Recently Viewed"
+        android:id="@+id/nav_menu_recently_viewed"
+        android:icon="@drawable/ic_recently_viewed"/>
+    <item
+        android:title="Wallet"
+        android:id="@+id/nav_menu_wallet"
+        android:icon="@drawable/ic_wallet"/>
+    <item
+        android:title="Online Payment"
+        android:id="@+id/nav_menu_online_payment"
+        android:icon="@drawable/round_currency_rupee_24"/>
+    <item
+        android:title="Refer &amp; Earn"
+        android:id="@+id/nav_menu_refer"
+        android:icon="@drawable/ic_refer"/>
+</menu>

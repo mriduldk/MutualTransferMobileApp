@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_item"
+        android:title="Mail">
+        <menu>
+            <item
+                android:id="@+id/inbox_item"
+                android:icon="@drawable/ic_person"
+                android:title="Inbox"
+                android:checkable="true"/>
+            <item
+                android:id="@+id/outbox_item"
+                android:icon="@drawable/ic_eye"
+                android:title="Outbox"
+                android:checkable="true"/>
+            <item
+                android:id="@+id/favourites_item"
+                android:icon="@drawable/ic_baseline_favorite_24"
+                android:title="Fav"
+                android:checkable="true"/>
+        </menu>
+    </item>
+
+</menu>

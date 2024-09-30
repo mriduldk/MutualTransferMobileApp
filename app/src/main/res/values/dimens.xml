@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="dim_14">@dimen/_10sdp</dimen>
+    <dimen name="dim_20">@dimen/_16sdp</dimen>
+    <dimen name="dim_8">@dimen/_6sdp</dimen>
+    <dimen name="dim_10">@dimen/_8sdp</dimen>
+    <dimen name="dim_12">@dimen/_10sdp</dimen>
+    <dimen name="dim_16">@dimen/_12sdp</dimen>
+    <dimen name="dim_18">@dimen/_14sdp</dimen>
+
+</resources>

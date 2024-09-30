@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:background="@color/colorBlue"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="@dimen/_56sdp"
+        android:layout_height="@dimen/_56sdp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:background="@color/colorBlue"
+        android:src="@drawable/logo_no_bg"
+        app:tint="@color/white" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/ar_one_sans_bold"
+        android:text="Mutual Transfer"
+        android:background="@color/colorBlue"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_18sdp" />
+
+
+</LinearLayout>

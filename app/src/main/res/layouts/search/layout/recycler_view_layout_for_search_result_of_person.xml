@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_12sdp"
+    android:layout_marginBottom="@dimen/_12sdp"
+    android:elevation="5dp"
+    android:fitsSystemWindows="true"
+    app:cardCornerRadius="16dp"
+    tools:context=".ui.auth.compoment.UserAuthenticationActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/district_not_match">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayoutSearchResultUserDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textViewSearchResultUserName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ar_one_sans_bold"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/_16sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Mridul Das" />
+
+                    <TextView
+                        android:id="@+id/textViewSearchResultUserPhoneNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ar_one_sans_medium"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toStartOf="@id/imageViewPhoneNoCopy"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewSearchResultUserName"
+                        tools:text="+91 6001025603" />
+
+                    <ImageView
+                        android:id="@+id/imageViewPhoneNoCopy"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:clickable="true"
+                        android:focusable="?attr/selectableItemBackgroundBorderless"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/round_content_copy_24"
+                        app:layout_constraintBottom_toBottomOf="@id/textViewSearchResultUserPhoneNo"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/textViewSearchResultUserPhoneNo" />
+
+                    <TextView
+                        android:id="@+id/textViewSearchResultUserEmail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ar_one_sans_medium"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewSearchResultUserPhoneNo"
+                        tools:text="mriduldas0226@gmail.com" />
+
+                    <TextView
+                        android:id="@+id/textViewSearchResultUserSchoolName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ar_one_sans_medium"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewSearchResultUserEmail"
+                        tools:text="Barsola HS School" />
+
+                    <TextView
+                        android:id="@+id/textViewSearchResultUserAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ar_one_sans_medium"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewSearchResultUserSchoolName"
+                        tools:text="Barbhogia, Barsola, Sonitpur, Assam 784117" />
+
+                    <TextView
+                        android:id="@+id/textViewSearchResultPreferredDistrictsText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:fontFamily="@font/ar_one_sans_medium"
+                        android:gravity="center_vertical"
+                        android:text="@string/preferred_districts"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_8sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewSearchResultUserAddress" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewSearchResultPreferredDistrictsText">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDistrictPreference1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9sdp"
+                            app:chipMinTouchTargetSize="0dp"
+                            app:textEndPadding="0dp"
+                            app:textStartPadding="0dp"
+                            tools:text="Preference 1" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDistrictPreference2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9sdp"
+                            app:chipMinTouchTargetSize="0dp"
+                            app:textEndPadding="0dp"
+                            app:textStartPadding="0dp"
+                            tools:text="Preference 2" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDistrictPreference3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9sdp"
+                            app:chipMinTouchTargetSize="0dp"
+                            app:textEndPadding="0dp"
+                            app:textStartPadding="0dp"
+                            tools:text="Preference 3" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipAmalgamated"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/school_amalgamated"
+                        android:textSize="@dimen/_8sdp"
+                        app:chipMinTouchTargetSize="0dp"
+                        android:fontFamily="@font/ar_one_sans_semi_bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/chipGroup"
+                        app:textEndPadding="0dp"
+                        app:textStartPadding="0dp"
+                        android:textColor="@color/white"
+                        app:chipStrokeColor="@color/colorOrangeDark"
+                        app:chipBackgroundColor="@color/orange"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayoutSearchResultPayCoins"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_1"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@id/textViewSearchResultViewDetailsButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraintLayoutSearchResultUserDetails">
+
+                    <ImageView
+                        android:id="@+id/imageViewShare"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:clickable="true"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/img_coin"
+                        app:layout_constraintBottom_toBottomOf="@id/textViewSearchResultPayButton"
+                        app:layout_constraintEnd_toStartOf="@id/textViewSearchResultPayButton"
+                        app:layout_constraintTop_toTopOf="@id/textViewSearchResultPayButton" />
+
+
+                    <TextView
+                        android:id="@+id/textViewSearchResultPayButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:fontFamily="@font/ar_one_sans_semi_bold"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toEndOf="@id/imageViewShare"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Pay 10 Coins" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--<TextView
+                    android:id="@+id/textViewSearchResultPayButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_1"
+                    android:fontFamily="@font/ar_one_sans_bold"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toStartOf="@id/textViewSearchResultViewDetailsButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraintLayoutSearchResultUserDetails"
+                    tools:text="Pay 10 Coins" />-->
+
+                <TextView
+                    android:id="@+id/textViewSearchResultViewDetailsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_40"
+                    android:fontFamily="@font/ar_one_sans_bold"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:text="@string/view_details"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/constraintLayoutSearchResultPayCoins"
+                    app:layout_constraintTop_toBottomOf="@id/constraintLayoutSearchResultUserDetails" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardView1">
+
+            <TextView
+                android:id="@+id/textViewSearchResultPreferenceNotMatch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/district_not_match"
+                android:fontFamily="@font/ar_one_sans_semi_bold"
+                android:gravity="center"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="@string/preferred_district_does_not_match"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_8sdp"
+                android:visibility="gone" />
+
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

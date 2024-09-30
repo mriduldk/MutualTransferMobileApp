@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "420728397199",
+    "project_id": "mutual-transfer-ce4c3",
+    "storage_bucket": "mutual-transfer-ce4c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420728397199:android:a2929b29ab2a722e75fffa",
+        "android_client_info": {
+          "package_name": "com.codingstudio.mutualtransfer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaQ0-VP7EsFm-vr_fkeBZee0AeqCmxZZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
