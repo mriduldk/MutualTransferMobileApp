@@ -42,6 +42,9 @@ android {
 
     buildTypes {
         debug {
+
+            buildConfigField "String", "JWT_SECRET_KEY", '"89ADBD13-63DA-4CAE-9AE8-046E87E68AA5"'
+
             buildConfigField "String", "ADMOB_BANNER_UNIT_ID", '"ca-app-pub-3940256099942544/6300978111"'
             buildConfigField "String", "ADMOB_INTERSTITIAL_UNIT_ID", '"ca-app-pub-3940256099942544/1033173712"'
             buildConfigField "String", "ADMOB_NATIVE_ADVANCED_UNIT_ID", '"ca-app-pub-3940256099942544/2247696110"'
@@ -51,6 +54,8 @@ android {
             debuggable true
         }
         release {
+            buildConfigField "String", "JWT_SECRET_KEY", '"89ADBD13-63DA-4CAE-9AE8-046E87E68AA5"'
+
             buildConfigField "String", "ADMOB_BANNER_UNIT_ID", '"ca-app-pub-4457216037877623/1407280237"'
             buildConfigField "String", "ADMOB_INTERSTITIAL_UNIT_ID", '"ca-app-pub-4457216037877623/9391390073"'
             buildConfigField "String", "ADMOB_NATIVE_ADVANCED_UNIT_ID", '"ca-app-pub-4457216037877623/2608681268"'
