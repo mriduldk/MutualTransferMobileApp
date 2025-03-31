@@ -29,7 +29,7 @@ class AdapterForSearchResultOfPerson : RecyclerView.Adapter<RecyclerView.ViewHol
     companion object {
         private const val VIEW_TYPE_PERSON = 0
         private const val VIEW_TYPE_AD = 1
-        private const val AD_FREQUENCY = 6 // Show an ad after every 3 items
+        private const val AD_FREQUENCY = 15 // Show an ad after every 15 items
     }
 
     inner class ViewHolderForSearchHistory(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -88,7 +88,7 @@ class AdapterForSearchResultOfPerson : RecyclerView.Adapter<RecyclerView.ViewHol
             }
 
             if (hasPreferredDistricts) {
-                textViewSearchResultPreferredDistrictsText.text = "Preferred Districts"
+                textViewSearchResultPreferredDistrictsText.text = "Preferred Districts (Want To Go)"
             }
             else {
                 textViewSearchResultPreferredDistrictsText.text = "No Preferred District Available"

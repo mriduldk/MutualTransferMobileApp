@@ -10,6 +10,7 @@ import com.codingstudio.mutualtransfer.repository.local.RecentlyViewedRepository
 import com.codingstudio.mutualtransfer.repository.remote.AuthRepository
 import com.codingstudio.mutualtransfer.repository.remote.BlockRepository
 import com.codingstudio.mutualtransfer.repository.remote.DistrictRepository
+import com.codingstudio.mutualtransfer.repository.remote.MessageRepository
 import com.codingstudio.mutualtransfer.repository.remote.PaymentRepository
 import com.codingstudio.mutualtransfer.repository.remote.SearchRepository
 import com.codingstudio.mutualtransfer.repository.remote.UserDetailsRepository
@@ -25,6 +26,7 @@ class MainApplication : Application() {
     val blockRepository by lazy { BlockRepository() }
     val searchRepository by lazy { SearchRepository() }
     val paymentRepository by lazy { PaymentRepository() }
+    val messageRepository by lazy { MessageRepository() }
 
     private val localDatabase by lazy { RoomLocalDatabase.invoke(this) }
     val historyRepository by lazy { HistoryRepository(localDatabase.daoSearchHistory()) }

@@ -3,7 +3,9 @@ package com.codingstudio.mutualtransfer.di
 import com.codingstudio.mutualtransfer.repository.remote.AuthRepository
 import com.codingstudio.mutualtransfer.repository.remote.BlockRepository
 import com.codingstudio.mutualtransfer.repository.remote.DistrictRepository
+import com.codingstudio.mutualtransfer.repository.remote.MessageRepository
 import com.codingstudio.mutualtransfer.repository.remote.PaymentRepository
+import com.codingstudio.mutualtransfer.repository.remote.SubjectRepository
 import com.codingstudio.mutualtransfer.repository.remote.UserDetailsRepository
 import com.codingstudio.mutualtransfer.repository.remote.WalletRepository
 import dagger.Module
@@ -43,6 +45,15 @@ class RemoteRepositoryModule {
     @Provides
     fun providePaymentRepository() : PaymentRepository {
         return PaymentRepository()
+    }
+
+    @Provides
+    fun provideSubjectRepository() : SubjectRepository {
+        return SubjectRepository()
+    }
+    @Provides
+    fun provideMessageRepository() : MessageRepository {
+        return MessageRepository()
     }
 
 

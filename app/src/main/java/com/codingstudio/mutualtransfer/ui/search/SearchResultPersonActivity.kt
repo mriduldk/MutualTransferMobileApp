@@ -186,19 +186,19 @@ class SearchResultPersonActivity : AppCompatActivity() {
                                 else if (size <= 1) {
                                     binding.linearLayoutNoResultFound.visibility = View.GONE
                                     binding.recyclerViewSearchResultOfPerson.visibility = View.VISIBLE
-                                    binding.textViewSearchResultOfPerson.text = "$size result found"
+                                    binding.textViewSearchResultOfPerson.text = "$size person found"
                                 }
                                 else {
                                     binding.linearLayoutNoResultFound.visibility = View.GONE
                                     binding.recyclerViewSearchResultOfPerson.visibility = View.VISIBLE
-                                    binding.textViewSearchResultOfPerson.text = "$size results found"
+                                    binding.textViewSearchResultOfPerson.text = "$size persons found"
                                 }
                             }
                             else{
                                 binding.linearLayoutNoResultFound.visibility = View.VISIBLE
                                 binding.recyclerViewSearchResultOfPerson.visibility = View.GONE
                                 showSnackBarMessage(responseResult.message)
-                                binding.textViewSearchResultOfPerson.text = "0 result found"
+                                binding.textViewSearchResultOfPerson.text = "0 person found"
                             }
                         }
 

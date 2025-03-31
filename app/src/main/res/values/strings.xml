@@ -62,7 +62,7 @@
     <string name="share_profile">Share Profile</string>
     <string name="view_details">View Details</string>
     <string name="wallet">Wallet</string>
-    <string name="preferred_districts">Preferred Districts</string>
+    <string name="preferred_districts">Preferred Districts (Want To Go)</string>
     <string name="preferred_district_does_not_match">Preferred district does not match</string>
     <string name="preferred_district_red">Search results will be based on your preferred district. Your profile will appear in search results according to your preferred districts.</string>
     <string name="school_amalgamated">School Amalgamated</string>

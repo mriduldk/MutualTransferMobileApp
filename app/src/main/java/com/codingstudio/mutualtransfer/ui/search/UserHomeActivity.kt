@@ -26,11 +26,13 @@ import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ModelSearch
 import com.codingstudio.mutualtransfer.ui.auth.compoment.UserAuthenticationActivity
 import com.codingstudio.mutualtransfer.ui.auth.compoment.UserDetailsChangeActivity
+import com.codingstudio.mutualtransfer.ui.message.MessageActivity
 import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.profile.ReferAndEarnActivity
 import com.codingstudio.mutualtransfer.ui.profile.UserProfileActivity
 import com.codingstudio.mutualtransfer.ui.recently_viewed.RecentlyViewedActivity
 import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewModel
+import com.codingstudio.mutualtransfer.ui.wallet.BuyCoinActivity
 import com.codingstudio.mutualtransfer.ui.wallet.OnlinePaymentActivity
 import com.codingstudio.mutualtransfer.ui.wallet.WalletActivity
 import com.codingstudio.mutualtransfer.utils.Constants
@@ -117,12 +119,20 @@ class UserHomeActivity : AppCompatActivity() {
                     val intent = Intent(this@UserHomeActivity, WalletActivity::class.java)
                     startActivity(intent)
                 }
+                R.id.nav_menu_buy_coins -> {
+                    val intent = Intent(this@UserHomeActivity, BuyCoinActivity::class.java)
+                    startActivity(intent)
+                }
                 R.id.nav_menu_online_payment -> {
                     val intent = Intent(this@UserHomeActivity, OnlinePaymentActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_menu_refer -> {
                     val intent = Intent(this@UserHomeActivity, ReferAndEarnActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_menu_messages -> {
+                    val intent = Intent(this@UserHomeActivity, MessageActivity::class.java)
                     startActivity(intent)
                 }
             }
@@ -317,6 +327,13 @@ class UserHomeActivity : AppCompatActivity() {
             binding.imageViewBtnClearBlock.visibility = View.GONE
         }
 
+        binding.textViewPreferredDistrictButton.setOnClickListener {
+
+            val intent = Intent(this, UserDetailsChangeActivity::class.java)
+            intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_PREFERENCE)
+            startActivity(intent)
+
+        }
     }
 
     private fun activelyLookingStatusChange(is_actively_looking : Int) {
@@ -358,6 +375,17 @@ class UserHomeActivity : AppCompatActivity() {
                 it.school_type?.let { _school_type ->
                     teacherPostName += "( $_school_type )"
                 }
+
+                if (it.preferred_district_1.isNullOrEmpty() || it.preferred_district_2.isNullOrEmpty() || it.preferred_district_3.isNullOrEmpty()) {
+                    binding.cardViewPreferredDistrict.visibility = View.VISIBLE
+                }
+                /*else if (it.preferred_district_1 == it.school_address_district && it.preferred_district_2 == it.school_address_district && it.preferred_district_3 == it.school_address_district) {
+                    binding.cardViewPreferredDistrict.visibility = View.VISIBLE
+                }*/
+                else {
+                    binding.cardViewPreferredDistrict.visibility = View.GONE
+                }
+
 
                 binding.switchActivelyLooking.isChecked = it.is_actively_looking == 1
 

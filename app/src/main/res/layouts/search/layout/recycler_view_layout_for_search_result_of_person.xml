@@ -117,11 +117,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_6sdp"
-                        android:fontFamily="@font/ar_one_sans_medium"
+                        android:fontFamily="@font/ar_one_sans_semi_bold"
                         android:gravity="center_vertical"
                         android:text="@string/preferred_districts"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/_8sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textViewSearchResultUserAddress" />
@@ -130,7 +130,7 @@
                         android:id="@+id/chipGroup"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textViewSearchResultPreferredDistrictsText">

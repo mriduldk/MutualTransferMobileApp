@@ -189,12 +189,72 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewPreferredDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:elevation="0dp"
+                    android:visibility="gone"
+                    ads:layout_constraintTop_toBottomOf="@id/cardViewPushNotification"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_12sdp">
+
+                        <TextView
+                            android:id="@+id/textViewPreferredDistrictHeaderHome"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ar_one_sans_bold"
+                            android:text="Set Preferred District (Want To Go)"
+                            android:textSize="@dimen/_13sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textViewPreferredDistrictHeaderText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:fontFamily="@font/ar_one_sans_regular"
+                            android:text="Please select your Preferred Districts (want to go to) to help us match you with the best options."
+                            android:textSize="@dimen/_11sdp"
+                            ads:layout_constraintTop_toBottomOf="@id/textViewPreferredDistrictHeaderHome"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textViewPreferredDistrictButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@drawable/bg_text_view_round_home"
+                            android:backgroundTint="@color/colorBlue"
+                            android:fontFamily="@font/ar_one_sans_bold"
+                            android:gravity="center"
+                            android:paddingHorizontal="@dimen/_20sdp"
+                            android:text="Edit"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dim_14"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textViewPreferredDistrictHeaderText" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardViewSearchHome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_12sdp"
                     android:elevation="0dp"
-                    ads:layout_constraintTop_toBottomOf="@id/cardViewPushNotification"
+                    ads:layout_constraintTop_toBottomOf="@id/cardViewPreferredDistrict"
                     app:cardCornerRadius="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">

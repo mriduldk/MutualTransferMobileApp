@@ -79,6 +79,11 @@
             android:theme="@style/Theme.MutualTransfer"
             android:windowSoftInputMode="adjustResize"/>
         <activity
+            android:name=".ui.message.MessageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MutualTransfer"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
             android:name=".ui.wallet.OnlinePaymentActivity"
             android:exported="false"
             android:theme="@style/Theme.MutualTransfer"

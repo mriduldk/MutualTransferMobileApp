@@ -14,6 +14,10 @@
         android:id="@+id/nav_menu_saved_profiles"
         android:icon="@drawable/ic_saved_profile"/>
     <item
+        android:title="My Messages"
+        android:id="@+id/nav_menu_messages"
+        android:icon="@drawable/outline_chat_24"/>
+    <item
         android:title="Recently Viewed"
         android:id="@+id/nav_menu_recently_viewed"
         android:icon="@drawable/ic_recently_viewed"/>
@@ -21,6 +25,10 @@
         android:title="Wallet"
         android:id="@+id/nav_menu_wallet"
         android:icon="@drawable/ic_wallet"/>
+    <item
+        android:title="Buy Coins"
+        android:id="@+id/nav_menu_buy_coins"
+        android:icon="@drawable/ic_buy_coin"/>
     <item
         android:title="Online Payment"
         android:id="@+id/nav_menu_online_payment"

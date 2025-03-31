@@ -86,6 +86,12 @@ class RetrofitInstance {
         val blockAPI by lazy {
             retrofit.create(RetrofitBlockAPI::class.java)
         }
+        val subjectAPI by lazy {
+            retrofit.create(RetrofitSubjectAPI::class.java)
+        }
+        val messageAPI by lazy {
+            retrofit.create(RetrofitMessageAPI::class.java)
+        }
 
 
 

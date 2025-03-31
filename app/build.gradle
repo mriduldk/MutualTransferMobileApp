@@ -17,8 +17,8 @@ android {
         applicationId "com.codingstudio.mutualtransfer"
         minSdk 24
         targetSdk 34
-        versionCode 6
-        versionName "1.3"
+        versionCode 7
+        versionName "1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -35,6 +35,7 @@ android {
                     'src/main/res/layouts/search',
                     'src/main/res/layouts/wallet',
                     'src/main/res/layouts/profile',
+                    'src/main/res/layouts/message',
                     'src/main/res/layouts/recently_viewed',
             ]
         }
@@ -51,6 +52,9 @@ android {
 
             buildConfigField "String", "PHONE_PE_MERCHANT_ID", '"M22LEY2FHR755"'
 
+            buildConfigField "String", "RAZORPAY_KEY_ID", '"rzp_test_poAXMhBwy9mqNZ"'
+            buildConfigField "String", "RAZORPAY_KEY_SECRET", '"trNCEkskY4cP75ljldNkM07Z"'
+
             debuggable true
         }
         release {
@@ -61,6 +65,9 @@ android {
             buildConfigField "String", "ADMOB_NATIVE_ADVANCED_UNIT_ID", '"ca-app-pub-4457216037877623/2608681268"'
 
             buildConfigField "String", "PHONE_PE_MERCHANT_ID", '"M22LEY2FHR755"'
+
+            buildConfigField "String", "RAZORPAY_KEY_ID", '"rzp_live_3pXtkbx2UXqfQO"'
+            buildConfigField "String", "RAZORPAY_KEY_SECRET", '"eVRYu9lUT7DFCSWYW71N2259"'
 
             debuggable false
             minifyEnabled false
