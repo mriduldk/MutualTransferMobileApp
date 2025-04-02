@@ -172,4 +172,8 @@
     <color name="district_not_match">#FFDBB5</color>
 
 
+    <color name="chat_bubble_sender">#effdde</color>
+    <color name="chat_bubble_receiver">#DEF2FB</color>
+
+
 </resources>

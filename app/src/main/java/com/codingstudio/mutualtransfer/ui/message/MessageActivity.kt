@@ -1,5 +1,6 @@
 package com.codingstudio.mutualtransfer.ui.message
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -63,10 +64,24 @@ class MessageActivity : AppCompatActivity() {
 
         adapterForMessageParent.setOnMessageClickedListener { modelMessage ->
 
-            /*val intent = Intent(this, ViewDetailsOfPersonActivity::class.java).apply {
-                putExtra(ViewDetailsOfPersonActivity.SEARCH_PERSON_ID, personDetails.user_details_id)
+            var receiverId = ""
+            var receiverName = ""
+
+            if (modelMessage.sender_id == userId) {
+                receiverId = modelMessage.receiver_id ?: ""
+                receiverName = modelMessage.receiver_name ?: ""
             }
-            startActivity(intent)*/
+            else {
+                receiverId = modelMessage.sender_id ?: ""
+                receiverName = modelMessage.sender_name ?: ""
+            }
+
+            val intent = Intent(this, MessageTransactionActivity::class.java).apply {
+                putExtra(MessageTransactionActivity.MESSAGE_ID, "${modelMessage.id}")
+                putExtra(MessageTransactionActivity.RECEIVER_ID, receiverId)
+                putExtra(MessageTransactionActivity.RECEIVER_NAME, receiverName)
+            }
+            startActivity(intent)
 
         }
 

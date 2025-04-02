@@ -71,4 +71,8 @@
     <string name="refresh_status">Refresh Status</string>
     <string name="contact_support">Contact Support</string>
     <string name="view_your_online_payments">View Your Online Payments</string>
+    <string name="green_square">Green Square</string>
+    <string name="message_text">Hi. How are you? Some random text here and here. I need spend more time for android dev</string>
+    <string name="send_button">Send Button</string>
+    <string name="type_a_message">Type a message</string>
 </resources>

@@ -48,8 +48,12 @@ class AdapterForMessageParent(private val userId: String, private val context: C
                 textViewMessageParentMessageContent.typeface = typeface
                 textViewMessageParentSenderName.typeface = typeface
             }
-            else {
+            else if (modelMessage.last_message_sent_by != userId) {
                 val typeface = ResourcesCompat.getFont(context, R.font.roboto_bold)
+                textViewMessageParentMessageContent.typeface = typeface
+                textViewMessageParentSenderName.typeface = typeface
+            } else {
+                val typeface = ResourcesCompat.getFont(context, R.font.roboto)
                 textViewMessageParentMessageContent.typeface = typeface
                 textViewMessageParentSenderName.typeface = typeface
             }
