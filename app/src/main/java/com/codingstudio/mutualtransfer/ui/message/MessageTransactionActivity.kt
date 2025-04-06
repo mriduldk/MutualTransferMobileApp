@@ -49,6 +49,10 @@ class MessageTransactionActivity : AppCompatActivity() {
         receiver_id = intent.extras?.getString(RECEIVER_ID) ?: ""
         receiver_name = intent.extras?.getString(RECEIVER_NAME) ?: ""
 
+        if (message_id.isEmpty()) {
+            insertAcceptMessage()
+        }
+
         setData()
         setOnClickListener()
         observeMessages()
@@ -111,6 +115,8 @@ class MessageTransactionActivity : AppCompatActivity() {
                             if (responseResult.status == 200){
 
                                 adapterForMessageTransactions.differ.submitList(responseResult.MessageContent)
+
+                                binding.recyclerViewMessages.scrollToPosition(binding.recyclerViewMessages.adapter?.itemCount?.minus(1) ?: 0)
 
                             }
                             else{
@@ -197,6 +203,14 @@ class MessageTransactionActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    private fun insertAcceptMessage(){
+        messageViewModel.storeMessageFun(
+            sender_id = userId,
+            receiver_id = receiver_id,
+            last_message_content = "Hey, I want to talk to you about the mutual transfer. If you're interested, let's chat!",
+        )
     }
 
 

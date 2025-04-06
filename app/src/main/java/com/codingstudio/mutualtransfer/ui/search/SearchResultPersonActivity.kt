@@ -16,6 +16,7 @@ import com.codingstudio.mutualtransfer.databinding.ActivitySearchResultOfPersonB
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ModelSearch
 import com.codingstudio.mutualtransfer.model.search.ModelSearchResultOfPerson
+import com.codingstudio.mutualtransfer.ui.message.MessageTransactionActivity
 import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModel
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModelFactory
@@ -142,6 +143,17 @@ class SearchResultPersonActivity : AppCompatActivity() {
                 }
                 .build()
                 .show()
+
+        }
+
+        adapterForSearchResultOfPerson.setOnMessagePersonClickedListener { personDetails ->
+
+            val intent = Intent(this, MessageTransactionActivity::class.java).apply {
+                putExtra(MessageTransactionActivity.RECEIVER_ID, personDetails.fk_user_id)
+                putExtra(MessageTransactionActivity.RECEIVER_NAME, personDetails.name)
+            }
+            startActivity(intent)
+
 
         }
 
