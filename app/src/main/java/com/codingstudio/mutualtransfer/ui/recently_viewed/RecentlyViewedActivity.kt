@@ -18,6 +18,7 @@ import com.codingstudio.mutualtransfer.model.search.ModelRecentlyViewed
 import com.codingstudio.mutualtransfer.model.search.ModelSearch
 import com.codingstudio.mutualtransfer.model.search.ModelSearchResultOfPerson
 import com.codingstudio.mutualtransfer.repository.local.RecentlyViewedRepository
+import com.codingstudio.mutualtransfer.ui.message.MessageTransactionActivity
 import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModel
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModelFactory
@@ -111,6 +112,14 @@ class RecentlyViewedActivity : AppCompatActivity() {
                 .build()
                 .show()
 
+        }
+        adapterForRecentlyViewedPerson.setOnMessagePersonClickedListener { personDetails ->
+
+            val intent = Intent(this, MessageTransactionActivity::class.java).apply {
+                putExtra(MessageTransactionActivity.RECEIVER_ID, personDetails.fk_user_id)
+                putExtra(MessageTransactionActivity.RECEIVER_NAME, personDetails.name)
+            }
+            startActivity(intent)
         }
 
     }

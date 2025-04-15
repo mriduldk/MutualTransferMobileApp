@@ -13,6 +13,7 @@ import com.codingstudio.mutualtransfer.MainApplication
 import com.codingstudio.mutualtransfer.databinding.ActivityViewDetailsOfPersonBinding
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ModelSearchResultOfPerson
+import com.codingstudio.mutualtransfer.ui.message.MessageTransactionActivity
 import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModel
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModelFactory
@@ -37,6 +38,8 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
     private val TAG = "ViewDetailsOfPersonActivity"
     private var personId : String ?= null
     private var searchedPerson : ModelSearchResultOfPerson ?= null
+    private var receiver_id = ""
+    private var receiver_name = ""
 
     private var _binding : ActivityViewDetailsOfPersonBinding ?= null
     private val binding get() = _binding!!
@@ -85,6 +88,16 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
                 }
                 .build()
                 .show()
+
+        }
+
+        binding.constraintLayoutSearchResultMessage.setOnClickListener {
+
+            val intent = Intent(this, MessageTransactionActivity::class.java).apply {
+                putExtra(MessageTransactionActivity.RECEIVER_ID, receiver_id)
+                putExtra(MessageTransactionActivity.RECEIVER_NAME, receiver_name)
+            }
+            startActivity(intent)
 
         }
 
@@ -260,6 +273,9 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
 
     private fun setPersonalInformation(personDetails: ModelSearchResultOfPerson) {
 
+        receiver_id = "${personDetails.fk_user_id}"
+        receiver_name = "${personDetails.name}"
+
         binding.textViewViewDetailsUserName.text = personDetails.name
         binding.textViewViewDetailsUserPhoneNo.text = personDetails.phone
         binding.textViewViewDetailsUserEmail.text = personDetails.email
@@ -276,10 +292,12 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
         if(personDetails.is_paid == 1) {
             binding.constraintLayoutSearchResultPayCoins.visibility = View.GONE
             binding.constraintLayoutSearchResultSave.visibility = View.VISIBLE
+            binding.constraintLayoutSearchResultMessage.visibility = View.VISIBLE
         }
         else {
-            binding.constraintLayoutSearchResultPayCoins.visibility = View.VISIBLE
+            binding.constraintLayoutSearchResultPayCoins.visibility = View.GONE
             binding.constraintLayoutSearchResultSave.visibility = View.VISIBLE
+            binding.constraintLayoutSearchResultMessage.visibility = View.VISIBLE
         }
 
         binding.textViewViewDetailsPayCoins.text = "Pay ${personDetails.pay_to_view_amount} Coins"

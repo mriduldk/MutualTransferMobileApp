@@ -206,6 +206,8 @@ dependencies {
     // GIF
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
 
+    implementation 'com.google.mlkit:translate:17.0.1'
+
 
 }
 kapt {

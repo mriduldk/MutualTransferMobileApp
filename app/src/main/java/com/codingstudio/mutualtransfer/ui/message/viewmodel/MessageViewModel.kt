@@ -169,5 +169,34 @@ class MessageViewModel @Inject constructor(
 
 
 
+    private val _getMessageTransactionsBySenderAndReceiverId: MutableLiveData<EventWrapper<Resource<ResponseMessageTransaction>>> =
+        MutableLiveData()
+    val getMessageTransactionsBySenderAndReceiverId: LiveData<EventWrapper<Resource<ResponseMessageTransaction>>>
+        get() = _getMessageTransactionsBySenderAndReceiverId
+
+    fun getMessageTransactionsBySenderAndReceiverIdFun(
+        sender_id: String,
+        receiver_id: String,
+        user_id: String,
+    ) = viewModelScope.launch {
+
+        _getMessageTransactionsBySenderAndReceiverId.postValue(EventWrapper(Resource.Loading()))
+
+        if (HasInternetConnection().check(application)) {
+
+            val response = messageRepository.getMessageTransactionsBySenderAndReceiverId(
+                sender_id = sender_id,
+                receiver_id = receiver_id,
+                user_id = user_id,
+            )
+            HandleNetworkResponse.Check(response, _getMessageTransactionsBySenderAndReceiverId).process()
+        } else {
+            _getMessageTransactionsBySenderAndReceiverId.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
+        }
+
+    }
+
+
+
 
 }

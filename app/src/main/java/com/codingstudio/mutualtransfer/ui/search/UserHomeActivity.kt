@@ -21,6 +21,7 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import com.codingstudio.mutualtransfer.BuildConfig
 import com.codingstudio.mutualtransfer.R
+import com.codingstudio.mutualtransfer.api.RetrofitAuthAPI
 import com.codingstudio.mutualtransfer.databinding.ActivityMainBinding
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ModelSearch
@@ -31,6 +32,8 @@ import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.profile.ReferAndEarnActivity
 import com.codingstudio.mutualtransfer.ui.profile.UserProfileActivity
 import com.codingstudio.mutualtransfer.ui.recently_viewed.RecentlyViewedActivity
+import com.codingstudio.mutualtransfer.ui.translate.TranslateRequest
+import com.codingstudio.mutualtransfer.ui.translate.TranslateResponse
 import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewModel
 import com.codingstudio.mutualtransfer.ui.wallet.BuyCoinActivity
 import com.codingstudio.mutualtransfer.ui.wallet.OnlinePaymentActivity
@@ -46,7 +49,16 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import dagger.hilt.android.AndroidEntryPoint
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 @AndroidEntryPoint
@@ -149,6 +161,8 @@ class UserHomeActivity : AppCompatActivity() {
 
         checkAdEnableStatus()
         checkAppUpdate()
+
+        //translateMessage()
     }
 
     private fun onClickListeners() {
@@ -724,5 +738,44 @@ class UserHomeActivity : AppCompatActivity() {
                 }
             }
     }
+
+
+    private fun translateMessage() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://translation.googleapis.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(RetrofitAuthAPI::class.java)
+
+        val apiKey = "AIzaSyBCpKoPHCeZtqTGWywuaJtLtagNz4dv9hc"
+        val request = TranslateRequest(
+            q = "Prime Minister Narendra Modi and Sri Lankan President Anura Kumara Dissanayake jointly launched the signalling system for the Maho-Anuradhapura railway line – a project supported by the government of India. They also launched the railway track of the Maho-Omanthai railway line and flagged off a train at Anuradhapura Railway Station.",
+            target = "as" // "bn" for Bengali
+        )
+
+        service.translateText(apiKey, request).enqueue(object : Callback<TranslateResponse> {
+            override fun onResponse(call: Call<TranslateResponse>, response: Response<TranslateResponse>) {
+                if (response.isSuccessful) {
+                    val translated = response.body()?.data?.translations?.firstOrNull()?.translatedText
+                    binding.textViewTranslateMessage.text = translated
+                } else {
+                    Log.e("Translation", "Error: ${response.code()}")
+                    binding.textViewTranslateMessage.text = "Error: ${response.code()}"
+                }
+            }
+
+            override fun onFailure(call: Call<TranslateResponse>, t: Throwable) {
+                Log.e("Translation", "Failed: ${t.message}")
+                binding.textViewTranslateMessage.text = "Failed: ${t.message}"
+            }
+        })
+
+
+
+    }
+
+
 
 }

@@ -51,6 +51,7 @@
                         tools:text="Mridul Das" />
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/textViewSearchResultUserPhoneNo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
                         tools:text="+91 6001025603" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/imageViewPhoneNoCopy"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -76,6 +78,7 @@
                         app:layout_constraintTop_toTopOf="@id/textViewSearchResultUserPhoneNo" />
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/textViewSearchResultUserEmail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

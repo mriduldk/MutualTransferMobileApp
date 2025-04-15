@@ -96,6 +96,7 @@
                     tools:text="Mridul Das" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/textViewViewDetailsUserPhoneNo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -109,6 +110,7 @@
                     tools:text="+91 6001025603" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/imageViewPhoneNoCopy"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -122,6 +124,7 @@
                     app:layout_constraintTop_toTopOf="@id/textViewViewDetailsUserPhoneNo" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/textViewViewDetailsUserEmail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -403,6 +406,47 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayoutSearchResultMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_1"
+                    android:paddingVertical="@dimen/_12sdp"
+                    android:paddingStart="@dimen/_12sdp"
+                    app:layout_constraintEnd_toStartOf="@id/constraintLayoutSearchResultSave"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imageViewChat"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:clickable="true"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/outline_chat_24"
+                        app:layout_constraintBottom_toBottomOf="@id/textViewViewDetailsMessage"
+                        app:layout_constraintEnd_toStartOf="@id/textViewViewDetailsMessage"
+                        app:layout_constraintTop_toTopOf="@id/textViewViewDetailsMessage"
+                        ads:tint="@color/white" />
+
+
+                    <TextView
+                        android:id="@+id/textViewViewDetailsMessage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:fontFamily="@font/ar_one_sans_semi_bold"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintStart_toEndOf="@id/imageViewChat"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="Message" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayoutSearchResultSave"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -410,7 +454,7 @@
                     android:paddingVertical="@dimen/_12sdp"
                     android:paddingStart="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/constraintLayoutSearchResultPayCoins"
+                    app:layout_constraintStart_toEndOf="@id/constraintLayoutSearchResultMessage"
                     app:layout_constraintTop_toTopOf="parent">
 
 

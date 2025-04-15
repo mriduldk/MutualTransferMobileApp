@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.model.search.ModelRecentlyViewed
-import com.codingstudio.mutualtransfer.model.search.ModelSearchHistory
-import com.codingstudio.mutualtransfer.model.search.ModelSearchResultOfPerson
 import com.google.android.material.chip.Chip
 
 class AdapterForRecentlyViewedPerson : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -30,6 +28,8 @@ class AdapterForRecentlyViewedPerson : RecyclerView.Adapter<RecyclerView.ViewHol
         private val textViewSearchResultPayButton = itemView.findViewById<TextView>(R.id.textViewSearchResultPayButton)
         private val textViewSearchResultViewDetailsButton = itemView.findViewById<TextView>(R.id.textViewSearchResultViewDetailsButton)
         private val constraintLayoutSearchResultPayCoins = itemView.findViewById<ConstraintLayout>(R.id.constraintLayoutSearchResultPayCoins)
+
+        private val textViewSearchResultMessagePerson = itemView.findViewById<TextView>(R.id.textViewSearchResultMessagePerson)
 
         private val chipDistrictPreference1 = itemView.findViewById<Chip>(R.id.chipDistrictPreference1)
         private val chipDistrictPreference2 = itemView.findViewById<Chip>(R.id.chipDistrictPreference2)
@@ -84,7 +84,7 @@ class AdapterForRecentlyViewedPerson : RecyclerView.Adapter<RecyclerView.ViewHol
             }
             else{
                 textViewSearchResultViewDetailsButton.visibility = View.VISIBLE
-                constraintLayoutSearchResultPayCoins.visibility = View.VISIBLE
+                constraintLayoutSearchResultPayCoins.visibility = View.GONE //View.VISIBLE
             }
 
             textViewSearchResultPayButton.text = "Pay ${modelRecentlyViewed.pay_to_view_amount} Coins"
@@ -92,6 +92,12 @@ class AdapterForRecentlyViewedPerson : RecyclerView.Adapter<RecyclerView.ViewHol
 
             textViewSearchResultViewDetailsButton.setOnClickListener {
                 onPersonViewDetailsClickListener?.let {
+                    it(modelRecentlyViewed)
+                }
+            }
+
+            textViewSearchResultMessagePerson.setOnClickListener {
+                onMessagePersonClickedListener?.let {
                     it(modelRecentlyViewed)
                 }
             }
@@ -150,6 +156,11 @@ class AdapterForRecentlyViewedPerson : RecyclerView.Adapter<RecyclerView.ViewHol
     private var onPayPersonClickedListener : ((ModelRecentlyViewed) -> Unit) ?= null
     fun setOnPayPersonClickedListener(listener: ((ModelRecentlyViewed) -> Unit)) {
         onPayPersonClickedListener = listener
+    }
+
+    private var onMessagePersonClickedListener : ((ModelRecentlyViewed) -> Unit) ?= null
+    fun setOnMessagePersonClickedListener(listener: ((ModelRecentlyViewed) -> Unit)) {
+        onMessagePersonClickedListener = listener
     }
 
     private var onPersonViewDetailsClickListener : ((ModelRecentlyViewed) -> Unit) ?= null

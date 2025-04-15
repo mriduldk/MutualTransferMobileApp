@@ -56,13 +56,13 @@
                     tools:text="Receiver Name" />
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/receiver_designation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ar_one_sans_medium"
                     android:gravity="center"
                     android:textSize="@dimen/_12sdp"
+                    android:visibility="gone"
                     tools:text="Receiver Designation" />
             </LinearLayout>
 
@@ -88,12 +88,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:clipToPadding="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="5"
-                android:clipToPadding="false"
                 tools:listitem="@layout/chat_bubble_receiver" />
 
 
@@ -133,6 +133,7 @@
         android:background="@color/white"
         android:orientation="horizontal"
         android:padding="8dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
@@ -162,15 +163,122 @@
             android:src="@drawable/round_send_24" />
 
         <ProgressBar
-            android:visibility="gone"
             android:id="@+id/progressBarSendMessages"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:indeterminate="true"
-            android:padding="10dp"
             android:indeterminateTint="@color/primaryTextColor"
-            />
+            android:padding="10dp"
+            android:visibility="gone" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chat_input_layout_initial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <EditText
+            android:id="@+id/edit_text_message_initial"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text_bg"
+            android:clickable="false"
+            android:focusable="false"
+            android:hint="@string/type_a_message"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="3"
+
+            android:padding="10dp"
+            android:text="Hey, I want to talk to you about the mutual transfer. If you're interested, let's chat!" />
+
+        <ImageView
+            android:id="@+id/button_send_initial"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:contentDescription="@string/send_button"
+            android:focusable="true"
+            android:padding="10dp"
+            android:src="@drawable/round_send_24" />
+
+        <ProgressBar
+            android:id="@+id/progressBarSendMessages_initial"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/primaryTextColor"
+            android:padding="10dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutNotAcceptedText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/textViewNotAcceptedText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:padding="10dp"
+            tools:text="Your message is pending. Raktim has not accepted your message yet. Please wait until it is accepted." />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAcceptReject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/buttonReject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/red"
+            android:padding="10dp"
+            android:text="Reject" />
+
+        <Button
+            android:id="@+id/buttonAccept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/updated_success"
+            android:padding="10dp"
+            android:text="Accept" />
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

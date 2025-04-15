@@ -54,6 +54,17 @@ class MessageRepository {
     )
 
 
+    suspend fun getMessageTransactionsBySenderAndReceiverId(
+        sender_id: String,
+        receiver_id: String,
+        user_id: String,
+    ) = RetrofitInstance.messageAPI.getMessageTransactionsBySenderAndReceiverId(
+        sender_id = sender_id,
+        receiver_id = receiver_id,
+        user_id = user_id,
+    )
+
+
 
 
 }

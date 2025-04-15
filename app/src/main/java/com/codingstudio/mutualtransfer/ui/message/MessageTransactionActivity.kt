@@ -3,12 +3,17 @@ package com.codingstudio.mutualtransfer.ui.message
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codingstudio.mutualtransfer.MainApplication
+import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.databinding.ActivityMessageBinding
 import com.codingstudio.mutualtransfer.databinding.ActivityMessageTransactionsBinding
 import com.codingstudio.mutualtransfer.model.Resource
@@ -45,13 +50,13 @@ class MessageTransactionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         userId = SharedPref().getUserIDPref(this) ?: ""
-        message_id = intent.extras?.getString(MESSAGE_ID) ?: ""
+        //message_id = intent.extras?.getString(MESSAGE_ID) ?: ""
         receiver_id = intent.extras?.getString(RECEIVER_ID) ?: ""
         receiver_name = intent.extras?.getString(RECEIVER_NAME) ?: ""
 
-        if (message_id.isEmpty()) {
+        /*if (message_id.isEmpty()) {
             insertAcceptMessage()
-        }
+        }*/
 
         setData()
         setOnClickListener()
@@ -84,6 +89,56 @@ class MessageTransactionActivity : AppCompatActivity() {
 
         }
 
+        binding.buttonSendInitial.setOnClickListener {
+            insertAcceptMessage()
+        }
+
+        binding.buttonAccept.setOnClickListener {
+
+            AlertDialog.Builder(this)
+                .setTitle("Confirm")
+                .setMessage("Are you sure you want to accept this message?")
+                .setPositiveButton("Accept") { dialog, _ ->
+
+                    messageViewModel.acceptMessageFun(
+                        message_id = message_id,
+                        status = "accepted",
+                        user_id = userId,
+                    )
+
+                    dialog.dismiss()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    // Handle "No" action here
+                    dialog.dismiss()
+                }
+                .show()
+
+        }
+
+        binding.buttonReject.setOnClickListener {
+
+            AlertDialog.Builder(this)
+                .setTitle("Confirm")
+                .setMessage("Are you sure you want to reject this message?")
+                .setPositiveButton("Reject") { dialog, _ ->
+
+                    messageViewModel.acceptMessageFun(
+                        message_id = message_id,
+                        status = "rejected",
+                        user_id = userId,
+                    )
+
+                    dialog.dismiss()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    // Handle "No" action here
+                    dialog.dismiss()
+                }
+                .show()
+
+        }
+
     }
 
     private fun setRecyclerViewOfMessages() {
@@ -97,11 +152,14 @@ class MessageTransactionActivity : AppCompatActivity() {
     }
 
     private fun getMessages(){
-        messageViewModel.getMessageTransactionsByMessageIdFun(message_id, userId)
+
+        //messageViewModel.getMessageTransactionsByMessageIdFun(message_id, userId)
+        messageViewModel.getMessageTransactionsBySenderAndReceiverIdFun(userId, receiver_id, userId)
     }
+
     private fun observeMessages() {
 
-        messageViewModel.getMessageTransactionsByMessageId.observe(this, Observer { res ->
+        messageViewModel.getMessageTransactionsBySenderAndReceiverId.observe(this, Observer { res ->
 
             res.getContentIfNotHandled()?.let { response ->
 
@@ -112,10 +170,45 @@ class MessageTransactionActivity : AppCompatActivity() {
 
                         response.data?.let { responseResult ->
 
-                            if (responseResult.status == 200){
+                            if (responseResult.status == 200) {
+
+                                var message = responseResult.Message
+
+                                message_id = "${message?.id}"
+
+                                if (message?.status == "accepted") {
+                                    binding.chatInputLayout.visibility = VISIBLE
+                                    binding.layoutNotAcceptedText.visibility = GONE
+                                    binding.chatInputLayoutInitial.visibility = GONE
+                                }
+                                else if (message?.status == "pending") {
+                                    binding.chatInputLayout.visibility = GONE
+                                    binding.chatInputLayoutInitial.visibility = GONE
+                                    binding.textViewNotAcceptedText.text = "Your message is pending. $receiver_name has not accepted your message yet. Please wait until it is accepted."
+
+                                    if (message.last_message_sent_by != userId) {
+                                        binding.linearLayoutAcceptReject.visibility = VISIBLE
+                                        binding.layoutNotAcceptedText.visibility = GONE
+                                    }
+                                    else {
+                                        binding.linearLayoutAcceptReject.visibility = GONE
+                                        binding.layoutNotAcceptedText.visibility = VISIBLE
+                                    }
+                                }
+                                else if (message?.status == "rejected") {
+                                    binding.chatInputLayout.visibility = GONE
+                                    binding.layoutNotAcceptedText.visibility = VISIBLE
+                                    binding.chatInputLayoutInitial.visibility = GONE
+                                    binding.textViewNotAcceptedText.text = "Message is rejectd by ${receiver_name}."
+                                    binding.textViewNotAcceptedText.setTextColor(ContextCompat.getColor(this, R.color.red))
+                                }
+                                else {
+                                    binding.chatInputLayout.visibility = GONE
+                                    binding.layoutNotAcceptedText.visibility = GONE
+                                    binding.chatInputLayoutInitial.visibility = VISIBLE
+                                }
 
                                 adapterForMessageTransactions.differ.submitList(responseResult.MessageContent)
-
                                 binding.recyclerViewMessages.scrollToPosition(binding.recyclerViewMessages.adapter?.itemCount?.minus(1) ?: 0)
 
                             }
@@ -134,10 +227,16 @@ class MessageTransactionActivity : AppCompatActivity() {
                                     showSnackBarMessage("No internet connection")
                                 }
                                 Constants.CONFLICT -> {
-                                    showSnackBarMessage(errorMessage)
+                                    //showSnackBarMessage(errorMessage)
+                                }
+                                Constants.NOT_FOUND -> {
+                                    //showSnackBarMessage(errorMessage)
+
+                                    binding.chatInputLayoutInitial.visibility = VISIBLE
+                                    binding.chatInputLayout.visibility = GONE
                                 }
                                 else -> {
-                                    showSnackBarMessage(errorMessage)
+                                    //showSnackBarMessage(errorMessage)
                                 }
                             }
                         }
@@ -149,7 +248,6 @@ class MessageTransactionActivity : AppCompatActivity() {
                 }
 
             }
-
 
         })
 
@@ -202,6 +300,94 @@ class MessageTransactionActivity : AppCompatActivity() {
 
         })
 
+        messageViewModel.storeMessage.observe(this, Observer { res ->
+
+            res.getContentIfNotHandled()?.let { response ->
+
+                when(response)
+                {
+                    is Resource.Success -> {
+                        hideProgressBarSendInitialMessage()
+
+                        response.data?.let { responseResult ->
+
+                            getMessages()
+                        }
+
+                    }
+                    is Resource.Error -> {
+                        hideProgressBarSendInitialMessage()
+
+                        response.message?.let { errorMessage ->
+                            when (errorMessage) {
+                                Constants.NO_INTERNET -> {
+                                    showSnackBarMessage("No internet connection")
+                                }
+                                Constants.CONFLICT -> {
+                                    showSnackBarMessage(errorMessage)
+                                }
+                                else -> {
+                                    showSnackBarMessage(errorMessage)
+                                }
+                            }
+                        }
+
+                    }
+                    is Resource.Loading -> {
+                        showProgressBarSendInitialMessage()
+                    }
+                }
+
+            }
+
+
+        })
+
+        messageViewModel.acceptMessage.observe(this, Observer { res ->
+
+            res.getContentIfNotHandled()?.let { response ->
+
+                when(response)
+                {
+                    is Resource.Success -> {
+                        hideProgressBarSendInitialMessage()
+
+                        response.data?.let { responseResult ->
+
+                            showSnackBarMessage(responseResult.message)
+                            getMessages()
+                        }
+
+                    }
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        binding.linearLayoutAcceptReject.visibility = VISIBLE
+
+                        response.message?.let { errorMessage ->
+                            when (errorMessage) {
+                                Constants.NO_INTERNET -> {
+                                    showSnackBarMessage("No internet connection")
+                                }
+                                Constants.CONFLICT -> {
+                                    showSnackBarMessage(errorMessage)
+                                }
+                                else -> {
+                                    showSnackBarMessage(errorMessage)
+                                }
+                            }
+                        }
+
+                    }
+                    is Resource.Loading -> {
+                        showProgressBar()
+                        binding.linearLayoutAcceptReject.visibility = GONE
+                    }
+                }
+
+            }
+
+
+        })
 
     }
 
@@ -213,22 +399,31 @@ class MessageTransactionActivity : AppCompatActivity() {
         )
     }
 
-
     private fun showProgressBar() {
-        binding.relativeLayoutProgressBar.visibility = View.VISIBLE
+        binding.relativeLayoutProgressBar.visibility = VISIBLE
     }
     private fun hideProgressBar() {
-        binding.relativeLayoutProgressBar.visibility = View.GONE
+        binding.relativeLayoutProgressBar.visibility = GONE
     }
 
     private fun showProgressBarSendMessage() {
-        binding.progressBarSendMessages.visibility = View.VISIBLE
-        binding.buttonSend.visibility = View.GONE
+        binding.progressBarSendMessages.visibility = VISIBLE
+        binding.buttonSend.visibility = GONE
     }
     private fun hideProgressBarSendMessage() {
-        binding.progressBarSendMessages.visibility = View.GONE
-        binding.buttonSend.visibility = View.VISIBLE
+        binding.progressBarSendMessages.visibility = GONE
+        binding.buttonSend.visibility = VISIBLE
     }
+
+    private fun showProgressBarSendInitialMessage() {
+        binding.progressBarSendMessagesInitial.visibility = VISIBLE
+        binding.buttonSendInitial.visibility = GONE
+    }
+    private fun hideProgressBarSendInitialMessage() {
+        binding.progressBarSendMessagesInitial.visibility = GONE
+        binding.buttonSendInitial.visibility = VISIBLE
+    }
+
     fun hideKeyboard() {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         currentFocus?.let {

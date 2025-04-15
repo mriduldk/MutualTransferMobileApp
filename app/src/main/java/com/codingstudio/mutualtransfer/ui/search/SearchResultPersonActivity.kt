@@ -153,8 +153,6 @@ class SearchResultPersonActivity : AppCompatActivity() {
                 putExtra(MessageTransactionActivity.RECEIVER_NAME, personDetails.name)
             }
             startActivity(intent)
-
-
         }
 
     }

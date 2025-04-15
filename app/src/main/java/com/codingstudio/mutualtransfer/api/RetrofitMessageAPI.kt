@@ -1,16 +1,11 @@
 package com.codingstudio.mutualtransfer.api
 
-import com.codingstudio.mutualtransfer.model.auth.ResponseLogin
-import com.codingstudio.mutualtransfer.model.block.ResponseBlock
-import com.codingstudio.mutualtransfer.model.district.ResponseDistrict
 import com.codingstudio.mutualtransfer.model.message.ResponseMessage
 import com.codingstudio.mutualtransfer.model.message.ResponseMessageTransaction
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface RetrofitMessageAPI {
 
@@ -67,6 +62,19 @@ interface RetrofitMessageAPI {
     suspend fun getMessageTransactionsByMessageId(
         @Field("message_id")
         message_id : String,
+        @Field("user_id")
+        user_id : String
+    ): Response<ResponseMessageTransaction>
+
+
+
+    @POST("message/getMessageTransactionsBySenderAndReceiverId")
+    @FormUrlEncoded
+    suspend fun getMessageTransactionsBySenderAndReceiverId(
+        @Field("sender_id")
+        sender_id : String,
+        @Field("receiver_id")
+        receiver_id : String,
         @Field("user_id")
         user_id : String
     ): Response<ResponseMessageTransaction>

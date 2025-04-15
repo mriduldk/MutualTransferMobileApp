@@ -56,7 +56,7 @@ class MessageActivity : AppCompatActivity() {
 
     private fun setRecyclerViewOfSearchHistory() {
 
-        adapterForMessageParent = AdapterForMessageParent(userId ?: "", this)
+        adapterForMessageParent = AdapterForMessageParent(userId, this)
         binding.recyclerViewMessages.apply {
             adapter = adapterForMessageParent
             layoutManager = LinearLayoutManager(this@MessageActivity)
@@ -105,7 +105,7 @@ class MessageActivity : AppCompatActivity() {
 
                             if (responseResult.status == 200){
 
-                                adapterForMessageParent.differ.submitList(responseResult.MessageContent)
+                                adapterForMessageParent.differ.submitList(responseResult.Messages)
 
                             }
                             else{
