@@ -2,7 +2,6 @@ package com.codingstudio.mutualtransfer.ui.message
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
@@ -14,10 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codingstudio.mutualtransfer.MainApplication
 import com.codingstudio.mutualtransfer.R
-import com.codingstudio.mutualtransfer.databinding.ActivityMessageBinding
 import com.codingstudio.mutualtransfer.databinding.ActivityMessageTransactionsBinding
 import com.codingstudio.mutualtransfer.model.Resource
-import com.codingstudio.mutualtransfer.ui.message.adapter.AdapterForMessageParent
 import com.codingstudio.mutualtransfer.ui.message.adapter.AdapterForMessageTransactions
 import com.codingstudio.mutualtransfer.ui.message.viewmodel.MessageViewModel
 import com.codingstudio.mutualtransfer.ui.message.viewmodel.MessageViewModelFactory

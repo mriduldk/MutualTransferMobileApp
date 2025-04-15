@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 
 public class RoundCornerImageView extends androidx.appcompat.widget.AppCompatImageView {
 
-    private float radius = 30.0f;
+    private final float radius = 30.0f;
     private Path path;
     private RectF rect;
 

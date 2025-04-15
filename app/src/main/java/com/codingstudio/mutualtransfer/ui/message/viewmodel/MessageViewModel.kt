@@ -8,10 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.message.ResponseMessage
 import com.codingstudio.mutualtransfer.model.message.ResponseMessageTransaction
-import com.codingstudio.mutualtransfer.model.search.ModelRecentlyViewed
-import com.codingstudio.mutualtransfer.model.search.ResponseSearchResult
-import com.codingstudio.mutualtransfer.model.search.ResponseSearchedPerson
-import com.codingstudio.mutualtransfer.repository.local.RecentlyViewedRepository
 import com.codingstudio.mutualtransfer.repository.remote.MessageRepository
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.EventWrapper

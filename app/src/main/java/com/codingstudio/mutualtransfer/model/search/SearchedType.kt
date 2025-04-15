@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 
-enum class SearchedType() : Parcelable {
+enum class SearchedType : Parcelable {
     DISTRICT,
     BLOCK,
     SCHOOL;

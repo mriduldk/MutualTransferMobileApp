@@ -931,13 +931,13 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
                 options.put("name","Mutual Transfer")
                 options.put("description","Buy Coins")
                 options.put("image","https://themutualtransfer.in/mt_logo.png")
-                options.put("theme.color", "#3399cc");
-                options.put("currency","INR");
+                options.put("theme.color", "#3399cc")
+                options.put("currency","INR")
                 options.put("order_id", order_id)
                 //options.put("amount","${selectedAmount}00")
                 options.put("amount", selectedAmount)
 
-                val retryObj = JSONObject();
+                val retryObj = JSONObject()
                 retryObj.put("enabled", true)
                 retryObj.put("max_count", 4)
                 options.put("retry", retryObj)
