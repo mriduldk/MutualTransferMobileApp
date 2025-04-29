@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.ui.auth.compoment.UserAuthenticationActivity
+import com.codingstudio.mutualtransfer.ui.home.UserHomeActivityNew
 import com.codingstudio.mutualtransfer.ui.search.UserHomeActivity
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
@@ -130,8 +131,45 @@ class SplashScreenActivity : AppCompatActivity() {
 
         if (isLogIn) {
 
+            val profileStep1 = SharedPref().getBooleanPref(this, Constants.ProfileStep1)
+            val profileStep2 = SharedPref().getBooleanPref(this, Constants.ProfileStep2)
+            val profileStep3 = SharedPref().getBooleanPref(this, Constants.ProfileStep3)
+            val profileStep4 = SharedPref().getBooleanPref(this, Constants.ProfileStep4)
+            val userType = SharedPref().getStringPref(this, Constants.user_type)
+
+            if (userType == Constants.TETTeacher) {
+
+                if (!profileStep1 || !profileStep2 || !profileStep3 || !profileStep4) {
+
+                    val intent = Intent(this, UserAuthenticationActivity::class.java)
+                    intent.putExtra(UserAuthenticationActivity.NAVIGATION_TYPE, UserAuthenticationActivity.NAVIGATION_SET_PROFILE)
+                    startActivity(intent)
+                    finish()
+
+                } else {
+
+                    startActivity(Intent(this, UserHomeActivity::class.java))
+                    finish()
+                }
+
+            } else {
+                if (!profileStep1 || !profileStep3 || !profileStep4) {
+
+                    val intent = Intent(this, UserAuthenticationActivity::class.java)
+                    intent.putExtra(UserAuthenticationActivity.NAVIGATION_TYPE, UserAuthenticationActivity.NAVIGATION_SET_PROFILE)
+                    startActivity(intent)
+                    finish()
+                } else {
+
+                    startActivity(Intent(this, UserHomeActivityNew::class.java))
+                    finish()
+                }
+            }
+
+            /*if (profileStep1 != null && profileStep2 != null && profileStep3 != null && profileStep4 != null)
+
             startActivity(Intent(this, UserHomeActivity::class.java))
-            finish()
+            finish()*/
 
         }
         else {

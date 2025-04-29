@@ -400,7 +400,6 @@ class UserHomeActivity : AppCompatActivity() {
                     binding.cardViewPreferredDistrict.visibility = View.GONE
                 }
 
-
                 binding.switchActivelyLooking.isChecked = it.is_actively_looking == 1
 
                 switchLocalChange = true
@@ -738,7 +737,6 @@ class UserHomeActivity : AppCompatActivity() {
                 }
             }
     }
-
 
     private fun translateMessage() {
 

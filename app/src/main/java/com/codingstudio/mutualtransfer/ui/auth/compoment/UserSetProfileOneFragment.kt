@@ -71,6 +71,15 @@ class UserSetProfileOneFragment : Fragment() {
         observeUserDetailsLocalData()
 
         getLocalData()
+
+
+
+        val fragment = UserSetUserTypeFragment()
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        fragmentTransaction?.replace(R.id.fragment_container, fragment, TAG)
+        fragmentTransaction?.addToBackStack(null)
+        fragmentTransaction?.commit()
+
     }
 
     private fun getLocalData(){
@@ -177,6 +186,8 @@ class UserSetProfileOneFragment : Fragment() {
                                     requireActivity().finish()
                                 }
                                 else{
+
+                                    SharedPref().setBoolean(localContext, Constants.ProfileStep1, true)
 
                                     val fragment = UserSetProfileTwoFragment()
                                     val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()

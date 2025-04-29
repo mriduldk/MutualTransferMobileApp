@@ -1,16 +1,12 @@
 package com.codingstudio.mutualtransfer.api
 
-import com.codingstudio.mutualtransfer.model.auth.ResponseLogin
-import com.codingstudio.mutualtransfer.model.auth.ResponseUserDetails
 import com.codingstudio.mutualtransfer.model.online_payment.ResponseOnlinePayment
 import com.codingstudio.mutualtransfer.model.payment.ResponsePayment
 import com.codingstudio.mutualtransfer.model.payment.ResponsePaymentHistory
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface RetrofitPaymentAPI {
 

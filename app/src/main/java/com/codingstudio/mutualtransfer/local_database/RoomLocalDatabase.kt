@@ -10,7 +10,9 @@ import com.codingstudio.mutualtransfer.local_database.dao.DaoDistrict
 import com.codingstudio.mutualtransfer.local_database.dao.DaoRecentlyViewed
 import com.codingstudio.mutualtransfer.local_database.dao.DaoSearchHistory
 import com.codingstudio.mutualtransfer.local_database.dao.DaoUserDetails
+import com.codingstudio.mutualtransfer.local_database.dao.DaoUserDetailsNew
 import com.codingstudio.mutualtransfer.model.auth.UserDetails
+import com.codingstudio.mutualtransfer.model.auth.UserDetailsNew
 import com.codingstudio.mutualtransfer.model.block.ModelBlock
 import com.codingstudio.mutualtransfer.model.district.ModelDistrict
 import com.codingstudio.mutualtransfer.model.search.ModelRecentlyViewed
@@ -23,9 +25,10 @@ import com.codingstudio.mutualtransfer.model.search.ModelSearchHistory
         ModelDistrict::class,
         ModelBlock::class,
         ModelRecentlyViewed::class,
-        UserDetails::class
+        UserDetails::class,
+        UserDetailsNew::class
     ],
-    version = 11
+    version = 12
 )
 abstract class RoomLocalDatabase : RoomDatabase() {
 
@@ -34,6 +37,7 @@ abstract class RoomLocalDatabase : RoomDatabase() {
     abstract fun daoBlock() : DaoBlock
     abstract fun daoRecentlyViewed() : DaoRecentlyViewed
     abstract fun daoUserDetails() : DaoUserDetails
+    abstract fun daoUserDetailsNew() : DaoUserDetailsNew
 
 
     companion object {

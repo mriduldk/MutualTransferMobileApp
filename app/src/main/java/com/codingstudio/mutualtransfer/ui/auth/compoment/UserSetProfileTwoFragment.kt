@@ -193,6 +193,8 @@ class UserSetProfileTwoFragment : Fragment() {
                                 }
                                 else{
 
+                                    SharedPref().setBoolean(localContext, Constants.ProfileStep2, true)
+
                                     val fragment = UserSetProfileThreeFragment()
                                     val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
                                     fragmentTransaction?.replace(R.id.fragment_container, fragment, TAG)

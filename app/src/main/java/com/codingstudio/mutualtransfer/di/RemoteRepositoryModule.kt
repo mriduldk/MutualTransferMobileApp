@@ -2,12 +2,17 @@ package com.codingstudio.mutualtransfer.di
 
 import com.codingstudio.mutualtransfer.repository.remote.AuthRepository
 import com.codingstudio.mutualtransfer.repository.remote.BlockRepository
+import com.codingstudio.mutualtransfer.repository.remote.CurrentRoleRepository
+import com.codingstudio.mutualtransfer.repository.remote.DepartmentRepository
 import com.codingstudio.mutualtransfer.repository.remote.DistrictRepository
 import com.codingstudio.mutualtransfer.repository.remote.MessageRepository
 import com.codingstudio.mutualtransfer.repository.remote.PaymentRepository
+import com.codingstudio.mutualtransfer.repository.remote.StateRepository
 import com.codingstudio.mutualtransfer.repository.remote.SubjectRepository
+import com.codingstudio.mutualtransfer.repository.remote.UserDetailsNewRepository
 import com.codingstudio.mutualtransfer.repository.remote.UserDetailsRepository
 import com.codingstudio.mutualtransfer.repository.remote.WalletRepository
+import com.codingstudio.mutualtransfer.repository.remote.ZoneDivisionRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +28,11 @@ class RemoteRepositoryModule {
     }
 
     @Provides
+    fun provideUserDetailsNewRepository() : UserDetailsNewRepository {
+        return UserDetailsNewRepository()
+    }
+
+    @Provides
     fun provideWalletRepository() : WalletRepository {
         return WalletRepository()
     }
@@ -35,6 +45,11 @@ class RemoteRepositoryModule {
     @Provides
     fun provideDistrictRepository() : DistrictRepository {
         return DistrictRepository()
+    }
+
+    @Provides
+    fun provideStateRepository() : StateRepository {
+        return StateRepository()
     }
 
     @Provides
@@ -54,6 +69,18 @@ class RemoteRepositoryModule {
     @Provides
     fun provideMessageRepository() : MessageRepository {
         return MessageRepository()
+    }
+    @Provides
+    fun provideCurrentRoleRepository() : CurrentRoleRepository {
+        return CurrentRoleRepository()
+    }
+    @Provides
+    fun provideDepartmentRepository() : DepartmentRepository {
+        return DepartmentRepository()
+    }
+    @Provides
+    fun provideZoneDivisionRepository() : ZoneDivisionRepository {
+        return ZoneDivisionRepository()
     }
 
 

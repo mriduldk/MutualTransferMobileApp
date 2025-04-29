@@ -26,6 +26,12 @@ class DistrictRepository {
         state_id = state_id,
     )
 
+    suspend fun getDistrictByStateName(
+        state_name: String,
+    ) = RetrofitInstance.districtAPI.getDistrictByStateName(
+        state_name = state_name,
+    )
+
 
 
 }

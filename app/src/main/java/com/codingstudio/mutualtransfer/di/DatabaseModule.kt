@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.codingstudio.mutualtransfer.local_database.RoomLocalDatabase
 import com.codingstudio.mutualtransfer.local_database.dao.DaoRecentlyViewed
 import com.codingstudio.mutualtransfer.local_database.dao.DaoUserDetails
+import com.codingstudio.mutualtransfer.local_database.dao.DaoUserDetailsNew
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,6 +30,11 @@ class DatabaseModule {
     @Provides
     fun provideUserDetailsDao(database: RoomLocalDatabase): DaoUserDetails {
         return database.daoUserDetails()
+    }
+
+    @Provides
+    fun provideUserDetailsNewDao(database: RoomLocalDatabase): DaoUserDetailsNew {
+        return database.daoUserDetailsNew()
     }
 
     @Provides

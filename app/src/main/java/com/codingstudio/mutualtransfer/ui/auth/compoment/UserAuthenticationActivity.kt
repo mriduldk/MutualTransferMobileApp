@@ -20,10 +20,17 @@ class UserAuthenticationActivity : AppCompatActivity() {
 
         if (navigationType == NAVIGATION_SET_PROFILE) {
 
-            val fragment = UserSetProfileOneFragment()
+
+            val fragment = UserSetUserTypeFragment()
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment_container, fragment, TAG)
+            fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
+
+            /*val fragment = UserSetProfileOneFragment()
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragment_container, fragment, TAG)
+            fragmentTransaction.commit()*/
 
         }
         else {

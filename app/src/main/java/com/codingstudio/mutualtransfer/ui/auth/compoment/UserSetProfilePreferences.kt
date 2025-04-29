@@ -196,6 +196,8 @@ class UserSetProfilePreferences : Fragment() {
 
                             if (responseUserDetails.status == 200){
 
+                                SharedPref().setBoolean(localContext, Constants.ProfileStep4, true)
+
                                 if (fragmentType == Constants.GO_TO_BACK) {
                                     requireActivity().finish()
                                 }

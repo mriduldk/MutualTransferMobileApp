@@ -5,6 +5,10 @@ import android.os.Parcelable
 
 
 enum class SearchedType : Parcelable {
+    CURRENT_ROLE,
+    DEPARTMENT,
+    ZONE_DIVISION,
+    STATE,
     DISTRICT,
     BLOCK,
     SCHOOL;

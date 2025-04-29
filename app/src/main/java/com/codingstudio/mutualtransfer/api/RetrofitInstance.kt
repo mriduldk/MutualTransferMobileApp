@@ -71,6 +71,9 @@ class RetrofitInstance {
         val userDetailsAPI by lazy {
             retrofit.create(RetrofitUserDetailsAPI::class.java)
         }
+        val userDetailsNewAPI by lazy {
+            retrofit.create(RetrofitUserDetailsNewAPI::class.java)
+        }
         val paymentAPI by lazy {
             retrofit.create(RetrofitPaymentAPI::class.java)
         }
@@ -79,6 +82,9 @@ class RetrofitInstance {
         }
         val walletAPI by lazy {
             retrofit.create(RetrofitWalletAPI::class.java)
+        }
+        val stateAPI by lazy {
+            retrofit.create(RetrofitStateAPI::class.java)
         }
         val districtAPI by lazy {
             retrofit.create(RetrofitDistrictAPI::class.java)
@@ -91,6 +97,15 @@ class RetrofitInstance {
         }
         val messageAPI by lazy {
             retrofit.create(RetrofitMessageAPI::class.java)
+        }
+        val currentRoleAPI by lazy {
+            retrofit.create(RetrofitCurrentRoleAPI::class.java)
+        }
+        val departmentAPI by lazy {
+            retrofit.create(RetrofitDepartmentAPI::class.java)
+        }
+        val zoneDivisionAPI by lazy {
+            retrofit.create(RetrofitZoneDivisionAPI::class.java)
         }
 
 

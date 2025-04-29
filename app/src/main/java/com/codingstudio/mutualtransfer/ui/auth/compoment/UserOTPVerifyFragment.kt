@@ -23,6 +23,7 @@ import com.codingstudio.mutualtransfer.databinding.FragmentUserOtpVerifyBinding
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.auth.User
 import com.codingstudio.mutualtransfer.ui.auth.viewmodel.AuthViewModel
+import com.codingstudio.mutualtransfer.ui.home.UserHomeActivityNew
 import com.codingstudio.mutualtransfer.ui.search.UserHomeActivity
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
@@ -270,6 +271,24 @@ class UserOTPVerifyFragment : Fragment() {
                                     if (!responseLogin.userDetails.user_details_id.isNullOrEmpty()){
 
                                         startActivity(Intent(requireContext(), UserHomeActivity::class.java))
+                                        activity?.finish()
+                                    }
+                                    else {
+                                        val intent = Intent(localContext, UserAuthenticationActivity::class.java)
+                                        intent.putExtra(
+                                            UserAuthenticationActivity.NAVIGATION_TYPE,
+                                            UserAuthenticationActivity.NAVIGATION_SET_PROFILE
+                                        )
+                                        startActivity(intent)
+
+                                        activity?.finish()
+                                    }
+                                }
+                                else if (responseLogin.userDetailsNew != null) {
+
+                                    if (!responseLogin.userDetailsNew.user_details_new_id.isNullOrEmpty()){
+
+                                        startActivity(Intent(requireContext(), UserHomeActivityNew::class.java))
                                         activity?.finish()
                                     }
                                     else {

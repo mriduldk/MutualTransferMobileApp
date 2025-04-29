@@ -43,14 +43,34 @@ object Constants {
 
     const val  user_id = "user_id"
     const val  user_phone = "user_phone"
+    const val  user_type = "user_type"
 
     const val  IsLogIn = "IsLogIn"
+
+
+    const val  ProfileStep1 = "ProfileStep1"
+    const val  ProfileStep2 = "ProfileStep2"
+    const val  ProfileStep3 = "ProfileStep3"
+    const val  ProfileStep4 = "ProfileStep4"
+
 
     const val  GO_TO_HOME = "GO_TO_HOME"
     const val  GO_TO_BACK = "GO_TO_BACK"
 
     const val UPDATE_AVAILABLE = "UPDATE_AVAILABLE"
     const val UPDATE_CHECK_TIME = "UPDATE_CHECK_TIME"
+
+    const val TETTeacher = "TET Teacher"
+    const val PolicePersonnel = "Police Personnel"
+    const val StateGovernmentEmployee = "State Government Employee"
+    const val CentralGovernmentEmployee = "Central Government Employee"
+    const val HealthcareWorkers = "Healthcare Workers"
+    const val RailwayEmployees = "Railway Employees"
+    const val PostalDepartmentEmployees = "Postal Department Employees"
+    const val ParamedicalAndSupportStaff = "Paramedical and Support Staff"
+    const val EngineersAndTechnicalStaff = "Engineers and Technical Staff"
+    const val UniversityCollege  = "University/College Lecturers"
+
 
 
 }
