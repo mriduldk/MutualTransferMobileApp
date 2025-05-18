@@ -20,6 +20,7 @@ data class UserDetailsNew(
     val phone: String? = null,
 
     val user_type: String? = null,
+    val user_type_id: String? = null,
     val current_role: String? = null,
     val employee_code: String? = null,
     val department: String? = null,

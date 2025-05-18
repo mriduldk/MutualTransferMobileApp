@@ -43,9 +43,15 @@ object Constants {
 
     const val  user_id = "user_id"
     const val  user_phone = "user_phone"
-    const val  user_type = "user_type"
+    const val  user_type_name = "user_type_name"
+    const val  user_type_id = "user_type_id"
+
+    const val  state_name = "state_name"
+    const val  state_id = "state_id"
+
 
     const val  IsLogIn = "IsLogIn"
+    const val  hasUnReadMessage = "hasUnReadMessage"
 
 
     const val  ProfileStep1 = "ProfileStep1"
@@ -61,6 +67,8 @@ object Constants {
     const val UPDATE_CHECK_TIME = "UPDATE_CHECK_TIME"
 
     const val TETTeacher = "TET Teacher"
+    const val TETTeacherID = "b1d1a110-0001-4a9e-bc01-001"
+
     const val PolicePersonnel = "Police Personnel"
     const val StateGovernmentEmployee = "State Government Employee"
     const val CentralGovernmentEmployee = "Central Government Employee"
@@ -70,6 +78,12 @@ object Constants {
     const val ParamedicalAndSupportStaff = "Paramedical and Support Staff"
     const val EngineersAndTechnicalStaff = "Engineers and Technical Staff"
     const val UniversityCollege  = "University/College Lecturers"
+
+
+
+    const val banner_ad  = "banner_ad"
+    const val interstitial_ad  = "interstitial_ad"
+    const val interstitial_ad_maxClickCount  = "interstitial_ad_maxClickCount"
 
 
 

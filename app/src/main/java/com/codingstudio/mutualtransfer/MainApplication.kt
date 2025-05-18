@@ -1,10 +1,10 @@
 package com.codingstudio.mutualtransfer
 
 import android.app.Application
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.codingstudio.mutualtransfer.local_database.RoomLocalDatabase
-import com.codingstudio.mutualtransfer.local_database.dao.DaoSearchHistory
-import com.codingstudio.mutualtransfer.local_database.dao.DaoSearchHistory_Impl
-import com.codingstudio.mutualtransfer.model.auth.UserDetailsNew
 import com.codingstudio.mutualtransfer.repository.local.HistoryRepository
 import com.codingstudio.mutualtransfer.repository.local.LocalUserDetailsNewRepository
 import com.codingstudio.mutualtransfer.repository.local.LocalUserDetailsRepository
@@ -17,8 +17,10 @@ import com.codingstudio.mutualtransfer.repository.remote.PaymentRepository
 import com.codingstudio.mutualtransfer.repository.remote.SearchRepository
 import com.codingstudio.mutualtransfer.repository.remote.UserDetailsNewRepository
 import com.codingstudio.mutualtransfer.repository.remote.UserDetailsRepository
+import com.codingstudio.mutualtransfer.ui.message.UnreadMessageWorker
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
+import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp
 class MainApplication : Application() {
@@ -42,5 +44,17 @@ class MainApplication : Application() {
         super.onCreate()
 
         FirebaseApp.initializeApp(this)
+
+        val workRequest = PeriodicWorkRequestBuilder<UnreadMessageWorker>(1, TimeUnit.HOURS)
+            .setInitialDelay(1, TimeUnit.MINUTES)
+            .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "UnreadMessageChecker",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
+
+
     }
 }

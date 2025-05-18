@@ -22,6 +22,8 @@ import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.databinding.FragmentUserOtpVerifyBinding
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.auth.User
+import com.codingstudio.mutualtransfer.model.auth.UserDetails
+import com.codingstudio.mutualtransfer.model.auth.UserDetailsNew
 import com.codingstudio.mutualtransfer.ui.auth.viewmodel.AuthViewModel
 import com.codingstudio.mutualtransfer.ui.home.UserHomeActivityNew
 import com.codingstudio.mutualtransfer.ui.search.UserHomeActivity
@@ -270,8 +272,21 @@ class UserOTPVerifyFragment : Fragment() {
 
                                     if (!responseLogin.userDetails.user_details_id.isNullOrEmpty()){
 
-                                        startActivity(Intent(requireContext(), UserHomeActivity::class.java))
-                                        activity?.finish()
+                                        if (checkUserDetails(responseLogin.userDetails)) {
+
+                                            startActivity(Intent(requireContext(), UserHomeActivity::class.java))
+                                            activity?.finish()
+
+                                        } else {
+                                            val intent = Intent(localContext, UserAuthenticationActivity::class.java)
+                                            intent.putExtra(
+                                                UserAuthenticationActivity.NAVIGATION_TYPE,
+                                                UserAuthenticationActivity.NAVIGATION_SET_PROFILE
+                                            )
+                                            startActivity(intent)
+
+                                            activity?.finish()
+                                        }
                                     }
                                     else {
                                         val intent = Intent(localContext, UserAuthenticationActivity::class.java)
@@ -287,6 +302,22 @@ class UserOTPVerifyFragment : Fragment() {
                                 else if (responseLogin.userDetailsNew != null) {
 
                                     if (!responseLogin.userDetailsNew.user_details_new_id.isNullOrEmpty()){
+
+                                        if (checkUserDetailsNew(responseLogin.userDetailsNew)) {
+
+                                            startActivity(Intent(requireContext(), UserHomeActivity::class.java))
+                                            activity?.finish()
+
+                                        } else {
+                                            val intent = Intent(localContext, UserAuthenticationActivity::class.java)
+                                            intent.putExtra(
+                                                UserAuthenticationActivity.NAVIGATION_TYPE,
+                                                UserAuthenticationActivity.NAVIGATION_SET_PROFILE
+                                            )
+                                            startActivity(intent)
+
+                                            activity?.finish()
+                                        }
 
                                         startActivity(Intent(requireContext(), UserHomeActivityNew::class.java))
                                         activity?.finish()
@@ -482,5 +513,69 @@ class UserOTPVerifyFragment : Fragment() {
 
     }
 
+    private fun checkUserDetails(userDetails: UserDetails): Boolean {
+
+        var canProceed = true
+
+        if (userDetails.name.isNullOrEmpty() || userDetails.gender.isNullOrEmpty()) {
+            canProceed = false
+        } else {
+            SharedPref().setBoolean(localContext, Constants.ProfileStep1, true)
+        }
+
+        if (userDetails.school_type.isNullOrEmpty() || userDetails.teacher_type.isNullOrEmpty() || userDetails.teacher_type.isNullOrEmpty()) {
+            canProceed = false
+        } else {
+            SharedPref().setBoolean(localContext, Constants.ProfileStep2, true)
+        }
+
+        if (userDetails.school_name.isNullOrEmpty() || userDetails.school_address_vill.isNullOrEmpty() || userDetails.school_address_district.isNullOrEmpty()
+            || userDetails.school_address_block.isNullOrEmpty() || userDetails.school_address_state.isNullOrEmpty() || userDetails.school_address_pin.isNullOrEmpty()) {
+            canProceed = false
+        } else {
+            SharedPref().setBoolean(localContext, Constants.ProfileStep3, true)
+        }
+
+        if (userDetails.preferred_district_1.isNullOrEmpty() || userDetails.preferred_district_2.isNullOrEmpty() || userDetails.preferred_district_3.isNullOrEmpty()) {
+            canProceed = false
+        } else {
+            SharedPref().setBoolean(localContext, Constants.ProfileStep4, true)
+        }
+
+        SharedPref().setString(localContext, Constants.user_type_name, Constants.TETTeacher)
+        SharedPref().setString(localContext, Constants.user_type_id, Constants.TETTeacherID)
+
+        return canProceed
+    }
+
+    private fun checkUserDetailsNew(userDetailsNew: UserDetailsNew): Boolean {
+
+        var canProceed = true
+
+        if (userDetailsNew.name.isNullOrEmpty() || userDetailsNew.gender.isNullOrEmpty()) {
+            canProceed = false
+        } else {
+            SharedPref().setBoolean(localContext, Constants.ProfileStep1, true)
+        }
+
+        if (userDetailsNew.current_role.isNullOrEmpty() || userDetailsNew.department.isNullOrEmpty() || userDetailsNew.service_type.isNullOrEmpty()
+            || userDetailsNew.current_organisation_name.isNullOrEmpty() || userDetailsNew.job_address_village.isNullOrEmpty() || userDetailsNew.job_address_block.isNullOrEmpty()
+            || userDetailsNew.job_address_district.isNullOrEmpty()  || userDetailsNew.job_address_state.isNullOrEmpty()  || userDetailsNew.job_address_pin.isNullOrEmpty()) {
+            canProceed = false
+        } else {
+            SharedPref().setBoolean(localContext, Constants.ProfileStep3, true)
+        }
+
+        if (userDetailsNew.preferred_district_1.isNullOrEmpty() || userDetailsNew.preferred_district_2.isNullOrEmpty() || userDetailsNew.preferred_district_3.isNullOrEmpty()) {
+            canProceed = false
+        } else {
+            SharedPref().setBoolean(localContext, Constants.ProfileStep4, true)
+        }
+
+        SharedPref().setString(localContext, Constants.user_type_name, userDetailsNew.user_type)
+        SharedPref().setString(localContext, Constants.user_type_id, userDetailsNew.user_type_id)
+
+        return canProceed
+    }
 
 }

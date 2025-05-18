@@ -108,6 +108,12 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
+            android:name=".ui.search.SearchResultPersonActivityNew"
+            android:exported="false"
+            android:theme="@style/Theme.MutualTransfer"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
             android:name=".ui.splashScreen.SplashScreenActivity"
             android:exported="true">
             <intent-filter>

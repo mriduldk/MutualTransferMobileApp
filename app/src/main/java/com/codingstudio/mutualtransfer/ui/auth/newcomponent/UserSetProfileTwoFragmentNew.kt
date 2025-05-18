@@ -1,4 +1,4 @@
-package com.codingstudio.mutualtransfer.ui.auth.compoment
+package com.codingstudio.mutualtransfer.ui.auth.newcomponent
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,20 +19,17 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.codingstudio.mutualtransfer.MainApplication
 import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.databinding.FragmentUserDetailsNewTwoBinding
-import com.codingstudio.mutualtransfer.databinding.FragmentUserDetailsTwoBinding
 import com.codingstudio.mutualtransfer.model.Resource
+import com.codingstudio.mutualtransfer.ui.auth.compoment.UserSetProfileThreeFragment
 import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewModel
-import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewModelFactory
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
 import com.codingstudio.mutualtransfer.viewmodels.LocalUserDetailsViewModel
 import com.codingstudio.mutualtransfer.viewmodels.SubjectViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class UserSetProfileTwoFragmentNew : Fragment() {
@@ -310,7 +306,9 @@ class UserSetProfileTwoFragmentNew : Fragment() {
                         }
                     }
                     HigherSecondary -> {
-                        binding.spinnerSchoolType.setSelection(listOfSchoolType.indexOf(HigherSecondary))
+                        binding.spinnerSchoolType.setSelection(listOfSchoolType.indexOf(
+                            HigherSecondary
+                        ))
                         binding.spinnerTeacherType.setSelection(listOfHigherSecondaryTeacherType.indexOf(userDetails.teacher_type))
                         binding.spinnerTeacherSubject.setSelection(listOfSubjects.indexOf(userDetails.subject_type))
                     }

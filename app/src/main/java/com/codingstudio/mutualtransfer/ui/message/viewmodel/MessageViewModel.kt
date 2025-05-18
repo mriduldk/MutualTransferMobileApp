@@ -33,18 +33,28 @@ class MessageViewModel @Inject constructor(
         sender_id: String,
         receiver_id: String,
         last_message_content: String,
+        userTypeId: String
     ) = viewModelScope.launch {
 
         _storeMessage.postValue(EventWrapper(Resource.Loading()))
 
         if (HasInternetConnection().check(application)) {
 
-            val response = messageRepository.storeMessage(
-                sender_id = sender_id,
-                receiver_id = receiver_id,
-                last_message_content = last_message_content,
-            )
-            HandleNetworkResponse.Check(response, _storeMessage).process()
+            if (userTypeId == Constants.TETTeacherID) {
+                val response = messageRepository.storeMessage(
+                    sender_id = sender_id,
+                    receiver_id = receiver_id,
+                    last_message_content = last_message_content,
+                )
+                HandleNetworkResponse.Check(response, _storeMessage).process()
+            } else {
+                val response = messageRepository.storeMessageNew(
+                    sender_id = sender_id,
+                    receiver_id = receiver_id,
+                    last_message_content = last_message_content,
+                )
+                HandleNetworkResponse.Check(response, _storeMessage).process()
+            }
         } else {
             _storeMessage.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
         }
@@ -174,18 +184,28 @@ class MessageViewModel @Inject constructor(
         sender_id: String,
         receiver_id: String,
         user_id: String,
+        userTypeId: String
     ) = viewModelScope.launch {
 
         _getMessageTransactionsBySenderAndReceiverId.postValue(EventWrapper(Resource.Loading()))
 
         if (HasInternetConnection().check(application)) {
 
-            val response = messageRepository.getMessageTransactionsBySenderAndReceiverId(
-                sender_id = sender_id,
-                receiver_id = receiver_id,
-                user_id = user_id,
-            )
-            HandleNetworkResponse.Check(response, _getMessageTransactionsBySenderAndReceiverId).process()
+            if (userTypeId == Constants.TETTeacherID) {
+                val response = messageRepository.getMessageTransactionsBySenderAndReceiverId(
+                    sender_id = sender_id,
+                    receiver_id = receiver_id,
+                    user_id = user_id,
+                )
+                HandleNetworkResponse.Check(response, _getMessageTransactionsBySenderAndReceiverId).process()
+            } else {
+                val response = messageRepository.getMessageTransactionsBySenderAndReceiverIdNew(
+                    sender_id = sender_id,
+                    receiver_id = receiver_id,
+                    user_id = user_id,
+                )
+                HandleNetworkResponse.Check(response, _getMessageTransactionsBySenderAndReceiverId).process()
+            }
         } else {
             _getMessageTransactionsBySenderAndReceiverId.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
         }

@@ -3,6 +3,7 @@ package com.codingstudio.mutualtransfer.ui.auth.compoment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.codingstudio.mutualtransfer.R
+import com.codingstudio.mutualtransfer.ui.auth.newcomponent.UserSetUserTypeFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -10,5 +10,19 @@ class CurrentRoleRepository {
         user_type = user_type
     )
 
+    suspend fun getByUserTypeId(
+        user_type_id: String,
+    ) = RetrofitInstance.currentRoleAPI.getByUserTypeId(
+        user_type_id = user_type_id
+    )
+
+    suspend fun getByUserTypeAndCurrentRoleName(
+        user_type_id: String,
+        current_role_name: String,
+    ) = RetrofitInstance.currentRoleAPI.getByUserTypeAndCurrentRoleName(
+        user_type_id = user_type_id,
+        current_role_name = current_role_name
+    )
+
 
 }

@@ -20,6 +20,17 @@ interface RetrofitMessageAPI {
         last_message_content : String,
     ): Response<ResponseMessage>
 
+    @POST("message/messagesNew")
+    @FormUrlEncoded
+    suspend fun storeMessageNew(
+        @Field("sender_id")
+        sender_id : String,
+        @Field("receiver_id")
+        receiver_id : String,
+        @Field("last_message_content")
+        last_message_content : String,
+    ): Response<ResponseMessage>
+
 
     @POST("message/acceptMessage")
     @FormUrlEncoded
@@ -71,6 +82,17 @@ interface RetrofitMessageAPI {
     @POST("message/getMessageTransactionsBySenderAndReceiverId")
     @FormUrlEncoded
     suspend fun getMessageTransactionsBySenderAndReceiverId(
+        @Field("sender_id")
+        sender_id : String,
+        @Field("receiver_id")
+        receiver_id : String,
+        @Field("user_id")
+        user_id : String
+    ): Response<ResponseMessageTransaction>
+
+    @POST("message/getMessageTransactionsBySenderAndReceiverIdNew")
+    @FormUrlEncoded
+    suspend fun getMessageTransactionsBySenderAndReceiverIdNew(
         @Field("sender_id")
         sender_id : String,
         @Field("receiver_id")

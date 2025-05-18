@@ -97,45 +97,17 @@
 
                 <TextView
                     android:visibility="gone"
-                    android:id="@+id/textViewViewDetailsUserPhoneNo"
+                    android:id="@+id/textViewViewDetailsUserType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:fontFamily="@font/ar_one_sans_medium"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/_12sdp"
-                    app:layout_constraintEnd_toStartOf="@id/imageViewPhoneNoCopy"
+                    ads:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewViewDetailsUserName"
-                    tools:text="+91 6001025603" />
-
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/imageViewPhoneNoCopy"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:padding="@dimen/_4sdp"
-                    android:src="@drawable/round_content_copy_24"
-                    app:layout_constraintBottom_toBottomOf="@id/textViewViewDetailsUserPhoneNo"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/textViewViewDetailsUserPhoneNo" />
-
-                <TextView
-                    android:visibility="gone"
-                    android:id="@+id/textViewViewDetailsUserEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/ar_one_sans_medium"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    android:textSize="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewViewDetailsUserPhoneNo"
-                    tools:text="mriduldas0226@gmail.com" />
+                    tools:text="Police" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

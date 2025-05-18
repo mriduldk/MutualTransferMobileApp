@@ -1,4 +1,4 @@
-package com.codingstudio.mutualtransfer.ui.auth.compoment
+package com.codingstudio.mutualtransfer.ui.auth.newcomponent
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -49,7 +49,8 @@ class UserSetProfileThreeFragmentNew : Fragment() {
     private lateinit var localContext: Context
     private var _binding: FragmentUserDetailsNewThreeBinding?= null
     private val binding get() = _binding!!
-    private var userType = ""
+    private var userTypeName = ""
+    private var userTypeId = ""
 
     private var listOfState = listOf<String>()
     private var listOfDistrict = listOf<String>()
@@ -111,7 +112,8 @@ class UserSetProfileThreeFragmentNew : Fragment() {
             fragmentType = it.getString(ARG_FRAGMENT)
         }
 
-        userType = SharedPref().getStringPref(localContext, Constants.user_type) ?: ""
+        userTypeName = SharedPref().getStringPref(localContext, Constants.user_type_name) ?: ""
+        userTypeId = SharedPref().getStringPref(localContext, Constants.user_type_id) ?: ""
 
         binding.btnSaveAndProceed.background.setColorFilter(ContextCompat.getColor(localContext, R.color.color_divider), PorterDuff.Mode.MULTIPLY)
         binding.btnSaveAndProceed.setTextColor(ContextCompat.getColor(localContext, R.color.text_color_regular))
@@ -140,9 +142,9 @@ class UserSetProfileThreeFragmentNew : Fragment() {
      * */
     private fun getCurrentRoleDepartmentZoneDivisionList() {
 
-        commonViewModel.getCurrentRolesByUserTypeFun(user_type = userType)
-        commonViewModel.getDepartmentsByUserTypeFun(user_type = userType)
-        commonViewModel.getZoneDivisionByUserTypeFun(user_type = userType)
+        commonViewModel.getCurrentRolesByUserTypeFun(user_type = userTypeName)
+        commonViewModel.getDepartmentsByUserTypeFun(user_type = userTypeName)
+        commonViewModel.getZoneDivisionByUserTypeFun(user_type = userTypeName)
 
     }
 
@@ -207,7 +209,7 @@ class UserSetProfileThreeFragmentNew : Fragment() {
         binding.textViewBlockNotFoundFeedback.setOnClickListener {
 
             val phoneNumber = Constants.FEEDBACK_WHATSAPP_NUMBER
-            val message = "*Block Not Available.*\n\nEnter District Name:\nEnter Block Name:"
+            val message = "*Need Help (Service Details).*\n\n"
             val url = "https://api.whatsapp.com/send?phone=$phoneNumber&text=${Uri.encode(message)}"
 
             try {
@@ -235,6 +237,10 @@ class UserSetProfileThreeFragmentNew : Fragment() {
                         response.data?.let { responseUserDetails ->
 
                             if (responseUserDetails.status == 200){
+
+                                SharedPref().setString(localContext, Constants.state_name, selectedStateModel?.state_name)
+                                SharedPref().setString(localContext, Constants.state_id, selectedStateModel?.state_id)
+
 
                                 if (fragmentType == Constants.GO_TO_BACK) {
                                     requireActivity().finish()
@@ -660,7 +666,7 @@ class UserSetProfileThreeFragmentNew : Fragment() {
                 saveButtonEnable()
 
                 selectedDistrictModel?.let {
-                    getBlockListByDistrictName(it)
+                    //getBlockListByDistrictName(it)
                 }
             }
 
@@ -906,8 +912,7 @@ class UserSetProfileThreeFragmentNew : Fragment() {
 
     private fun saveButtonEnable() {
 
-        if (blockSelectedBoolean
-            && districtSelectedBoolean
+        if (districtSelectedBoolean
             && stateSelectedBoolean
             && departmentSelectedBoolean
             && currentRoleSelectedBoolean

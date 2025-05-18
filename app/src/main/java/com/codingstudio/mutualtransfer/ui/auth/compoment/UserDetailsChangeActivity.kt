@@ -3,6 +3,9 @@ package com.codingstudio.mutualtransfer.ui.auth.compoment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.codingstudio.mutualtransfer.R
+import com.codingstudio.mutualtransfer.ui.auth.newcomponent.UserSetProfileOneFragmentNew
+import com.codingstudio.mutualtransfer.ui.auth.newcomponent.UserSetProfilePreferencesNew
+import com.codingstudio.mutualtransfer.ui.auth.newcomponent.UserSetProfileThreeFragmentNew
 import com.codingstudio.mutualtransfer.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +31,14 @@ class UserDetailsChangeActivity : AppCompatActivity() {
                 fragmentTransaction.commit()
 
             }
+            FRAGMENT_ONE_NEW -> {
+
+                val fragment = UserSetProfileOneFragmentNew.newInstance(fragmentType = Constants.GO_TO_BACK)
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fragment_container, fragment, TAG)
+                fragmentTransaction.commit()
+
+            }
             FRAGMENT_TWO -> {
 
                 val fragment = UserSetProfileTwoFragment.newInstance(fragmentType = Constants.GO_TO_BACK)
@@ -44,9 +55,25 @@ class UserDetailsChangeActivity : AppCompatActivity() {
                 fragmentTransaction.commit()
 
             }
+            FRAGMENT_THREE_NEW -> {
+
+                val fragment = UserSetProfileThreeFragmentNew.newInstance(fragmentType = Constants.GO_TO_BACK)
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fragment_container, fragment, TAG)
+                fragmentTransaction.commit()
+
+            }
             FRAGMENT_PREFERENCE -> {
 
                 val fragment = UserSetProfilePreferences.newInstance(fragmentType = Constants.GO_TO_BACK)
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fragment_container, fragment, TAG)
+                fragmentTransaction.commit()
+
+            }
+            FRAGMENT_PREFERENCE_NEW -> {
+
+                val fragment = UserSetProfilePreferencesNew.newInstance(fragmentType = Constants.GO_TO_BACK)
                 val fragmentTransaction = supportFragmentManager.beginTransaction()
                 fragmentTransaction.replace(R.id.fragment_container, fragment, TAG)
                 fragmentTransaction.commit()
@@ -73,6 +100,10 @@ class UserDetailsChangeActivity : AppCompatActivity() {
         const val FRAGMENT_TWO = "FRAGMENT_TWO"
         const val FRAGMENT_THREE = "FRAGMENT_THREE"
         const val FRAGMENT_PREFERENCE = "FRAGMENT_PREFERENCE"
+
+        const val FRAGMENT_ONE_NEW = "FRAGMENT_ONE_NEW"
+        const val FRAGMENT_THREE_NEW = "FRAGMENT_THREE_NEW"
+        const val FRAGMENT_PREFERENCE_NEW = "FRAGMENT_PREFERENCE_NEW"
 
 
     }

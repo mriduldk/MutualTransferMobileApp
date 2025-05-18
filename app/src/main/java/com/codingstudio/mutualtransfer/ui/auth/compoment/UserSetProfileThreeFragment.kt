@@ -25,8 +25,10 @@ import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.auth.UserDetails
 import com.codingstudio.mutualtransfer.model.block.ModelBlock
 import com.codingstudio.mutualtransfer.model.district.ModelDistrict
+import com.codingstudio.mutualtransfer.model.state.ModelState
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.block.BlockViewModel
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.district.DistrictViewModel
+import com.codingstudio.mutualtransfer.ui.state.viewmodel.StateViewModel
 import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewModel
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
@@ -44,17 +46,20 @@ class UserSetProfileThreeFragment : Fragment() {
     private var _binding: FragmentUserDetailsThreeBinding?= null
     private val binding get() = _binding!!
 
-    private var listOfState = listOf<String>("Assam")
+    private var listOfState = listOf<String>()
     private var listOfDistrict = listOf<String>()
     private var listOfBlock = listOf<String>()
 
-    private var selectedDistrict = ""
     private var selectedDistrictModel : ModelDistrict ?= null
-    private var selectedBlock = ""
+    private var selectedStateModel : ModelState?= null
+
     private var selectedState = ""
+    private var selectedDistrict = ""
+    private var selectedBlock = ""
 
     private var fragmentType : String ?= ""
 
+    private var stateSelectedBoolean = false
     private var districtSelectedBoolean = false
     private var blockSelectedBoolean = false
 
@@ -63,6 +68,7 @@ class UserSetProfileThreeFragment : Fragment() {
     }*/
     private val userDetailsViewModel: UserDetailsViewModel by viewModels()
     private val localUserDetailsViewModel: LocalUserDetailsViewModel by viewModels()
+    private val stateViewModel : StateViewModel by viewModels()
     private val districtViewModel : DistrictViewModel by viewModels()
     private val blockViewModel : BlockViewModel by viewModels()
 
@@ -99,7 +105,8 @@ class UserSetProfileThreeFragment : Fragment() {
         observer()
         observeUserDetailsLocalData()
         getLocalData()
-        getDistrictList()
+        getStateList()
+        //getDistrictList()
     }
 
     private fun getLocalData(){
@@ -110,12 +117,21 @@ class UserSetProfileThreeFragment : Fragment() {
     }
 
     /**
+     *  Get All State List
+     * */
+    private fun getStateList() {
+
+        stateViewModel.getAllStatesFun()
+
+    }
+    /**
      *  Get All District List
      * */
     private fun getDistrictList() {
-
         districtViewModel.getAllDistrictsFun()
-
+    }
+    private fun getDistrictListByStateId(state_id: String) {
+        districtViewModel.getDistrictByStateFun(state_id)
     }
 
     /**
@@ -189,6 +205,9 @@ class UserSetProfileThreeFragment : Fragment() {
 
                             if (responseUserDetails.status == 200){
 
+                                SharedPref().setString(localContext, Constants.state_name, selectedStateModel?.state_name)
+                                SharedPref().setString(localContext, Constants.state_id, selectedStateModel?.state_id)
+
                                 if (fragmentType == Constants.GO_TO_BACK) {
                                     requireActivity().finish()
                                 }
@@ -235,7 +254,55 @@ class UserSetProfileThreeFragment : Fragment() {
 
         })
 
-        districtViewModel.getAllDistrictsObserver.observe(requireActivity(), Observer { res ->
+        stateViewModel.getAllStatesObserver.observe(requireActivity(), Observer { res ->
+
+            res.getContentIfNotHandled()?.let { response ->
+
+                when(response)
+                {
+                    is Resource.Success -> {
+                        hideProgressBar()
+
+                        response.data?.let { responseStates ->
+
+                            if (responseStates.status == 200){
+
+                                responseStates.states?.let { stateList ->
+                                    setStateList(stateList)
+                                }
+
+                            }
+                            else{
+                                showSnackBarMessage(responseStates.message)
+                            }
+                        }
+
+                    }
+                    is Resource.Error -> {
+                        hideProgressBar()
+
+                        response.message?.let { errorMessage ->
+                            when (errorMessage) {
+                                Constants.NO_INTERNET -> {
+                                    showSnackBarMessage("No internet connection")
+                                }
+                                else -> {
+                                    showSnackBarMessage(errorMessage)
+                                }
+                            }
+                        }
+
+                    }
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+
+            }
+
+        })
+
+        districtViewModel.getDistrictByStateObserver.observe(requireActivity(), Observer { res ->
 
             res.getContentIfNotHandled()?.let { response ->
 
@@ -250,6 +317,8 @@ class UserSetProfileThreeFragment : Fragment() {
 
                                 responseDistricts.districts?.let { districtList ->
                                     setDistrictList(districtList)
+                                }?: run {
+                                    setDistrictList(listOf<ModelDistrict>())
                                 }
 
                             }
@@ -346,15 +415,55 @@ class UserSetProfileThreeFragment : Fragment() {
                 binding.editTextSchoolAddressVillage.setText(userDetails.school_address_vill)
                 binding.editTextSchoolAddressPin.setText(userDetails.school_address_pin)
 
+                binding.spinnerSchoolAddressState.setSelection(listOfState.indexOf(userDetails.school_address_state))
                 binding.spinnerSchoolAddressDistrict.setSelection(listOfDistrict.indexOf(userDetails.school_address_district))
                 binding.spinnerSchoolAddressBlock.setSelection(listOfBlock.indexOf(userDetails.school_address_block))
-                binding.spinnerSchoolAddressState.setSelection(listOfState.indexOf(userDetails.school_address_state))
 
                 binding.checkboxAmalgamated.isChecked = userDetails.amalgamation == 1
 
             }
 
         })
+
+    }
+
+    private fun setStateList(stateList : List<ModelState>) {
+
+        val stateNames : List<String> = stateList.map { it.state_name ?: "" }
+        listOfState = stateNames
+
+        val adapterState = ArrayAdapter(localContext, android.R.layout.simple_spinner_dropdown_item, listOfState)
+        binding.spinnerSchoolAddressState.adapter = adapterState
+
+        binding.spinnerSchoolAddressState.onItemSelectedListener = object : OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+                selectedState = listOfState[position]
+                selectedStateModel = stateList[position]
+                stateSelectedBoolean = true
+                districtSelectedBoolean = false
+                saveButtonEnable()
+
+                selectedStateModel?.let {
+                    getDistrictListByStateId(it.state_id ?: "")
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        }
+
+        localUserDetails?.let {
+
+            binding.spinnerSchoolAddressState.setSelection(listOfState.indexOf(it.school_address_state))
+        }
 
     }
 
@@ -379,9 +488,9 @@ class UserSetProfileThreeFragment : Fragment() {
                 districtSelectedBoolean = true
                 saveButtonEnable()
 
-                selectedDistrictModel?.let {
+                /*selectedDistrictModel?.let {
                     getBlockListByDistrictName(it)
-                }
+                }*/
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -567,7 +676,7 @@ class UserSetProfileThreeFragment : Fragment() {
 
     private fun saveButtonEnable() {
 
-        if (blockSelectedBoolean
+        if (stateSelectedBoolean
             && districtSelectedBoolean
             && binding.editTextUserSchoolName.text.toString().isNotEmpty()
             && binding.editTextUDICECode.text.toString().isNotEmpty()

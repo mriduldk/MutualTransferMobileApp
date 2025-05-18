@@ -8,9 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.current_role.ResponseCurrentRole
 import com.codingstudio.mutualtransfer.model.department.ResponseDepartment
+import com.codingstudio.mutualtransfer.model.user_type.ResponseUserType
 import com.codingstudio.mutualtransfer.model.zone_division.ResponseZoneDivision
 import com.codingstudio.mutualtransfer.repository.remote.CurrentRoleRepository
 import com.codingstudio.mutualtransfer.repository.remote.DepartmentRepository
+import com.codingstudio.mutualtransfer.repository.remote.UserTypeRepository
 import com.codingstudio.mutualtransfer.repository.remote.ZoneDivisionRepository
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.EventWrapper
@@ -25,7 +27,8 @@ class CommonViewModel @Inject constructor(
     private val application: Application,
     private val currentRoleRepository: CurrentRoleRepository,
     private val departmentRepository: DepartmentRepository,
-    private val zoneDivisionRepository: ZoneDivisionRepository
+    private val zoneDivisionRepository: ZoneDivisionRepository,
+    private val userTypeRepository: UserTypeRepository
 ) : ViewModel() {
 
 
@@ -51,6 +54,57 @@ class CommonViewModel @Inject constructor(
         }
 
     }
+
+    private val _getCurrentRolesByUserTypeIdObserver: MutableLiveData<EventWrapper<Resource<ResponseCurrentRole>>> =
+        MutableLiveData()
+    val getCurrentRolesByUserTypeIdObserver: LiveData<EventWrapper<Resource<ResponseCurrentRole>>>
+        get() = _getCurrentRolesByUserTypeIdObserver
+
+    fun getCurrentRolesByUserTypeIdFun(
+        user_type_id: String
+    ) = viewModelScope.launch {
+
+        _getCurrentRolesByUserTypeIdObserver.postValue(EventWrapper(Resource.Loading()))
+
+        if (HasInternetConnection().check(application)) {
+
+            val response = currentRoleRepository.getByUserTypeId(
+                user_type_id = user_type_id
+            )
+            HandleNetworkResponse.Check(response, _getCurrentRolesByUserTypeIdObserver).process()
+        } else {
+            _getCurrentRolesByUserTypeIdObserver.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
+        }
+
+    }
+
+    private val _getCurrentRolesByUserTypeAndCurrentRoleNameObserver: MutableLiveData<EventWrapper<Resource<ResponseCurrentRole>>> =
+        MutableLiveData()
+    val getCurrentRolesByUserTypeAndCurrentRoleNameObserver: LiveData<EventWrapper<Resource<ResponseCurrentRole>>>
+        get() = _getCurrentRolesByUserTypeAndCurrentRoleNameObserver
+
+    fun getCurrentRolesByUserTypeAndCurrentRoleNameFun(
+        user_type_id: String,
+        current_role_name: String
+    ) = viewModelScope.launch {
+
+        _getCurrentRolesByUserTypeAndCurrentRoleNameObserver.postValue(EventWrapper(Resource.Loading()))
+
+        if (HasInternetConnection().check(application)) {
+
+            val response = currentRoleRepository.getByUserTypeAndCurrentRoleName(
+                user_type_id = user_type_id,
+                current_role_name = current_role_name
+            )
+            HandleNetworkResponse.Check(response, _getCurrentRolesByUserTypeAndCurrentRoleNameObserver).process()
+        } else {
+            _getCurrentRolesByUserTypeAndCurrentRoleNameObserver.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
+        }
+
+    }
+
+
+
 
 
     private val _getDepartmentsByUserTypeObserver: MutableLiveData<EventWrapper<Resource<ResponseDepartment>>> =
@@ -96,6 +150,27 @@ class CommonViewModel @Inject constructor(
             HandleNetworkResponse.Check(response, _getZoneDivisionByUserTypeObserver).process()
         } else {
             _getZoneDivisionByUserTypeObserver.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
+        }
+
+    }
+
+
+
+    private val _getAllUserTypesObserver: MutableLiveData<EventWrapper<Resource<ResponseUserType>>> =
+        MutableLiveData()
+    val getAllUserTypesObserver: LiveData<EventWrapper<Resource<ResponseUserType>>>
+        get() = _getAllUserTypesObserver
+
+    fun getAllUserTypesFun() = viewModelScope.launch {
+
+        _getAllUserTypesObserver.postValue(EventWrapper(Resource.Loading()))
+
+        if (HasInternetConnection().check(application)) {
+
+            val response = userTypeRepository.getAllUserTypes()
+            HandleNetworkResponse.Check(response, _getAllUserTypesObserver).process()
+        } else {
+            _getAllUserTypesObserver.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
         }
 
     }

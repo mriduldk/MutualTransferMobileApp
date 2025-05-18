@@ -86,4 +86,6 @@
     <string name="employee_code">Employee Code</string>
     <string name="employee_code_optional">Employee Code (Optional)</string>
     <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="change">Change</string>
+    <string name="free">Free</string>
 </resources>

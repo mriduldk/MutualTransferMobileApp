@@ -15,6 +15,7 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -31,6 +32,7 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
+        checkAdConfigFromFireStore()
         appUpdateCheck()
 
     }
@@ -123,7 +125,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
     }
 
-
     private fun loginRedirect() {
 
         val userId = SharedPref().getUserIDPref(this)
@@ -135,9 +136,10 @@ class SplashScreenActivity : AppCompatActivity() {
             val profileStep2 = SharedPref().getBooleanPref(this, Constants.ProfileStep2)
             val profileStep3 = SharedPref().getBooleanPref(this, Constants.ProfileStep3)
             val profileStep4 = SharedPref().getBooleanPref(this, Constants.ProfileStep4)
-            val userType = SharedPref().getStringPref(this, Constants.user_type)
+            val userTypeName = SharedPref().getStringPref(this, Constants.user_type_name)
+            val userTypeId = SharedPref().getStringPref(this, Constants.user_type_id)
 
-            if (userType == Constants.TETTeacher) {
+            if (userTypeName == Constants.TETTeacher) {
 
                 if (!profileStep1 || !profileStep2 || !profileStep3 || !profileStep4) {
 
@@ -200,7 +202,6 @@ class SplashScreenActivity : AppCompatActivity() {
         }
     }
 
-
     companion object {
 
         const val NAVIGATION_TYPE = "NAVIGATION_TYPE"
@@ -209,6 +210,38 @@ class SplashScreenActivity : AppCompatActivity() {
 
     }
 
+    private fun checkAdConfigFromFireStore() {
+
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("ad_config").document("banner_ad")
+            .get()
+            .addOnSuccessListener { document ->
+
+                if (document != null) {
+
+                    val enable = document.getBoolean("enable")
+                    val banner_ad_enable = enable ?: false
+                    SharedPref().setBoolean(this, Constants.banner_ad, banner_ad_enable)
+                }
+            }
+
+        db.collection("ad_config").document("interstitial_ad")
+            .get()
+            .addOnSuccessListener { document ->
+
+                if (document != null) {
+
+                    val enable = document.getBoolean("enable")
+                    val no_of_clicks_to_open_ad = document.getLong("no_of_clicks_to_open_ad")?.toInt()
+
+                    SharedPref().setBoolean(this, Constants.interstitial_ad, enable ?: false)
+                    SharedPref().setInt(this, Constants.interstitial_ad_maxClickCount, no_of_clicks_to_open_ad ?: 5)
+
+                }
+            }
+
+    }
 
 
 }

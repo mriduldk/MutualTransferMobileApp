@@ -208,6 +208,8 @@ dependencies {
 
     implementation 'com.google.mlkit:translate:17.0.1'
 
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
+
 
 }
 kapt {

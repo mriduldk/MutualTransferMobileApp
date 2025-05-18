@@ -35,7 +35,8 @@ class UserDetailsNewViewModel @Inject constructor(
         user_id: String,
         email: String,
         gender: String,
-        user_type: String
+        user_type: String,
+        user_type_id: String
     ) = viewModelScope.launch {
 
         _saveUserPersonalInformationObserver.postValue(EventWrapper(Resource.Loading()))
@@ -47,7 +48,8 @@ class UserDetailsNewViewModel @Inject constructor(
                 user_id = user_id,
                 email = email,
                 gender = gender,
-                user_type = user_type
+                user_type = user_type,
+                user_type_id = user_type_id
             )
 
             if (response.isSuccessful){

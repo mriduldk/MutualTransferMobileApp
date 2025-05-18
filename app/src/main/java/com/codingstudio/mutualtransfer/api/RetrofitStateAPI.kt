@@ -12,7 +12,7 @@ interface RetrofitStateAPI {
     suspend fun getAllStates(): Response<ResponseState>
 
 
-    @POST("district/GetStateByName")
+    @POST("state/GetStateByName")
     @FormUrlEncoded
     suspend fun getStateByName(
         @Field("state_name")

@@ -21,6 +21,8 @@ interface RetrofitUserDetailsNewAPI {
         gender : String,
         @Field("user_type")
         user_type : String,
+        @Field("user_type_id")
+        user_type_id : String,
     ): Response<ResponseUserDetailsNew>
 
 

@@ -9,13 +9,15 @@ class UserDetailsNewRepository {
         user_id: String,
         email: String,
         gender: String,
-        user_type: String
+        user_type: String,
+        user_type_id: String
     ) = RetrofitInstance.userDetailsNewAPI.saveUserPersonalInformation(
         name = name,
         user_id = user_id,
         email = email,
         gender = gender,
-        user_type = user_type
+        user_type = user_type,
+        user_type_id = user_type_id
     )
 
 

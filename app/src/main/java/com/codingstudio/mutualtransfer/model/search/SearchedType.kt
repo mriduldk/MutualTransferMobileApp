@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 
 enum class SearchedType : Parcelable {
-    CURRENT_ROLE,
+    DESIGNATION,
     DEPARTMENT,
     ZONE_DIVISION,
     STATE,

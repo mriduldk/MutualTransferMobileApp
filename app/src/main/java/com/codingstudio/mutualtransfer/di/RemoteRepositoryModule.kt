@@ -11,6 +11,7 @@ import com.codingstudio.mutualtransfer.repository.remote.StateRepository
 import com.codingstudio.mutualtransfer.repository.remote.SubjectRepository
 import com.codingstudio.mutualtransfer.repository.remote.UserDetailsNewRepository
 import com.codingstudio.mutualtransfer.repository.remote.UserDetailsRepository
+import com.codingstudio.mutualtransfer.repository.remote.UserTypeRepository
 import com.codingstudio.mutualtransfer.repository.remote.WalletRepository
 import com.codingstudio.mutualtransfer.repository.remote.ZoneDivisionRepository
 import dagger.Module
@@ -81,6 +82,10 @@ class RemoteRepositoryModule {
     @Provides
     fun provideZoneDivisionRepository() : ZoneDivisionRepository {
         return ZoneDivisionRepository()
+    }
+    @Provides
+    fun provideUserTypeRepository() : UserTypeRepository {
+        return UserTypeRepository()
     }
 
 

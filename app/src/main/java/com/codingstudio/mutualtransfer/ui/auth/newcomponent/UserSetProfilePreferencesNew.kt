@@ -1,9 +1,8 @@
-package com.codingstudio.mutualtransfer.ui.auth.compoment
+package com.codingstudio.mutualtransfer.ui.auth.newcomponent
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,19 +10,15 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.codingstudio.mutualtransfer.databinding.FragmentUserPreferenceBinding
 import com.codingstudio.mutualtransfer.databinding.FragmentUserPreferenceNewBinding
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.district.ModelDistrict
 import com.codingstudio.mutualtransfer.ui.home.UserHomeActivityNew
-import com.codingstudio.mutualtransfer.ui.search.UserHomeActivity
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.district.DistrictViewModel
 import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsNewViewModel
-import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewModel
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
 import com.codingstudio.mutualtransfer.viewmodels.LocalUserDetailsNewViewModel
-import com.codingstudio.mutualtransfer.viewmodels.LocalUserDetailsViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging

@@ -2,6 +2,8 @@ package com.codingstudio.mutualtransfer.ui.message
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
@@ -20,6 +22,10 @@ import com.codingstudio.mutualtransfer.ui.message.viewmodel.MessageViewModel
 import com.codingstudio.mutualtransfer.ui.message.viewmodel.MessageViewModelFactory
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,6 +65,7 @@ class MessageTransactionActivity : AppCompatActivity() {
         setOnClickListener()
         observeMessages()
         setRecyclerViewOfMessages()
+        checkAdEnableStatus()
 
     }
 
@@ -136,6 +143,11 @@ class MessageTransactionActivity : AppCompatActivity() {
 
         }
 
+        binding.swipeRefreshLayoutMessageTransaction.setOnRefreshListener {
+            binding.swipeRefreshLayoutMessageTransaction.isRefreshing = false
+            getMessages()
+        }
+
     }
 
     private fun setRecyclerViewOfMessages() {
@@ -150,8 +162,9 @@ class MessageTransactionActivity : AppCompatActivity() {
 
     private fun getMessages(){
 
-        //messageViewModel.getMessageTransactionsByMessageIdFun(message_id, userId)
-        messageViewModel.getMessageTransactionsBySenderAndReceiverIdFun(userId, receiver_id, userId)
+        val userTypeId = SharedPref().getStringPref(this, Constants.user_type_id)
+
+        messageViewModel.getMessageTransactionsBySenderAndReceiverIdFun(userId, receiver_id, userId, userTypeId?: "")
     }
 
     private fun observeMessages() {
@@ -389,10 +402,14 @@ class MessageTransactionActivity : AppCompatActivity() {
     }
 
     private fun insertAcceptMessage(){
+
+        val userTypeId = SharedPref().getStringPref(this, Constants.user_type_id)
+
         messageViewModel.storeMessageFun(
             sender_id = userId,
             receiver_id = receiver_id,
             last_message_content = "Hey, I want to talk to you about the mutual transfer. If you're interested, let's chat!",
+            userTypeId ?: ""
         )
     }
 
@@ -443,5 +460,40 @@ class MessageTransactionActivity : AppCompatActivity() {
 
     }
 
+    private fun checkAdEnableStatus() {
+        val banner_ad = SharedPref().getBooleanPref(this, Constants.banner_ad)
+        if (banner_ad) {
+            loadBannerAdView()
+        }
+    }
+    private fun loadBannerAdView() {
+
+        MobileAds.initialize(this)
+        val adRequest = AdRequest.Builder().build()
+        binding.adViewHome.loadAd(adRequest)
+
+        binding.adViewHome.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                // Code to execute when an ad finishes loading
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                binding.adViewHome.visibility = View.GONE
+            }
+
+            override fun onAdOpened() {
+                // Code to execute when an ad opens an overlay that covers the screen
+            }
+
+            override fun onAdClicked() {
+                // Code to execute when the user clicks on an ad
+            }
+
+            override fun onAdClosed() {
+                // Code to execute when the user is about to return to the app after tapping on an ad
+            }
+        }
+
+    }
 
 }

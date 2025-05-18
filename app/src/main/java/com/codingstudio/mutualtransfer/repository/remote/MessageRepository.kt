@@ -14,6 +14,16 @@ class MessageRepository {
         last_message_content = last_message_content,
     )
 
+    suspend fun storeMessageNew(
+        sender_id: String,
+        receiver_id: String,
+        last_message_content: String,
+    ) = RetrofitInstance.messageAPI.storeMessageNew(
+        sender_id = sender_id,
+        receiver_id = receiver_id,
+        last_message_content = last_message_content,
+    )
+
     suspend fun acceptMessage(
         message_id: String,
         status: String,
@@ -59,6 +69,17 @@ class MessageRepository {
         receiver_id: String,
         user_id: String,
     ) = RetrofitInstance.messageAPI.getMessageTransactionsBySenderAndReceiverId(
+        sender_id = sender_id,
+        receiver_id = receiver_id,
+        user_id = user_id,
+    )
+
+
+    suspend fun getMessageTransactionsBySenderAndReceiverIdNew(
+        sender_id: String,
+        receiver_id: String,
+        user_id: String,
+    ) = RetrofitInstance.messageAPI.getMessageTransactionsBySenderAndReceiverIdNew(
         sender_id = sender_id,
         receiver_id = receiver_id,
         user_id = user_id,

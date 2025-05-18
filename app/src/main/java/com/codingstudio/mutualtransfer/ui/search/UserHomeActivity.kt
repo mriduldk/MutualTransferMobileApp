@@ -119,15 +119,15 @@ class UserHomeActivity : AppCompatActivity() {
                     val intent = Intent(this@UserHomeActivity, UserProfileActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.nav_menu_saved_profiles -> {
+                /*R.id.nav_menu_saved_profiles -> {
                     //val intent = Intent(this@UserHomeActivity, Saver::class.java)
                     //startActivity(intent)
-                }
+                }*/
                 R.id.nav_menu_recently_viewed -> {
                     val intent = Intent(this@UserHomeActivity, RecentlyViewedActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.nav_menu_wallet -> {
+                /*R.id.nav_menu_wallet -> {
                     val intent = Intent(this@UserHomeActivity, WalletActivity::class.java)
                     startActivity(intent)
                 }
@@ -142,7 +142,7 @@ class UserHomeActivity : AppCompatActivity() {
                 R.id.nav_menu_refer -> {
                     val intent = Intent(this@UserHomeActivity, ReferAndEarnActivity::class.java)
                     startActivity(intent)
-                }
+                }*/
                 R.id.nav_menu_messages -> {
                     val intent = Intent(this@UserHomeActivity, MessageActivity::class.java)
                     startActivity(intent)
@@ -167,11 +167,29 @@ class UserHomeActivity : AppCompatActivity() {
 
     private fun onClickListeners() {
 
-        binding.textViewSelectDistrict.setOnClickListener {
+        binding.textViewSelectState.setOnClickListener {
 
             val intent = Intent(this, SearchActivity::class.java)
-            intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DISTRICT)
+            intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_STATE)
             getSearchedContent.launch(intent)
+        }
+
+        binding.textViewSelectDistrict.setOnClickListener {
+
+            if (!modelSearch.searchStateId.isNullOrEmpty()){
+
+                val intent = Intent(this, SearchActivity::class.java)
+                intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DISTRICT)
+                intent.putExtra(SearchActivity.SEARCH_STATE_ID, modelSearch.searchStateId)
+                getSearchedContent.launch(intent)
+            }
+            else {
+                showSnackBarMessage("Please select state first.")
+            }
+
+            /*val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DISTRICT)
+            getSearchedContent.launch(intent)*/
         }
 
         binding.textViewSelectBlock.setOnClickListener {
@@ -197,8 +215,8 @@ class UserHomeActivity : AppCompatActivity() {
 
         binding.textViewSearchBtn.setOnClickListener {
 
-            if (modelSearch.searchDistrictId.isNullOrEmpty()){
-                showSnackBarMessage("Please Select District")
+            if (modelSearch.searchStateId.isNullOrEmpty()){
+                showSnackBarMessage("Please Select State")
             }
             else {
 
@@ -211,20 +229,6 @@ class UserHomeActivity : AppCompatActivity() {
 
             val intent = Intent(this, UserDetailsChangeActivity::class.java)
             intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_TWO)
-            startActivity(intent)
-
-        }
-
-        binding.textViewReferralTextHome.setOnClickListener {
-
-            val intent = Intent(this, ReferAndEarnActivity::class.java)
-            startActivity(intent)
-
-        }
-
-        binding.imageViewGoToReferralPage.setOnClickListener {
-
-            val intent = Intent(this, ReferAndEarnActivity::class.java)
             startActivity(intent)
 
         }
@@ -409,9 +413,18 @@ class UserHomeActivity : AppCompatActivity() {
 
         })
 
-
         binding.textViewVersionCode.text = "Version - ${BuildConfig.VERSION_NAME}"
 
+        val stateName = SharedPref().getStringPref(this, Constants.state_name)
+        val stateId = SharedPref().getStringPref(this, Constants.state_id)
+
+        if (!stateName.isNullOrEmpty()) {
+
+            binding.textViewSelectState.text = stateName
+            modelSearch.searchStateText = stateName
+            modelSearch.searchStateId = stateId
+
+        }
     }
 
     private fun observer(){
@@ -514,6 +527,30 @@ class UserHomeActivity : AppCompatActivity() {
             val resultId = result.data?.extras?.getString(SEARCH_RESULT_ID)
 
             when(resultType) {
+                SearchActivity.SEARCH_TYPE_STATE -> {
+                    binding.textViewSelectState.text = resultText
+
+                    modelSearch.searchStateText = resultText
+                    modelSearch.searchStateId = resultId
+
+                    modelSearch.searchDistrictText = ""
+                    modelSearch.searchDistrictId = ""
+
+                    modelSearch.searchCurrentRoleText = ""
+                    modelSearch.searchCurrentRoleId = ""
+
+                    binding.textViewSelectDistrict.text = ""
+                    binding.textViewSelectDistrict.hint = "Select District ( Optional )"
+                    binding.imageViewBtnClearDistrict.visibility = View.GONE
+
+                    binding.textViewSelectBlock.text = ""
+                    binding.textViewSelectBlock.hint = "Select Block ( Optional )"
+                    binding.imageViewBtnClearBlock.visibility = View.GONE
+
+                    SharedPref().setString(this, Constants.state_name, resultText)
+                    SharedPref().setString(this, Constants.state_id, resultId)
+
+                }
                 SearchActivity.SEARCH_TYPE_DISTRICT -> {
                     binding.textViewSelectDistrict.text = resultText
 
@@ -720,7 +757,12 @@ class UserHomeActivity : AppCompatActivity() {
 
     private fun checkAdEnableStatus() {
 
-        val db = FirebaseFirestore.getInstance()
+        val banner_ad = SharedPref().getBooleanPref(this, Constants.banner_ad)
+        if (banner_ad) {
+            loadBannerAdView()
+        }
+
+        /*val db = FirebaseFirestore.getInstance()
 
         db.collection("ad_config").document("banner_ad")
             .get()
@@ -735,7 +777,7 @@ class UserHomeActivity : AppCompatActivity() {
                     }
 
                 }
-            }
+            }*/
     }
 
     private fun translateMessage() {

@@ -13,7 +13,7 @@ data class ResponseCurrentRole (
             ModelSearchResult(
                 searchResultId = role.current_role_id,
                 searchResultText = role.current_role_name,
-                searchedType = SearchedType.CURRENT_ROLE
+                searchedType = SearchedType.DESIGNATION
             )
         }
     }

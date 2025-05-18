@@ -1,4 +1,4 @@
-package com.codingstudio.mutualtransfer.ui.auth.compoment
+package com.codingstudio.mutualtransfer.ui.auth.newcomponent
 
 import android.content.Context
 import android.graphics.PorterDuff
@@ -32,7 +32,8 @@ class UserSetProfileOneFragmentNew : Fragment() {
     private var genderSelected = false
     private var gender = ""
     private var fragmentType : String ?= ""
-    private var userType = ""
+    private var userTypeName = ""
+    private var userTypeId = ""
 
     private val userDetailsNewViewModel: UserDetailsNewViewModel by viewModels()
     private val localUserDetailsNewViewModel: LocalUserDetailsNewViewModel by viewModels()
@@ -59,7 +60,8 @@ class UserSetProfileOneFragmentNew : Fragment() {
             fragmentType = it.getString(ARG_FRAGMENT)
         }
 
-        userType = SharedPref().getStringPref(localContext, Constants.user_type) ?: ""
+        userTypeName = SharedPref().getStringPref(localContext, Constants.user_type_name) ?: ""
+        userTypeId = SharedPref().getStringPref(localContext, Constants.user_type_id) ?: ""
 
         binding.btnSaveAndProceed.background.setColorFilter(ContextCompat.getColor(localContext, R.color.color_divider), PorterDuff.Mode.MULTIPLY)
         binding.btnSaveAndProceed.setTextColor(ContextCompat.getColor(localContext, R.color.text_color_regular))
@@ -106,7 +108,8 @@ class UserSetProfileOneFragmentNew : Fragment() {
                     user_id = user_id ?: "",
                     email = binding.editTextUserEmail.text.toString().trim(),
                     gender = gender,
-                    user_type = userType
+                    user_type = userTypeName,
+                    user_type_id = userTypeId
                 )
 
             }

@@ -107,6 +107,9 @@ class RetrofitInstance {
         val zoneDivisionAPI by lazy {
             retrofit.create(RetrofitZoneDivisionAPI::class.java)
         }
+        val userTypeAPI by lazy {
+            retrofit.create(RetrofitUserTypeAPI::class.java)
+        }
 
 
 

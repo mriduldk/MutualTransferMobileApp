@@ -271,8 +271,8 @@
                         android:hint="@string/current_organisation"
                         android:imeOptions="actionNext"
                         android:importantForAutofill="no"
-                        android:inputType="number"
-                        android:maxLength="12"
+                        android:inputType="textCapWords"
+                        android:maxLength="100"
                         android:minLines="1"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="16dp"
@@ -345,7 +345,7 @@
                     android:orientation="vertical"
                     android:paddingStart="16dp"
                     android:paddingEnd="4dp"
-                    app:layout_constraintEnd_toStartOf="@id/linearLayoutServiceAddressBlock"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/linearLayoutServiceAddressVillage">
 
@@ -383,6 +383,7 @@
                     android:orientation="vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="16dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/linearLayoutServiceAddressDistrict"
                     app:layout_constraintTop_toBottomOf="@id/linearLayoutServiceAddressVillage">
@@ -423,7 +424,7 @@
                     android:paddingEnd="4dp"
                     app:layout_constraintEnd_toStartOf="@id/linearLayoutServiceAddressPin"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/linearLayoutServiceAddressBlock">
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutServiceAddressDistrict">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -459,7 +460,7 @@
                     android:paddingEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/linearLayoutServiceAddressState"
-                    app:layout_constraintTop_toBottomOf="@id/linearLayoutServiceAddressBlock">
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutServiceAddressDistrict">
 
                     <TextView
                         android:layout_width="match_parent"

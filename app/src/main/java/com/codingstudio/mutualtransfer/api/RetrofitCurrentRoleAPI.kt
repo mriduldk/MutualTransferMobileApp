@@ -16,4 +16,26 @@ interface RetrofitCurrentRoleAPI {
     ): Response<ResponseCurrentRole>
 
 
+
+
+    @POST("currentRole/getByUserTypeId")
+    @FormUrlEncoded
+    suspend fun getByUserTypeId(
+        @Field("user_type_id")
+        user_type_id: String
+    ): Response<ResponseCurrentRole>
+
+
+
+
+    @POST("currentRole/getByUserTypeAndCurrentRoleName")
+    @FormUrlEncoded
+    suspend fun getByUserTypeAndCurrentRoleName(
+        @Field("user_type_id")
+        user_type_id: String,
+        @Field("current_role_name")
+        current_role_name: String
+    ): Response<ResponseCurrentRole>
+
+
 }

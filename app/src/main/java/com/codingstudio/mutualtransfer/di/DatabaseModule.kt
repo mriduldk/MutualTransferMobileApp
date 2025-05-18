@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.codingstudio.mutualtransfer.local_database.RoomLocalDatabase
 import com.codingstudio.mutualtransfer.local_database.dao.DaoRecentlyViewed
+import com.codingstudio.mutualtransfer.local_database.dao.DaoRecentlyViewedNew
 import com.codingstudio.mutualtransfer.local_database.dao.DaoUserDetails
 import com.codingstudio.mutualtransfer.local_database.dao.DaoUserDetailsNew
 import dagger.Module
@@ -40,6 +41,11 @@ class DatabaseModule {
     @Provides
     fun provideRecentlyViewedDao(database: RoomLocalDatabase): DaoRecentlyViewed {
         return database.daoRecentlyViewed()
+    }
+
+    @Provides
+    fun provideRecentlyViewedNewDao(database: RoomLocalDatabase): DaoRecentlyViewedNew {
+        return database.daoRecentlyViewedNew()
     }
 
 
