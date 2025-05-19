@@ -49,10 +49,6 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.mlkit.common.model.DownloadConditions
-import com.google.mlkit.nl.translate.TranslateLanguage
-import com.google.mlkit.nl.translate.Translation
-import com.google.mlkit.nl.translate.TranslatorOptions
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
@@ -782,7 +778,7 @@ class UserHomeActivity : AppCompatActivity() {
 
     private fun translateMessage() {
 
-        val retrofit = Retrofit.Builder()
+        /*val retrofit = Retrofit.Builder()
             .baseUrl("https://translation.googleapis.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -810,7 +806,7 @@ class UserHomeActivity : AppCompatActivity() {
                 Log.e("Translation", "Failed: ${t.message}")
                 binding.textViewTranslateMessage.text = "Failed: ${t.message}"
             }
-        })
+        })*/
 
 
 

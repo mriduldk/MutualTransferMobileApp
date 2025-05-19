@@ -209,7 +209,7 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
         binding.textViewViewDetailsPostSubject.text = personDetails.subject_type
 
         binding.textViewViewDetailsSchoolName.text = personDetails.school_name
-        binding.textViewViewDetailsSchoolUdiceCode.text = "UDICE Code: ${personDetails.udice_code}"
+        binding.textViewViewDetailsSchoolUdiceCode.text = "UDISE Code: ${personDetails.udice_code}"
         binding.textViewViewDetailsSchoolAddress.text = "${personDetails.school_address_vill}, ${personDetails.school_address_block}, ${personDetails.school_address_district}, ${personDetails.school_address_state}, ${personDetails.school_address_pin}"
 
         binding.textViewViewDetailsSchoolAmalgamated.text = "School Amalgamated: ${if (personDetails.amalgamation == 1) { "Yes" } else { "No" }}"

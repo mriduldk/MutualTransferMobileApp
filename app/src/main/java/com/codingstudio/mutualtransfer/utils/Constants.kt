@@ -3,13 +3,13 @@ package com.codingstudio.mutualtransfer.utils
 object Constants {
 
     // Prod URL
-    //const val BASE_URL = "https://themutualtransfer.in/MutualTransferAPI/public/api/"
+    const val BASE_URL = "https://themutualtransfer.in/MutualTransferAPI/public/api/"
 
     // Local URL
     //const val BASE_URL = "https://5299-117-209-60-158.ngrok-free.app/api/"
 
     // Development URL
-    const val BASE_URL = "https://devapi.themutualtransfer.in/public/api/"
+    //const val BASE_URL = "https://devapi.themutualtransfer.in/public/api/"
 
     const val MSG91_WIDGET_ID = "346969687569363739393536"
     const val MSG91_AUTH_TOKEN = "429985TV0O1hMX1666deb13eP1"

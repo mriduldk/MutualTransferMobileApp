@@ -17,8 +17,8 @@ android {
         applicationId "com.codingstudio.mutualtransfer"
         minSdk 24
         targetSdk 34
-        versionCode 7
-        versionName "1.4"
+        versionCode 9
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -206,7 +206,7 @@ dependencies {
     // GIF
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
 
-    implementation 'com.google.mlkit:translate:17.0.1'
+    //implementation 'com.google.mlkit:translate:17.0.1'
 
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 

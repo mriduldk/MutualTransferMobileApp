@@ -917,8 +917,8 @@ class UserSetProfileThreeFragmentNew : Fragment() {
             && departmentSelectedBoolean
             && currentRoleSelectedBoolean
             && serviceTypeSelectedBoolean
-            && zoneDivisionSelectedBoolean
-            && binding.editTextEmployeeCode.text.toString().isNotEmpty()
+            /*&& zoneDivisionSelectedBoolean*/
+            /*&& binding.editTextEmployeeCode.text.toString().isNotEmpty()*/
             && binding.editTextCurrentOrganisation.text.toString().isNotEmpty()
             && binding.editTextServiceAddressVillage.text.toString().isNotEmpty()
             && binding.editTextServiceAddressPin.text.toString().isNotEmpty()

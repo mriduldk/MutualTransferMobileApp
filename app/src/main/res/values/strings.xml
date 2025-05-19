@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Mutual Transfer</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-4457216037877623/1407280237</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
     <string name="banner_ad_unit_id_real">ca-app-pub-4457216037877623/1407280237</string>
 
@@ -81,7 +81,7 @@
     <string name="back_button_for_service_type">Back Button for Service Type</string>
     <string name="service_details">Service Details</string>
     <string name="department">Department</string>
-    <string name="zone_division">Zone / Division</string>
+    <string name="zone_division">Zone / Division (Optional)</string>
     <string name="service_type">Service Type</string>
     <string name="employee_code">Employee Code</string>
     <string name="employee_code_optional">Employee Code (Optional)</string>

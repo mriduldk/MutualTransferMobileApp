@@ -535,7 +535,7 @@
                             android:layout_marginStart="20dp"
                             android:layout_toEndOf="@id/imageView_profile_1"
                             android:fontFamily="@font/ar_one_sans_bold"
-                            android:text="Message"
+                            android:text="My Messages"
                             android:textColor="@color/color_text"
                             android:textSize="@dimen/_12sdp" />
 
