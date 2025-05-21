@@ -139,7 +139,7 @@ class SplashScreenActivity : AppCompatActivity() {
             val userTypeName = SharedPref().getStringPref(this, Constants.user_type_name)
             val userTypeId = SharedPref().getStringPref(this, Constants.user_type_id)
 
-            if (userTypeName == Constants.TETTeacher) {
+            if (userTypeId == Constants.TETTeacherID) {
 
                 if (!profileStep1 || !profileStep2 || !profileStep3 || !profileStep4) {
 
