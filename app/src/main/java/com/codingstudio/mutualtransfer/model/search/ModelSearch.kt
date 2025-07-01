@@ -8,6 +8,9 @@ import java.util.UUID
 data class ModelSearch (
     var searchId : String = UUID.randomUUID().toString(),
 
+    var searchStateText : String ?= null,
+    var searchStateId : String ?= null,
+
     var searchDistrictText : String ?= null,
     var searchDistrictId : String ?= null,
     var searchBlockText : String ?= null,
@@ -15,6 +18,12 @@ data class ModelSearch (
     var searchSchoolText : String ?= null,
     var searchSchoolId : String ?= null,
 
+
+    var searchDepartmentText : String ?= null,
+    var searchDepartmentId : String ?= null,
+
+    var searchCurrentRoleText : String ?= null,
+    var searchCurrentRoleId : String ?= null,
 
     var userDistrictText : String ?= null,
     var userDistrictId : String ?= null,

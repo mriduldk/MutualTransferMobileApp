@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.databinding.FragmentUserDetailsOneBinding
 import com.codingstudio.mutualtransfer.model.Resource
+import com.codingstudio.mutualtransfer.ui.auth.newcomponent.UserSetUserTypeFragment
 import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewModel
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
@@ -71,6 +72,7 @@ class UserSetProfileOneFragment : Fragment() {
         observeUserDetailsLocalData()
 
         getLocalData()
+
     }
 
     private fun getLocalData(){
@@ -177,6 +179,8 @@ class UserSetProfileOneFragment : Fragment() {
                                     requireActivity().finish()
                                 }
                                 else{
+
+                                    SharedPref().setBoolean(localContext, Constants.ProfileStep1, true)
 
                                     val fragment = UserSetProfileTwoFragment()
                                     val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()

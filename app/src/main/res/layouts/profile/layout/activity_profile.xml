@@ -114,7 +114,6 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                         <TextView
                             android:id="@+id/textViewUserPhone"
                             style="@style/textView_regular_color_16"
@@ -138,6 +137,47 @@
                             android:textAlignment="textStart"
                             tools:text="Gender: Male" />
 
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@drawable/edit_text_bg"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:paddingVertical="@dimen/_12sdp">
+
+                            <TextView
+                                android:id="@+id/textViewUserType"
+                                style="@style/textView_regular_color_16"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/_4sdp"
+                                android:fontFamily="@font/ar_one_sans_semi_bold"
+                                android:textAlignment="textStart"
+                                app:layout_constraintEnd_toStartOf="@id/textViewUserTypeChange"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="User Type: 3rd Grade" />
+
+
+                            <TextView
+                                android:id="@+id/textViewUserTypeChange"
+                                style="@style/textView_regular_color_16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:fontFamily="@font/ar_one_sans_bold"
+                                android:foreground="?attr/selectableItemBackground"
+                                android:text="@string/change"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/blue"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -146,6 +186,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutEmployeeDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -176,6 +217,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewEmployeeDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -200,18 +242,18 @@
                             android:id="@+id/textViewEmployeeCode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/ar_one_sans_medium"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_12sdp"
                             tools:text="Employee Code: 123456" />
 
                         <TextView
                             android:id="@+id/textViewSchoolType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/ar_one_sans_medium"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_12sdp"
                             tools:text="School Type : LP , Assistant Teacher" />
 
 
@@ -230,6 +272,7 @@
                 android:layout_marginTop="16dp">
 
                 <TextView
+                    android:id="@+id/textViewHeaderServiceDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ar_one_sans_bold"
@@ -278,36 +321,76 @@
                             android:id="@+id/textViewSchoolName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/ar_one_sans_medium"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_12sdp"
                             tools:text="School Name : Barsola HS School" />
 
                         <TextView
                             android:id="@+id/textViewUdiceCode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/ar_one_sans_medium"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_12sdp"
+                            tools:text="UCIDE Code: 1234567890" />
+
+                        <TextView
+                            android:id="@+id/textViewZone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/_12sdp"
+                            android:visibility="gone"
+                            tools:text="UCIDE Code: 1234567890" />
+
+                        <TextView
+                            android:id="@+id/textViewServiceType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/_12sdp"
+                            android:visibility="gone"
+                            tools:text="UCIDE Code: 1234567890" />
+
+                        <TextView
+                            android:id="@+id/textViewOrganization"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/_12sdp"
+                            android:visibility="gone"
+                            tools:text="UCIDE Code: 1234567890" />
+
+                        <TextView
+                            android:id="@+id/textViewEmployeeCode2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/_12sdp"
+                            android:visibility="gone"
                             tools:text="UCIDE Code: 1234567890" />
 
                         <TextView
                             android:id="@+id/textViewSchooladdress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/ar_one_sans_medium"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_12sdp"
                             tools:text="School Address: Barbhogoa, Barsola, Sonittpur, Assam, 784117" />
 
                         <TextView
                             android:id="@+id/textViewSchoolAmalgamated"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/ar_one_sans_medium"
+                            android:fontFamily="@font/ar_one_sans_semi_bold"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_12sdp"
                             tools:text="" />
 
 
@@ -425,6 +508,7 @@
 
 
                     <RelativeLayout
+                        android:id="@+id/relativeLayoutMessage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clickable="true"
@@ -439,7 +523,7 @@
                             android:layout_width="@dimen/_30sdp"
                             android:layout_height="@dimen/_30sdp"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/bookmark_job"
+                            android:src="@drawable/user_post"
                             app:civ_border_color="@color/colorBlueTransparent"
                             app:civ_border_width="1dp" />
 
@@ -451,7 +535,7 @@
                             android:layout_marginStart="20dp"
                             android:layout_toEndOf="@id/imageView_profile_1"
                             android:fontFamily="@font/ar_one_sans_bold"
-                            android:text="Saved Profiles"
+                            android:text="My Messages"
                             android:textColor="@color/color_text"
                             android:textSize="@dimen/_12sdp" />
 
@@ -466,11 +550,13 @@
                     </RelativeLayout>
 
                     <View
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/color_divider" />
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/relativeLayoutReferAndEarn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -562,7 +648,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_divider" />
+                        android:background="@color/color_divider"
+                        android:visibility="gone" />
 
                     <RelativeLayout
                         android:id="@+id/relativeLayoutWalletProfile"
@@ -573,7 +660,8 @@
                         android:foreground="?android:attr/selectableItemBackground"
                         android:orientation="horizontal"
                         android:paddingHorizontal="16dp"
-                        android:paddingVertical="10dp">
+                        android:paddingVertical="10dp"
+                        android:visibility="gone">
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/imageView_profile_4"
@@ -906,7 +994,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/ar_one_sans_medium"
                         android:gravity="center"
-                        android:text=" in Assam"
+                        android:text=" by"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sdp" />
 
@@ -917,10 +1005,10 @@
                     android:id="@+id/textViewJypkoWebsite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/ar_one_sans_medium"
+                    android:fontFamily="@font/ar_one_sans_bold"
                     android:gravity="center"
-                    android:text="by jypko.com"
-                    android:textColor="@color/text_color_regular"
+                    android:text="Jypko"
+                    android:textColor="@color/blue"
                     android:textSize="@dimen/_11sdp" />
             </LinearLayout>
 

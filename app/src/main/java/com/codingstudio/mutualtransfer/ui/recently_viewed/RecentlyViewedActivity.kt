@@ -12,21 +12,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codingstudio.mutualtransfer.MainApplication
 import com.codingstudio.mutualtransfer.databinding.ActivityRecentlyViewedBinding
-import com.codingstudio.mutualtransfer.databinding.ActivitySearchResultOfPersonBinding
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ModelRecentlyViewed
-import com.codingstudio.mutualtransfer.model.search.ModelSearch
-import com.codingstudio.mutualtransfer.model.search.ModelSearchResultOfPerson
-import com.codingstudio.mutualtransfer.repository.local.RecentlyViewedRepository
+import com.codingstudio.mutualtransfer.ui.message.MessageTransactionActivity
 import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModel
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModelFactory
 import com.codingstudio.mutualtransfer.ui.recently_viewed.adapter.AdapterForRecentlyViewedPerson
+import com.codingstudio.mutualtransfer.ui.recently_viewed.adapter.AdapterForRecentlyViewedPersonNew
 import com.codingstudio.mutualtransfer.ui.search.ViewDetailsOfPersonActivity
-import com.codingstudio.mutualtransfer.ui.search.adpter.AdapterForSearchResultOfPerson
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.recentlyViewed.RecentlyViewedViewModel
-import com.codingstudio.mutualtransfer.ui.search.viewmodel.search.SearchViewModel
-import com.codingstudio.mutualtransfer.ui.search.viewmodel.search.SearchViewModelFactory
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
 import com.google.android.material.snackbar.Snackbar
@@ -43,6 +38,7 @@ class RecentlyViewedActivity : AppCompatActivity() {
 
 
     private lateinit var adapterForRecentlyViewedPerson: AdapterForRecentlyViewedPerson
+    private lateinit var adapterForRecentlyViewedPersonNew: AdapterForRecentlyViewedPersonNew
 
     private val paymentViewModel : PaymentViewModel by viewModels {
         PaymentViewModelFactory(application, (application as MainApplication).paymentRepository)
@@ -59,7 +55,14 @@ class RecentlyViewedActivity : AppCompatActivity() {
         setOnClickListener()
         observeRecentlyViewedPersonResult()
         observePaymentRequestForThePerson()
-        setRecyclerViewOfSearchHistory()
+
+        val userTypeId = SharedPref().getStringPref(this, Constants.user_type_id)
+
+        if (userTypeId == Constants.TETTeacherID) {
+            setRecyclerViewOfSearchHistory()
+        } else {
+            setRecyclerViewOfSearchHistoryNew()
+        }
 
     }
 
@@ -112,6 +115,41 @@ class RecentlyViewedActivity : AppCompatActivity() {
                 .show()
 
         }
+        adapterForRecentlyViewedPerson.setOnMessagePersonClickedListener { personDetails ->
+
+            val intent = Intent(this, MessageTransactionActivity::class.java).apply {
+                putExtra(MessageTransactionActivity.RECEIVER_ID, personDetails.fk_user_id)
+                putExtra(MessageTransactionActivity.RECEIVER_NAME, personDetails.name)
+            }
+            startActivity(intent)
+        }
+
+    }
+    private fun setRecyclerViewOfSearchHistoryNew() {
+
+        adapterForRecentlyViewedPersonNew = AdapterForRecentlyViewedPersonNew()
+        binding.recyclerViewRecentlyViewedPerson.apply {
+            adapter = adapterForRecentlyViewedPersonNew
+            layoutManager = LinearLayoutManager(this@RecentlyViewedActivity)
+        }
+
+        adapterForRecentlyViewedPersonNew.setOnPersonViewDetailsClickListener { personDetails ->
+
+            val intent = Intent(this, ViewDetailsOfPersonActivity::class.java).apply {
+                putExtra(ViewDetailsOfPersonActivity.SEARCH_PERSON_ID, personDetails.user_details_new_id)
+            }
+            startActivity(intent)
+
+        }
+
+        adapterForRecentlyViewedPersonNew.setOnMessagePersonClickedListener { personDetails ->
+
+            val intent = Intent(this, MessageTransactionActivity::class.java).apply {
+                putExtra(MessageTransactionActivity.RECEIVER_ID, personDetails.fk_user_id)
+                putExtra(MessageTransactionActivity.RECEIVER_NAME, personDetails.name)
+            }
+            startActivity(intent)
+        }
 
     }
 
@@ -120,13 +158,32 @@ class RecentlyViewedActivity : AppCompatActivity() {
      */
     private fun getRecentlyViewedPerson(){
 
-        recentlyViewedViewMode.getAllRecentlyViewedPersonFun()
+        val userTypeId = SharedPref().getStringPref(this, Constants.user_type_id)
+
+        if (userTypeId == Constants.TETTeacherID) {
+            recentlyViewedViewMode.getAllRecentlyViewedPersonFun()
+        } else {
+            recentlyViewedViewMode.getAllRecentlyViewedNewPersonFun()
+        }
     }
     private fun observeRecentlyViewedPersonResult() {
 
         recentlyViewedViewMode.getAllRecentlyViewedPersonObserver.observe(this, Observer { response ->
 
             adapterForRecentlyViewedPerson.differ.submitList(response)
+
+            val size = response.size
+            if (size <= 1) {
+                binding.textViewSearchResultOfPerson.text = "$size result found"
+            }
+            else {
+                binding.textViewSearchResultOfPerson.text = "$size results found"
+            }
+
+        })
+        recentlyViewedViewMode.getAllRecentlyViewedNewPersonObserver.observe(this, Observer { response ->
+
+            adapterForRecentlyViewedPersonNew.differ.submitList(response)
 
             val size = response.size
             if (size <= 1) {

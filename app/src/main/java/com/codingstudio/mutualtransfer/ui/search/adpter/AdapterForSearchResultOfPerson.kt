@@ -29,7 +29,7 @@ class AdapterForSearchResultOfPerson : RecyclerView.Adapter<RecyclerView.ViewHol
     companion object {
         private const val VIEW_TYPE_PERSON = 0
         private const val VIEW_TYPE_AD = 1
-        private const val AD_FREQUENCY = 6 // Show an ad after every 3 items
+        private const val AD_FREQUENCY = 15 // Show an ad after every 15 items
     }
 
     inner class ViewHolderForSearchHistory(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -45,6 +45,8 @@ class AdapterForSearchResultOfPerson : RecyclerView.Adapter<RecyclerView.ViewHol
         private val textViewSearchResultPayButton = itemView.findViewById<TextView>(R.id.textViewSearchResultPayButton)
         private val textViewSearchResultViewDetailsButton = itemView.findViewById<TextView>(R.id.textViewSearchResultViewDetailsButton)
         private val constraintLayoutSearchResultPayCoins = itemView.findViewById<ConstraintLayout>(R.id.constraintLayoutSearchResultPayCoins)
+
+        private val textViewSearchResultMessagePerson = itemView.findViewById<TextView>(R.id.textViewSearchResultMessagePerson)
 
         private val chipDistrictPreference1 = itemView.findViewById<Chip>(R.id.chipDistrictPreference1)
         private val chipDistrictPreference2 = itemView.findViewById<Chip>(R.id.chipDistrictPreference2)
@@ -88,7 +90,7 @@ class AdapterForSearchResultOfPerson : RecyclerView.Adapter<RecyclerView.ViewHol
             }
 
             if (hasPreferredDistricts) {
-                textViewSearchResultPreferredDistrictsText.text = "Preferred Districts"
+                textViewSearchResultPreferredDistrictsText.text = "Preferred Districts (Want To Go)"
             }
             else {
                 textViewSearchResultPreferredDistrictsText.text = "No Preferred District Available"
@@ -100,7 +102,7 @@ class AdapterForSearchResultOfPerson : RecyclerView.Adapter<RecyclerView.ViewHol
             }
             else{
                 textViewSearchResultViewDetailsButton.visibility = View.VISIBLE
-                constraintLayoutSearchResultPayCoins.visibility = View.VISIBLE
+                constraintLayoutSearchResultPayCoins.visibility = View.GONE //View.VISIBLE
             }
 
             if (modelSearchResultOfPerson.district_match_flag == 0) {
@@ -121,6 +123,11 @@ class AdapterForSearchResultOfPerson : RecyclerView.Adapter<RecyclerView.ViewHol
 
             textViewSearchResultViewDetailsButton.setOnClickListener {
                 onPersonViewDetailsClickListener?.let {
+                    it(modelSearchResultOfPerson)
+                }
+            }
+            textViewSearchResultMessagePerson.setOnClickListener {
+                onMessagePersonClickedListener?.let {
                     it(modelSearchResultOfPerson)
                 }
             }
@@ -268,6 +275,11 @@ class AdapterForSearchResultOfPerson : RecyclerView.Adapter<RecyclerView.ViewHol
     private var onPayPersonClickedListener : ((ModelSearchResultOfPerson) -> Unit) ?= null
     fun setOnPayPersonClickedListener(listener: ((ModelSearchResultOfPerson) -> Unit)) {
         onPayPersonClickedListener = listener
+    }
+
+    private var onMessagePersonClickedListener : ((ModelSearchResultOfPerson) -> Unit) ?= null
+    fun setOnMessagePersonClickedListener(listener: ((ModelSearchResultOfPerson) -> Unit)) {
+        onMessagePersonClickedListener = listener
     }
 
     private var onPersonViewDetailsClickListener : ((ModelSearchResultOfPerson) -> Unit) ?= null

@@ -1,8 +1,5 @@
 package com.codingstudio.mutualtransfer.ui.search
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -13,14 +10,12 @@ import com.codingstudio.mutualtransfer.MainApplication
 import com.codingstudio.mutualtransfer.databinding.ActivityViewDetailsOfPersonBinding
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ModelSearchResultOfPerson
-import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
-import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModel
-import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModelFactory
+import com.codingstudio.mutualtransfer.model.search.ModelSearchResultOfPersonNew
+import com.codingstudio.mutualtransfer.ui.message.MessageTransactionActivity
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.recentlyViewed.RecentlyViewedViewModel
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.recentlyViewed.RecentlyViewedViewModelFactory
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.search.SearchViewModel
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.search.SearchViewModelFactory
-import com.codingstudio.mutualtransfer.ui.wallet.BuyCoinActivity
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
 import com.google.android.gms.ads.AdListener
@@ -36,7 +31,8 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
 
     private val TAG = "ViewDetailsOfPersonActivity"
     private var personId : String ?= null
-    private var searchedPerson : ModelSearchResultOfPerson ?= null
+    private var receiver_id = ""
+    private var receiver_name = ""
 
     private var _binding : ActivityViewDetailsOfPersonBinding ?= null
     private val binding get() = _binding!!
@@ -44,12 +40,7 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
     private val searchViewModel : SearchViewModel by viewModels {
         SearchViewModelFactory(application, (application as MainApplication).searchRepository)
     }
-    private val recentlyViewedViewModel : RecentlyViewedViewModel by viewModels {
-        RecentlyViewedViewModelFactory((application as MainApplication).recentlyViewedRepository)
-    }
-    private val paymentViewModel : PaymentViewModel by viewModels {
-        PaymentViewModelFactory(application, (application as MainApplication).paymentRepository)
-    }
+    private val recentlyViewedViewModel : RecentlyViewedViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,41 +55,24 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
 
         onClickListeners()
         observeSearchedPersonResult()
-        observePaymentRequestForThePerson()
 
         checkAdEnableStatus()
     }
 
     private fun onClickListeners() {
 
-        binding.constraintLayoutSearchResultPayCoins.setOnClickListener {
+        binding.constraintLayoutSearchResultMessage.setOnClickListener {
 
-            AlertConfirmationDialog.Builder(this)
-                .setTitle("Confirmation of Paying ${searchedPerson?.pay_to_view_amount} Coins")
-                .setMessage("You are paying ${searchedPerson?.pay_to_view_amount} coins to view ${searchedPerson?.name}'s details.")
-                .setPositiveButtonText("Pay")
-                .setNegativeButtonText("Cancel")
-                .onConfirm {
-                    paymentRequestForThePerson()
-                }
-                .onCancel {
-                }
-                .build()
-                .show()
+            val intent = Intent(this, MessageTransactionActivity::class.java).apply {
+                putExtra(MessageTransactionActivity.RECEIVER_ID, receiver_id)
+                putExtra(MessageTransactionActivity.RECEIVER_NAME, receiver_name)
+            }
+            startActivity(intent)
 
         }
 
         binding.imageViewBackPersonInformation.setOnClickListener {
             finish()
-        }
-
-        binding.imageViewPhoneNoCopy.setOnClickListener {
-
-            searchedPerson?.let {
-                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("Phone No", it.phone)
-                clipboard.setPrimaryClip(clip)
-            }
         }
 
     }
@@ -109,11 +83,19 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
     private fun getSearchedPersonResult(){
 
         val user_id = SharedPref().getUserIDPref(this)
+        val user_type_id = SharedPref().getStringPref(this, Constants.user_type_id)
 
-        searchViewModel.viewPersonDetailsFun(
-            person_user_id = personId ?: "",
-            user_id = user_id ?: "",
-        )
+        if (user_type_id == Constants.TETTeacherID) {
+            searchViewModel.viewPersonDetailsFun(
+                person_user_id = personId ?: "",
+                user_id = user_id ?: "",
+            )
+        } else {
+            searchViewModel.viewPersonDetails_v3Fun(
+                person_user_id = personId ?: "",
+                user_id = user_id ?: "",
+            )
+        }
     }
     private fun observeSearchedPersonResult() {
 
@@ -163,28 +145,9 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
 
             }
 
-
         })
 
-    }
-
-
-    /**
-     * Payment Request For Viewing The Person's Details
-     */
-    private fun paymentRequestForThePerson(){
-
-        val user_id = SharedPref().getUserIDPref(this)
-
-        paymentViewModel.saveUserPayForAnotherUserFun(
-            payment_done_by = user_id ?: "",
-            payment_done_for = searchedPerson?.fk_user_id ?: "",
-            amount = searchedPerson?.pay_to_view_amount ?: ""
-        )
-    }
-    private fun observePaymentRequestForThePerson() {
-
-        paymentViewModel.saveUserPayForAnotherUserObserver.observe(this, Observer { res ->
+        searchViewModel.viewPersonDetails_v3Observer.observe(this, Observer { res ->
 
             res.getContentIfNotHandled()?.let { response ->
 
@@ -196,35 +159,14 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
                         response.data?.let { responseResult ->
 
                             if (responseResult.status == 200){
-                                getSearchedPersonResult()
-                            }
-                            else if (responseResult.status == 409){
 
-                                AlertConfirmationDialog.Builder(this)
-                                    .setTitle("Error !!!")
-                                    .setMessage(responseResult.message)
-                                    .setPositiveButtonText("Buy Coins")
-                                    .setHasNegativeButton(true)
-                                    .onConfirm {
-                                        startActivity(Intent(this, BuyCoinActivity::class.java))
-                                    }
-                                    .onCancel {
-                                    }
-                                    .build()
-                                    .show()
+                                responseResult.personDetails?.let {
+                                    setPersonalInformationNew(it)
+                                    saveInRecentlyViewed(it)
+                                }
                             }
                             else{
-                                AlertConfirmationDialog.Builder(this)
-                                    .setTitle("Error !!!")
-                                    .setMessage(responseResult.message)
-                                    .setPositiveButtonText("Ok")
-                                    .setHasNegativeButton(false)
-                                    .onConfirm {
-                                    }
-                                    .onCancel {
-                                    }
-                                    .build()
-                                    .show()
+                                showSnackBarMessage(responseResult.message)
                             }
                         }
 
@@ -251,36 +193,30 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
 
             }
 
-
         })
 
     }
 
 
-
     private fun setPersonalInformation(personDetails: ModelSearchResultOfPerson) {
 
+        receiver_id = "${personDetails.fk_user_id}"
+        receiver_name = "${personDetails.name}"
+
         binding.textViewViewDetailsUserName.text = personDetails.name
-        binding.textViewViewDetailsUserPhoneNo.text = personDetails.phone
-        binding.textViewViewDetailsUserEmail.text = personDetails.email
 
         binding.textViewViewDetailsPostName.text = "${personDetails.teacher_type} (${personDetails.school_type})"
         binding.textViewViewDetailsPostSubject.text = personDetails.subject_type
 
         binding.textViewViewDetailsSchoolName.text = personDetails.school_name
-        binding.textViewViewDetailsSchoolUdiceCode.text = "UDICE Code: ${personDetails.udice_code}"
+        binding.textViewViewDetailsSchoolUdiceCode.text = "UDISE Code: ${personDetails.udice_code}"
         binding.textViewViewDetailsSchoolAddress.text = "${personDetails.school_address_vill}, ${personDetails.school_address_block}, ${personDetails.school_address_district}, ${personDetails.school_address_state}, ${personDetails.school_address_pin}"
 
         binding.textViewViewDetailsSchoolAmalgamated.text = "School Amalgamated: ${if (personDetails.amalgamation == 1) { "Yes" } else { "No" }}"
 
-        if(personDetails.is_paid == 1) {
-            binding.constraintLayoutSearchResultPayCoins.visibility = View.GONE
-            binding.constraintLayoutSearchResultSave.visibility = View.VISIBLE
-        }
-        else {
-            binding.constraintLayoutSearchResultPayCoins.visibility = View.VISIBLE
-            binding.constraintLayoutSearchResultSave.visibility = View.VISIBLE
-        }
+        binding.constraintLayoutSearchResultPayCoins.visibility = View.GONE
+        binding.constraintLayoutSearchResultSave.visibility = View.VISIBLE
+        binding.constraintLayoutSearchResultMessage.visibility = View.VISIBLE
 
         binding.textViewViewDetailsPayCoins.text = "Pay ${personDetails.pay_to_view_amount} Coins"
 
@@ -317,14 +253,83 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
             binding.textViewViewDetailsPreferredDistrictsText.text = "No Preferred District Available"
         }
 
+    }
+    private fun setPersonalInformationNew(personDetails: ModelSearchResultOfPersonNew) {
 
-        searchedPerson = personDetails
+        receiver_id = "${personDetails.fk_user_id}"
+        receiver_name = "${personDetails.name}"
+
+        binding.textViewViewDetailsUserName.text = personDetails.name
+        binding.textViewViewDetailsUserType.text = personDetails.user_type
+        binding.textViewViewDetailsUserType.visibility = View.VISIBLE
+
+        binding.textViewViewDetailsPostName.text =  "${personDetails.current_role} (${personDetails.department})"
+        binding.textViewViewDetailsPostSubject.text = personDetails.service_type
+
+        binding.textViewViewDetailsSchoolDetails.text = "Service Details"
+        binding.textViewViewDetailsSchoolName.text = personDetails.current_organisation_name
+        binding.textViewViewDetailsSchoolUdiceCode.visibility = View.GONE
+        personDetails.zone_division?.let {
+            binding.textViewViewDetailsSchoolUdiceCode.text = "Zone / Division: ${personDetails.zone_division}"
+            binding.textViewViewDetailsSchoolUdiceCode.visibility = View.VISIBLE
+        }
+
+        binding.textViewViewDetailsSchoolAddress.text = "${personDetails.job_address_village}, ${personDetails.job_address_district}, ${personDetails.job_address_state}, ${personDetails.job_address_pin}"
+
+        binding.textViewViewDetailsSchoolAmalgamated.visibility = View.GONE
+
+        binding.constraintLayoutSearchResultPayCoins.visibility = View.GONE
+        binding.constraintLayoutSearchResultSave.visibility = View.VISIBLE
+        binding.constraintLayoutSearchResultMessage.visibility = View.VISIBLE
+
+        var hasPreferredDistricts = false
+
+        personDetails.preferred_district_1?.let {
+            binding.chipDistrictPreference1.text = it
+            binding.chipDistrictPreference1.visibility = View.VISIBLE
+            hasPreferredDistricts = true
+        } ?: run {
+            binding.chipDistrictPreference1.visibility = View.GONE
+        }
+
+        personDetails.preferred_district_2?.let {
+            binding.chipDistrictPreference2.text = it
+            binding.chipDistrictPreference2.visibility = View.VISIBLE
+            hasPreferredDistricts = true
+        } ?: run {
+            binding.chipDistrictPreference2.visibility = View.GONE
+        }
+
+        personDetails.preferred_district_3?.let {
+            binding.chipDistrictPreference3.text = it
+            binding.chipDistrictPreference3.visibility = View.VISIBLE
+            hasPreferredDistricts = true
+        } ?: run {
+            binding.chipDistrictPreference3.visibility = View.GONE
+        }
+
+        if (hasPreferredDistricts) {
+            binding.textViewViewDetailsPreferredDistrictsText.text = "Preferred Districts"
+        }
+        else {
+            binding.textViewViewDetailsPreferredDistrictsText.text = "No Preferred District Available"
+        }
 
     }
+    private fun formatDetails(vararg parts: String?): String {
+        return parts.filterNotNull().filter { it.isNotBlank() }
+            .joinToString(" ") { part -> if (part.contains(" ")) "($part)" else part }
+    }
+
 
     private fun saveInRecentlyViewed(personDetails: ModelSearchResultOfPerson){
 
         val recentlyViewed = personDetails.toRecentlyViewedModel()
+        recentlyViewedViewModel.insertFun(recentlyViewed)
+    }
+    private fun saveInRecentlyViewed(personDetails: ModelSearchResultOfPersonNew){
+
+        val recentlyViewed = personDetails.toRecentlyViewedModelNew()
         recentlyViewedViewModel.insertFun(recentlyViewed)
     }
 
@@ -375,7 +380,12 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
 
     private fun checkAdEnableStatus() {
 
-        val db = FirebaseFirestore.getInstance()
+        val banner_ad = SharedPref().getBooleanPref(this, Constants.banner_ad)
+        if (banner_ad) {
+            loadBannerAdView()
+        }
+
+        /*val db = FirebaseFirestore.getInstance()
 
         db.collection("ad_config").document("banner_ad")
             .get()
@@ -390,7 +400,7 @@ class ViewDetailsOfPersonActivity : AppCompatActivity() {
                     }
 
                 }
-            }
+            }*/
     }
 
 }

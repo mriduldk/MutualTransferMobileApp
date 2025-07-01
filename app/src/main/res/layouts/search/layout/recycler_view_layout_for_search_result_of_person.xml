@@ -51,6 +51,7 @@
                         tools:text="Mridul Das" />
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/textViewSearchResultUserPhoneNo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
                         tools:text="+91 6001025603" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/imageViewPhoneNoCopy"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -76,6 +78,7 @@
                         app:layout_constraintTop_toTopOf="@id/textViewSearchResultUserPhoneNo" />
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/textViewSearchResultUserEmail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -117,11 +120,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_6sdp"
-                        android:fontFamily="@font/ar_one_sans_medium"
+                        android:fontFamily="@font/ar_one_sans_semi_bold"
                         android:gravity="center_vertical"
                         android:text="@string/preferred_districts"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/_8sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textViewSearchResultUserAddress" />
@@ -130,7 +133,7 @@
                         android:id="@+id/chipGroup"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textViewSearchResultPreferredDistrictsText">
@@ -229,8 +232,8 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--<TextView
-                    android:id="@+id/textViewSearchResultPayButton"
+                <TextView
+                    android:id="@+id/textViewSearchResultMessagePerson"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@color/color_1"
@@ -242,7 +245,7 @@
                     app:layout_constraintEnd_toStartOf="@id/textViewSearchResultViewDetailsButton"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/constraintLayoutSearchResultUserDetails"
-                    tools:text="Pay 10 Coins" />-->
+                    android:text="@string/message" />
 
                 <TextView
                     android:id="@+id/textViewSearchResultViewDetailsButton"
@@ -256,7 +259,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/constraintLayoutSearchResultPayCoins"
+                    app:layout_constraintStart_toEndOf="@id/textViewSearchResultMessagePerson"
                     app:layout_constraintTop_toBottomOf="@id/constraintLayoutSearchResultUserDetails" />
 
 

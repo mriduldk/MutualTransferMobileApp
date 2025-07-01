@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:fontFamily="@font/ar_one_sans_bold"
-                        android:text="UDICE Code"
+                        android:text="UDISE Code"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
 
@@ -114,7 +114,7 @@
                         android:background="@drawable/bg_edit_text_round"
                         android:fontFamily="@font/ar_one_sans_regular"
                         android:gravity="top"
-                        android:hint="UDICE Code"
+                        android:hint="UDISE Code"
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:maxLength="12"
@@ -190,7 +190,7 @@
                     android:orientation="vertical"
                     android:paddingStart="16dp"
                     android:paddingEnd="4dp"
-                    app:layout_constraintEnd_toStartOf="@id/linearLayoutSchoolAddressBlock"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressVillage">
 
@@ -221,6 +221,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/linearLayoutSchoolAddressBlock"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -268,7 +269,7 @@
                     android:paddingEnd="4dp"
                     app:layout_constraintEnd_toStartOf="@id/linearLayoutSchoolAddressPin"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressBlock">
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressDistrict">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -304,7 +305,7 @@
                     android:paddingEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/linearLayoutSchoolAddressState"
-                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressBlock">
+                    app:layout_constraintTop_toBottomOf="@id/linearLayoutSchoolAddressDistrict">
 
                     <TextView
                         android:layout_width="match_parent"

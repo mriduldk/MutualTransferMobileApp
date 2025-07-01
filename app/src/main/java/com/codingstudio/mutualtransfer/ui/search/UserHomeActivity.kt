@@ -21,16 +21,21 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import com.codingstudio.mutualtransfer.BuildConfig
 import com.codingstudio.mutualtransfer.R
+import com.codingstudio.mutualtransfer.api.RetrofitAuthAPI
 import com.codingstudio.mutualtransfer.databinding.ActivityMainBinding
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ModelSearch
 import com.codingstudio.mutualtransfer.ui.auth.compoment.UserAuthenticationActivity
 import com.codingstudio.mutualtransfer.ui.auth.compoment.UserDetailsChangeActivity
+import com.codingstudio.mutualtransfer.ui.message.MessageActivity
 import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.profile.ReferAndEarnActivity
 import com.codingstudio.mutualtransfer.ui.profile.UserProfileActivity
 import com.codingstudio.mutualtransfer.ui.recently_viewed.RecentlyViewedActivity
+import com.codingstudio.mutualtransfer.ui.translate.TranslateRequest
+import com.codingstudio.mutualtransfer.ui.translate.TranslateResponse
 import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewModel
+import com.codingstudio.mutualtransfer.ui.wallet.BuyCoinActivity
 import com.codingstudio.mutualtransfer.ui.wallet.OnlinePaymentActivity
 import com.codingstudio.mutualtransfer.ui.wallet.WalletActivity
 import com.codingstudio.mutualtransfer.utils.Constants
@@ -45,6 +50,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 @AndroidEntryPoint
@@ -105,16 +115,20 @@ class UserHomeActivity : AppCompatActivity() {
                     val intent = Intent(this@UserHomeActivity, UserProfileActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.nav_menu_saved_profiles -> {
+                /*R.id.nav_menu_saved_profiles -> {
                     //val intent = Intent(this@UserHomeActivity, Saver::class.java)
                     //startActivity(intent)
-                }
+                }*/
                 R.id.nav_menu_recently_viewed -> {
                     val intent = Intent(this@UserHomeActivity, RecentlyViewedActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.nav_menu_wallet -> {
+                /*R.id.nav_menu_wallet -> {
                     val intent = Intent(this@UserHomeActivity, WalletActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_menu_buy_coins -> {
+                    val intent = Intent(this@UserHomeActivity, BuyCoinActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_menu_online_payment -> {
@@ -123,6 +137,10 @@ class UserHomeActivity : AppCompatActivity() {
                 }
                 R.id.nav_menu_refer -> {
                     val intent = Intent(this@UserHomeActivity, ReferAndEarnActivity::class.java)
+                    startActivity(intent)
+                }*/
+                R.id.nav_menu_messages -> {
+                    val intent = Intent(this@UserHomeActivity, MessageActivity::class.java)
                     startActivity(intent)
                 }
             }
@@ -139,15 +157,35 @@ class UserHomeActivity : AppCompatActivity() {
 
         checkAdEnableStatus()
         checkAppUpdate()
+
+        //translateMessage()
     }
 
     private fun onClickListeners() {
 
-        binding.textViewSelectDistrict.setOnClickListener {
+        binding.textViewSelectState.setOnClickListener {
 
             val intent = Intent(this, SearchActivity::class.java)
-            intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DISTRICT)
+            intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_STATE)
             getSearchedContent.launch(intent)
+        }
+
+        binding.textViewSelectDistrict.setOnClickListener {
+
+            if (!modelSearch.searchStateId.isNullOrEmpty()){
+
+                val intent = Intent(this, SearchActivity::class.java)
+                intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DISTRICT)
+                intent.putExtra(SearchActivity.SEARCH_STATE_ID, modelSearch.searchStateId)
+                getSearchedContent.launch(intent)
+            }
+            else {
+                showSnackBarMessage("Please select state first.")
+            }
+
+            /*val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DISTRICT)
+            getSearchedContent.launch(intent)*/
         }
 
         binding.textViewSelectBlock.setOnClickListener {
@@ -173,8 +211,8 @@ class UserHomeActivity : AppCompatActivity() {
 
         binding.textViewSearchBtn.setOnClickListener {
 
-            if (modelSearch.searchDistrictId.isNullOrEmpty()){
-                showSnackBarMessage("Please Select District")
+            if (modelSearch.searchStateId.isNullOrEmpty()){
+                showSnackBarMessage("Please Select State")
             }
             else {
 
@@ -187,20 +225,6 @@ class UserHomeActivity : AppCompatActivity() {
 
             val intent = Intent(this, UserDetailsChangeActivity::class.java)
             intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_TWO)
-            startActivity(intent)
-
-        }
-
-        binding.textViewReferralTextHome.setOnClickListener {
-
-            val intent = Intent(this, ReferAndEarnActivity::class.java)
-            startActivity(intent)
-
-        }
-
-        binding.imageViewGoToReferralPage.setOnClickListener {
-
-            val intent = Intent(this, ReferAndEarnActivity::class.java)
             startActivity(intent)
 
         }
@@ -317,6 +341,13 @@ class UserHomeActivity : AppCompatActivity() {
             binding.imageViewBtnClearBlock.visibility = View.GONE
         }
 
+        binding.textViewPreferredDistrictButton.setOnClickListener {
+
+            val intent = Intent(this, UserDetailsChangeActivity::class.java)
+            intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_PREFERENCE)
+            startActivity(intent)
+
+        }
     }
 
     private fun activelyLookingStatusChange(is_actively_looking : Int) {
@@ -359,6 +390,16 @@ class UserHomeActivity : AppCompatActivity() {
                     teacherPostName += "( $_school_type )"
                 }
 
+                if (it.preferred_district_1.isNullOrEmpty() || it.preferred_district_2.isNullOrEmpty() || it.preferred_district_3.isNullOrEmpty()) {
+                    binding.cardViewPreferredDistrict.visibility = View.VISIBLE
+                }
+                /*else if (it.preferred_district_1 == it.school_address_district && it.preferred_district_2 == it.school_address_district && it.preferred_district_3 == it.school_address_district) {
+                    binding.cardViewPreferredDistrict.visibility = View.VISIBLE
+                }*/
+                else {
+                    binding.cardViewPreferredDistrict.visibility = View.GONE
+                }
+
                 binding.switchActivelyLooking.isChecked = it.is_actively_looking == 1
 
                 switchLocalChange = true
@@ -368,9 +409,18 @@ class UserHomeActivity : AppCompatActivity() {
 
         })
 
-
         binding.textViewVersionCode.text = "Version - ${BuildConfig.VERSION_NAME}"
 
+        val stateName = SharedPref().getStringPref(this, Constants.state_name)
+        val stateId = SharedPref().getStringPref(this, Constants.state_id)
+
+        if (!stateName.isNullOrEmpty()) {
+
+            binding.textViewSelectState.text = stateName
+            modelSearch.searchStateText = stateName
+            modelSearch.searchStateId = stateId
+
+        }
     }
 
     private fun observer(){
@@ -473,6 +523,30 @@ class UserHomeActivity : AppCompatActivity() {
             val resultId = result.data?.extras?.getString(SEARCH_RESULT_ID)
 
             when(resultType) {
+                SearchActivity.SEARCH_TYPE_STATE -> {
+                    binding.textViewSelectState.text = resultText
+
+                    modelSearch.searchStateText = resultText
+                    modelSearch.searchStateId = resultId
+
+                    modelSearch.searchDistrictText = ""
+                    modelSearch.searchDistrictId = ""
+
+                    modelSearch.searchCurrentRoleText = ""
+                    modelSearch.searchCurrentRoleId = ""
+
+                    binding.textViewSelectDistrict.text = ""
+                    binding.textViewSelectDistrict.hint = "Select District ( Optional )"
+                    binding.imageViewBtnClearDistrict.visibility = View.GONE
+
+                    binding.textViewSelectBlock.text = ""
+                    binding.textViewSelectBlock.hint = "Select Block ( Optional )"
+                    binding.imageViewBtnClearBlock.visibility = View.GONE
+
+                    SharedPref().setString(this, Constants.state_name, resultText)
+                    SharedPref().setString(this, Constants.state_id, resultId)
+
+                }
                 SearchActivity.SEARCH_TYPE_DISTRICT -> {
                     binding.textViewSelectDistrict.text = resultText
 
@@ -679,7 +753,12 @@ class UserHomeActivity : AppCompatActivity() {
 
     private fun checkAdEnableStatus() {
 
-        val db = FirebaseFirestore.getInstance()
+        val banner_ad = SharedPref().getBooleanPref(this, Constants.banner_ad)
+        if (banner_ad) {
+            loadBannerAdView()
+        }
+
+        /*val db = FirebaseFirestore.getInstance()
 
         db.collection("ad_config").document("banner_ad")
             .get()
@@ -694,7 +773,45 @@ class UserHomeActivity : AppCompatActivity() {
                     }
 
                 }
-            }
+            }*/
     }
+
+    private fun translateMessage() {
+
+        /*val retrofit = Retrofit.Builder()
+            .baseUrl("https://translation.googleapis.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(RetrofitAuthAPI::class.java)
+
+        val apiKey = "AIzaSyBCpKoPHCeZtqTGWywuaJtLtagNz4dv9hc"
+        val request = TranslateRequest(
+            q = "Prime Minister Narendra Modi and Sri Lankan President Anura Kumara Dissanayake jointly launched the signalling system for the Maho-Anuradhapura railway line – a project supported by the government of India. They also launched the railway track of the Maho-Omanthai railway line and flagged off a train at Anuradhapura Railway Station.",
+            target = "as" // "bn" for Bengali
+        )
+
+        service.translateText(apiKey, request).enqueue(object : Callback<TranslateResponse> {
+            override fun onResponse(call: Call<TranslateResponse>, response: Response<TranslateResponse>) {
+                if (response.isSuccessful) {
+                    val translated = response.body()?.data?.translations?.firstOrNull()?.translatedText
+                    binding.textViewTranslateMessage.text = translated
+                } else {
+                    Log.e("Translation", "Error: ${response.code()}")
+                    binding.textViewTranslateMessage.text = "Error: ${response.code()}"
+                }
+            }
+
+            override fun onFailure(call: Call<TranslateResponse>, t: Throwable) {
+                Log.e("Translation", "Failed: ${t.message}")
+                binding.textViewTranslateMessage.text = "Failed: ${t.message}"
+            }
+        })*/
+
+
+
+    }
+
+
 
 }

@@ -16,6 +16,7 @@ import com.codingstudio.mutualtransfer.databinding.ActivitySearchResultOfPersonB
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ModelSearch
 import com.codingstudio.mutualtransfer.model.search.ModelSearchResultOfPerson
+import com.codingstudio.mutualtransfer.ui.message.MessageTransactionActivity
 import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModel
 import com.codingstudio.mutualtransfer.ui.payment.viewmodel.PaymentViewModelFactory
@@ -26,9 +27,11 @@ import com.codingstudio.mutualtransfer.ui.wallet.BuyCoinActivity
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
 import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.snackbar.Snackbar
@@ -145,6 +148,15 @@ class SearchResultPersonActivity : AppCompatActivity() {
 
         }
 
+        adapterForSearchResultOfPerson.setOnMessagePersonClickedListener { personDetails ->
+
+            val intent = Intent(this, MessageTransactionActivity::class.java).apply {
+                putExtra(MessageTransactionActivity.RECEIVER_ID, personDetails.fk_user_id)
+                putExtra(MessageTransactionActivity.RECEIVER_NAME, personDetails.name)
+            }
+            startActivity(intent)
+        }
+
     }
 
     /**
@@ -155,6 +167,7 @@ class SearchResultPersonActivity : AppCompatActivity() {
         val user_id = SharedPref().getUserIDPref(this)
 
         searchViewModel.searchPersonFun(
+            school_address_state = modelSearch?.searchStateText ?: "",
             school_address_district = modelSearch?.searchDistrictText ?: "",
             user_id = user_id ?: "",
             school_address_block = modelSearch?.searchBlockText ?: "",
@@ -186,19 +199,19 @@ class SearchResultPersonActivity : AppCompatActivity() {
                                 else if (size <= 1) {
                                     binding.linearLayoutNoResultFound.visibility = View.GONE
                                     binding.recyclerViewSearchResultOfPerson.visibility = View.VISIBLE
-                                    binding.textViewSearchResultOfPerson.text = "$size result found"
+                                    binding.textViewSearchResultOfPerson.text = "$size person found"
                                 }
                                 else {
                                     binding.linearLayoutNoResultFound.visibility = View.GONE
                                     binding.recyclerViewSearchResultOfPerson.visibility = View.VISIBLE
-                                    binding.textViewSearchResultOfPerson.text = "$size results found"
+                                    binding.textViewSearchResultOfPerson.text = "$size persons found"
                                 }
                             }
                             else{
                                 binding.linearLayoutNoResultFound.visibility = View.VISIBLE
                                 binding.recyclerViewSearchResultOfPerson.visibility = View.GONE
                                 showSnackBarMessage(responseResult.message)
-                                binding.textViewSearchResultOfPerson.text = "0 result found"
+                                binding.textViewSearchResultOfPerson.text = "0 person found"
                             }
                         }
 
@@ -409,7 +422,21 @@ class SearchResultPersonActivity : AppCompatActivity() {
 
     private fun checkAdEnableStatus() {
 
-        val db = FirebaseFirestore.getInstance()
+        val interstitial_ad = SharedPref().getBooleanPref(this, Constants.interstitial_ad)
+        val interstitial_ad_maxClickCount = SharedPref().getIntPref(this, Constants.interstitial_ad_maxClickCount)
+        if (interstitial_ad) {
+            if (interstitial_ad_maxClickCount != 0) {
+                maxClickCountForAd = interstitial_ad_maxClickCount
+            }
+            checkAdLoadCount()
+        }
+
+        val banner_ad = SharedPref().getBooleanPref(this, Constants.banner_ad)
+        if (banner_ad) {
+            loadBannerAdView()
+        }
+
+        /*val db = FirebaseFirestore.getInstance()
 
         db.collection("ad_config").document("interstitial_ad")
             .get()
@@ -427,8 +454,38 @@ class SearchResultPersonActivity : AppCompatActivity() {
                     }
 
                 }
+            }*/
+
+
+    }
+
+    private fun loadBannerAdView() {
+
+        MobileAds.initialize(this)
+        val adRequest = AdRequest.Builder().build()
+        binding.adViewHome.loadAd(adRequest)
+
+        binding.adViewHome.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                // Code to execute when an ad finishes loading
             }
 
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                binding.adViewHome.visibility = View.GONE
+            }
+
+            override fun onAdOpened() {
+                // Code to execute when an ad opens an overlay that covers the screen
+            }
+
+            override fun onAdClicked() {
+                // Code to execute when the user clicks on an ad
+            }
+
+            override fun onAdClosed() {
+                // Code to execute when the user is about to return to the app after tapping on an ad
+            }
+        }
 
     }
 

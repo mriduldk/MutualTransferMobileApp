@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,12 +16,16 @@ import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.databinding.ActivityProfileBinding
 import com.codingstudio.mutualtransfer.databinding.ActivitySearchBinding
 import com.codingstudio.mutualtransfer.repository.local.RecentlyViewedRepository
+import com.codingstudio.mutualtransfer.ui.auth.compoment.UserAuthenticationActivity
 import com.codingstudio.mutualtransfer.ui.auth.compoment.UserDetailsChangeActivity
+import com.codingstudio.mutualtransfer.ui.message.MessageActivity
+import com.codingstudio.mutualtransfer.ui.payment.AlertConfirmationDialog
 import com.codingstudio.mutualtransfer.ui.recently_viewed.RecentlyViewedActivity
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.recentlyViewed.RecentlyViewedViewModel
 import com.codingstudio.mutualtransfer.ui.wallet.WalletActivity
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
+import com.codingstudio.mutualtransfer.viewmodels.LocalUserDetailsNewViewModel
 import com.codingstudio.mutualtransfer.viewmodels.LocalUserDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,7 +39,10 @@ class UserProfileActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private val localUserDetailsViewModel : LocalUserDetailsViewModel by viewModels()
+    private val localUserDetailsNewViewModel : LocalUserDetailsNewViewModel by viewModels()
     private val recentlyViewedViewModel : RecentlyViewedViewModel by viewModels()
+
+    private var isTETUser = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +57,27 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun setOnClickListeners(){
 
+        binding.relativeLayoutMessage.setOnClickListener {
+
+            val intent = Intent(this, MessageActivity::class.java)
+            startActivity(intent)
+
+        }
+
         binding.imageViewEditPersonalDetails.setOnClickListener {
 
-            val intent = Intent(this, UserDetailsChangeActivity::class.java)
-            intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_ONE)
-            startActivity(intent)
+            if (isTETUser) {
+
+                val intent = Intent(this, UserDetailsChangeActivity::class.java)
+                intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_ONE)
+                startActivity(intent)
+
+            } else {
+
+                val intent = Intent(this, UserDetailsChangeActivity::class.java)
+                intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_ONE_NEW)
+                startActivity(intent)
+            }
         }
 
         binding.imageViewEditEmployeeDetails.setOnClickListener {
@@ -64,16 +89,34 @@ class UserProfileActivity : AppCompatActivity() {
 
         binding.imageViewEditSchoolDetails.setOnClickListener {
 
-            val intent = Intent(this, UserDetailsChangeActivity::class.java)
-            intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_THREE)
-            startActivity(intent)
+            if (isTETUser) {
+
+                val intent = Intent(this, UserDetailsChangeActivity::class.java)
+                intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_THREE)
+                startActivity(intent)
+
+            } else {
+
+                val intent = Intent(this, UserDetailsChangeActivity::class.java)
+                intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_THREE_NEW)
+                startActivity(intent)
+            }
         }
 
         binding.imageViewEditPreferences.setOnClickListener {
 
-            val intent = Intent(this, UserDetailsChangeActivity::class.java)
-            intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_PREFERENCE)
-            startActivity(intent)
+            if (isTETUser) {
+
+                val intent = Intent(this, UserDetailsChangeActivity::class.java)
+                intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_PREFERENCE)
+                startActivity(intent)
+
+            } else {
+
+                val intent = Intent(this, UserDetailsChangeActivity::class.java)
+                intent.putExtra(UserDetailsChangeActivity.NAVIGATION_FRAGMENT, UserDetailsChangeActivity.FRAGMENT_PREFERENCE_NEW)
+                startActivity(intent)
+            }
         }
 
 
@@ -106,6 +149,7 @@ class UserProfileActivity : AppCompatActivity() {
         binding.relativeLayoutLogoutProfile.setOnClickListener {
 
             recentlyViewedViewModel.deleteAllFun()
+            recentlyViewedViewModel.deleteAllNewFun()
             localUserDetailsViewModel.deleteAllFun()
         }
 
@@ -129,6 +173,34 @@ class UserProfileActivity : AppCompatActivity() {
 
         }
 
+        binding.textViewUserTypeChange.setOnClickListener {
+
+            AlertConfirmationDialog.Builder(this)
+                .setTitle("Confirm User Type Change")
+                .setMessage("Changing your user type will remove your current user details. Do you want to continue?")
+                .setPositiveButtonText("Yes")
+                .setNegativeButtonText("Cancel")
+                .onConfirm {
+
+                    SharedPref().setBoolean(this, Constants.ProfileStep1, false)
+                    SharedPref().setBoolean(this, Constants.ProfileStep2, false)
+                    SharedPref().setBoolean(this, Constants.ProfileStep3, false)
+                    SharedPref().setBoolean(this, Constants.ProfileStep4, false)
+                    SharedPref().setString(this, Constants.user_type_name, "")
+                    SharedPref().setString(this, Constants.user_type_id, "")
+
+                    val intent = Intent(this, UserAuthenticationActivity::class.java)
+                    intent.putExtra(UserAuthenticationActivity.NAVIGATION_TYPE, UserAuthenticationActivity.NAVIGATION_SET_PROFILE)
+                    startActivity(intent)
+                    finish()
+
+                }
+                .onCancel {
+                }
+                .build()
+                .show()
+        }
+
     }
 
     private fun observeUserDetailsLocalData(){
@@ -138,6 +210,7 @@ class UserProfileActivity : AppCompatActivity() {
             userDetails?.let { _it ->
 
                 Log.e(TAG, "observeUserDetailsLocalData: ${_it.email}" )
+                binding.textViewUserType.text = "User Type: TET Teacher"
 
                 binding.textViewUserName.text = userDetails.name
                 binding.textViewUserPhone.text = "Phone: ${userDetails.phone}"
@@ -156,6 +229,69 @@ class UserProfileActivity : AppCompatActivity() {
                 binding.textViewPreferredDistrict3.text = "3. ${userDetails.preferred_district_3 ?: ""}"
 
                 binding.textViewSchoolAmalgamated.text = "School Amalgamated : ${if (userDetails.amalgamation == 1) { "Yes" } else { "No" } }"
+            }
+
+        })
+
+        localUserDetailsNewViewModel.getUserDetailsByUserIdObserver.observe(this, Observer { userDetailsNew ->
+
+            userDetailsNew?.let { _it ->
+
+                binding.textViewUserType.text = "User Type: ${userDetailsNew.user_type}"
+
+                binding.textViewUserName.text = userDetailsNew.name
+                binding.textViewUserPhone.text = "Phone: ${userDetailsNew.phone}"
+                binding.textViewUserEmail.text = "Email: ${userDetailsNew.email ?: ""}"
+                binding.textViewUserGender.text = "Gender: ${userDetailsNew.gender ?: ""}"
+
+                binding.textViewSchoolName.text = "Current Designation / Post: ${userDetailsNew.current_role ?: ""}"
+                binding.textViewUdiceCode.text = "Department: ${userDetailsNew.department ?: ""}"
+                binding.textViewZone.text = "Zone/Division: ${userDetailsNew.zone_division ?: ""}"
+                binding.textViewServiceType.text = "Service Type: ${userDetailsNew.service_type ?: ""}"
+                binding.textViewOrganization.text = "Organisation Name: ${userDetailsNew.current_organisation_name ?: ""}"
+                binding.textViewEmployeeCode2.text = "Employee Code: ${userDetailsNew.employee_code ?: ""}"
+                binding.textViewSchooladdress.text = "Service Address: ${userDetailsNew.job_address_village ?: ""}, ${userDetailsNew.job_address_block ?: ""}, ${userDetailsNew.job_address_district ?: ""}, ${userDetailsNew.job_address_state ?: ""}, ${userDetailsNew.job_address_pin ?: ""}"
+
+                binding.textViewPreferredDistrict1.text = "1. ${userDetailsNew.preferred_district_1 ?: ""}"
+                binding.textViewPreferredDistrict2.text = "2. ${userDetailsNew.preferred_district_2 ?: ""}"
+                binding.textViewPreferredDistrict3.text = "3. ${userDetailsNew.preferred_district_3 ?: ""}"
+
+                binding.textViewSchoolAmalgamated.text = ""
+
+                binding.textViewHeaderServiceDetails.text = "Service Details"
+
+                binding.constraintLayoutEmployeeDetails.visibility = GONE
+                binding.cardViewEmployeeDetails.visibility = GONE
+                binding.textViewSchoolAmalgamated.visibility = GONE
+
+                if (userDetailsNew.zone_division.isNullOrEmpty()) {
+                    binding.textViewZone.visibility = GONE
+                }
+                else {
+                    binding.textViewZone.visibility = VISIBLE
+                }
+
+                if (userDetailsNew.service_type.isNullOrEmpty()) {
+                    binding.textViewServiceType.visibility = GONE
+                }
+                else {
+                    binding.textViewServiceType.visibility = VISIBLE
+                }
+
+                if (userDetailsNew.current_organisation_name.isNullOrEmpty()) {
+                    binding.textViewOrganization.visibility = GONE
+                }
+                else {
+                    binding.textViewOrganization.visibility = VISIBLE
+                }
+
+                if (userDetailsNew.employee_code.isNullOrEmpty()) {
+                    binding.textViewEmployeeCode2.visibility = GONE
+                }
+                else {
+                    binding.textViewEmployeeCode2.visibility = VISIBLE
+                }
+
             }
 
         })
@@ -179,9 +315,16 @@ class UserProfileActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        val userTypeId = SharedPref().getStringPref(this, Constants.user_type_id)
         val userId = SharedPref().getUserIDPref(this)
-        localUserDetailsViewModel.getUserDetailsByUserIdFun(userId ?: "")
 
+        if (userTypeId == "" || userTypeId == Constants.TETTeacherID) {
+            isTETUser = true
+            localUserDetailsViewModel.getUserDetailsByUserIdFun(userId ?: "")
+        } else {
+            isTETUser = false
+            localUserDetailsNewViewModel.getUserDetailsByUserIdFun(userId ?: "")
+        }
     }
 
     private fun sendWhatsappMessage(message: String) {

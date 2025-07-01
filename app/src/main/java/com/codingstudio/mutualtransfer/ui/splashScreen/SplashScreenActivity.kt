@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.ui.auth.compoment.UserAuthenticationActivity
+import com.codingstudio.mutualtransfer.ui.home.UserHomeActivityNew
 import com.codingstudio.mutualtransfer.ui.search.UserHomeActivity
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
@@ -14,6 +15,7 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -30,6 +32,7 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
+        checkAdConfigFromFireStore()
         appUpdateCheck()
 
     }
@@ -122,7 +125,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
     }
 
-
     private fun loginRedirect() {
 
         val userId = SharedPref().getUserIDPref(this)
@@ -130,8 +132,46 @@ class SplashScreenActivity : AppCompatActivity() {
 
         if (isLogIn) {
 
+            val profileStep1 = SharedPref().getBooleanPref(this, Constants.ProfileStep1)
+            val profileStep2 = SharedPref().getBooleanPref(this, Constants.ProfileStep2)
+            val profileStep3 = SharedPref().getBooleanPref(this, Constants.ProfileStep3)
+            val profileStep4 = SharedPref().getBooleanPref(this, Constants.ProfileStep4)
+            val userTypeName = SharedPref().getStringPref(this, Constants.user_type_name)
+            val userTypeId = SharedPref().getStringPref(this, Constants.user_type_id)
+
+            if (userTypeId == Constants.TETTeacherID) {
+
+                if (!profileStep1 || !profileStep2 || !profileStep3 || !profileStep4) {
+
+                    val intent = Intent(this, UserAuthenticationActivity::class.java)
+                    intent.putExtra(UserAuthenticationActivity.NAVIGATION_TYPE, UserAuthenticationActivity.NAVIGATION_SET_PROFILE)
+                    startActivity(intent)
+                    finish()
+
+                } else {
+
+                    startActivity(Intent(this, UserHomeActivity::class.java))
+                    finish()
+                }
+
+            } else {
+                if (!profileStep1 || !profileStep3 || !profileStep4) {
+
+                    val intent = Intent(this, UserAuthenticationActivity::class.java)
+                    intent.putExtra(UserAuthenticationActivity.NAVIGATION_TYPE, UserAuthenticationActivity.NAVIGATION_SET_PROFILE)
+                    startActivity(intent)
+                    finish()
+                } else {
+
+                    startActivity(Intent(this, UserHomeActivityNew::class.java))
+                    finish()
+                }
+            }
+
+            /*if (profileStep1 != null && profileStep2 != null && profileStep3 != null && profileStep4 != null)
+
             startActivity(Intent(this, UserHomeActivity::class.java))
-            finish()
+            finish()*/
 
         }
         else {
@@ -162,7 +202,6 @@ class SplashScreenActivity : AppCompatActivity() {
         }
     }
 
-
     companion object {
 
         const val NAVIGATION_TYPE = "NAVIGATION_TYPE"
@@ -171,6 +210,38 @@ class SplashScreenActivity : AppCompatActivity() {
 
     }
 
+    private fun checkAdConfigFromFireStore() {
+
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("ad_config").document("banner_ad")
+            .get()
+            .addOnSuccessListener { document ->
+
+                if (document != null) {
+
+                    val enable = document.getBoolean("enable")
+                    val banner_ad_enable = enable ?: false
+                    SharedPref().setBoolean(this, Constants.banner_ad, banner_ad_enable)
+                }
+            }
+
+        db.collection("ad_config").document("interstitial_ad")
+            .get()
+            .addOnSuccessListener { document ->
+
+                if (document != null) {
+
+                    val enable = document.getBoolean("enable")
+                    val no_of_clicks_to_open_ad = document.getLong("no_of_clicks_to_open_ad")?.toInt()
+
+                    SharedPref().setBoolean(this, Constants.interstitial_ad, enable ?: false)
+                    SharedPref().setInt(this, Constants.interstitial_ad_maxClickCount, no_of_clicks_to_open_ad ?: 5)
+
+                }
+            }
+
+    }
 
 
 }

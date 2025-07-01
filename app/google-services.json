@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "420728397199",
     "project_id": "mutual-transfer-ce4c3",
-    "storage_bucket": "mutual-transfer-ce4c3.appspot.com"
+    "storage_bucket": "mutual-transfer-ce4c3.firebasestorage.app"
   },
   "client": [
     {
@@ -22,7 +22,8 @@
         "appinvite_service": {
           "other_platform_oauth_client": []
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-4457216037877623~6940448561"
     }
   ],
   "configuration_version": "1"

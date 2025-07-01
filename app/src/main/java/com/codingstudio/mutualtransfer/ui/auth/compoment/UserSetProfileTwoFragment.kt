@@ -29,6 +29,7 @@ import com.codingstudio.mutualtransfer.ui.userDetails.viewmodel.UserDetailsViewM
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.SharedPref
 import com.codingstudio.mutualtransfer.viewmodels.LocalUserDetailsViewModel
+import com.codingstudio.mutualtransfer.viewmodels.SubjectViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -47,11 +48,11 @@ class UserSetProfileTwoFragment : Fragment() {
     )
     private var listOfLPTeacherType = listOf<String>(AssistantTeacher)
     private var listOfUPTeacherType = listOf<String>(SelectTeacherType, AssistantTeacher, ScienceTeacher)
-    private var listOfHighSchoolTeacherType = listOf<String>(SelectTeacherType, ScienceTeacher, SocialTeacher)
+    private var listOfHighSchoolTeacherType = listOf<String>(SelectTeacherType, ScienceTeacher, SocialTeacher, HindiTeacher)
     private var listOfHigherSecondaryTeacherType = listOf<String>(SubjectTeacher)
 
     //private var listOfSubjects = listOf<String>(SelectSubject, "Biology", "Chemistry", "Physics", "Math", )
-    private var listOfSubjects = listOf<String>(SelectSubject,"Biology","Chemistry","Physics","Math","Commerce","Advance Assamese","Advance Bengali","Arabic","Assamese","Bengali","Bodo","Botany","Economics","Education","English","Geography","Geology","Hindi","History","Logic & Philosophy","Mathematics","Nepali","Persian","Political Science","Sanskrit","Sociology","Statistics","Zoology")
+    private var listOfSubjects = mutableListOf<String>(SelectSubject,"Biology","Chemistry","Physics","Math","Commerce","Advance Assamese","Advance Bengali","Arabic","Assamese","Bengali","Bodo","Botany","Economics","Education","English","Geography","Geology","Hindi","History","Logic & Philosophy","Mathematics","Nepali","Persian","Political Science","Sanskrit","Sociology","Statistics","Zoology")
 
     private var selectedSchoolType = ""
     private var selectedTeacherType = ""
@@ -66,6 +67,7 @@ class UserSetProfileTwoFragment : Fragment() {
         UserDetailsViewModelFactory(requireActivity().application, (requireActivity().application as MainApplication).userDetailsRepository)
     }*/
     private val userDetailsViewModel: UserDetailsViewModel by viewModels()
+    private val subjectViewModel: SubjectViewModel by viewModels()
     private val localUserDetailsViewModel: LocalUserDetailsViewModel by viewModels()
 
     override fun onCreateView(
@@ -100,6 +102,7 @@ class UserSetProfileTwoFragment : Fragment() {
         observeUserDetailsLocalData()
 
         getLocalData()
+        getSubjectList()
 
     }
 
@@ -108,6 +111,10 @@ class UserSetProfileTwoFragment : Fragment() {
         val userId = SharedPref().getUserIDPref(requireContext())
         localUserDetailsViewModel.getUserDetailsByUserIdFun(userId ?: "")
 
+    }
+
+    private fun getSubjectList() {
+        subjectViewModel.getAllHighSecondarySubjectFun()
     }
 
     private fun setOnClickListeners() {
@@ -186,6 +193,8 @@ class UserSetProfileTwoFragment : Fragment() {
                                 }
                                 else{
 
+                                    SharedPref().setBoolean(localContext, Constants.ProfileStep2, true)
+
                                     val fragment = UserSetProfileThreeFragment()
                                     val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
                                     fragmentTransaction?.replace(R.id.fragment_container, fragment, TAG)
@@ -199,6 +208,57 @@ class UserSetProfileTwoFragment : Fragment() {
                             }
                         }
 
+                    }
+                    is Resource.Error -> {
+                        hideProgressBar()
+
+                        response.message?.let { errorMessage ->
+                            when (errorMessage) {
+                                Constants.NO_INTERNET -> {
+                                    showSnackBarMessage("No internet connection")
+                                }
+                                else -> {
+                                    showSnackBarMessage(errorMessage)
+                                }
+                            }
+                        }
+
+                    }
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+
+            }
+
+        })
+
+        subjectViewModel.getAllHighSecondarySubjectObserver.observe(requireActivity(), Observer { res ->
+
+            res.getContentIfNotHandled()?.let { response ->
+
+                when(response)
+                {
+                    is Resource.Success -> {
+                        hideProgressBar()
+
+                        response.data?.let { responseSubjectList ->
+
+                            if (responseSubjectList.status == 200){
+
+                                responseSubjectList.subjects?.let {
+
+                                    listOfSubjects.clear()
+                                    listOfSubjects.add(SelectSubject)
+
+                                    it.forEach { subject ->
+                                        listOfSubjects.add("${subject.subject_name}")
+                                    }
+
+                                    getLocalData()
+                                }
+                            }
+                        }
                     }
                     is Resource.Error -> {
                         hideProgressBar()
@@ -452,6 +512,7 @@ class UserSetProfileTwoFragment : Fragment() {
         const val ScienceTeacher = "Science Teacher"
         const val SocialTeacher = "Social Teacher"
         const val SubjectTeacher = "Subject Teacher"
+        const val HindiTeacher = "Hindi Teacher"
 
 
         private const val ARG_FRAGMENT = "ARG_FRAGMENT"

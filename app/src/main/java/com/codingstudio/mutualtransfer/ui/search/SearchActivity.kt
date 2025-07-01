@@ -22,7 +22,11 @@ import com.codingstudio.mutualtransfer.ui.search.viewmodel.block.BlockViewModel
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.district.DistrictViewModel
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.searchHistory.SearchedHistoryViewModel
 import com.codingstudio.mutualtransfer.ui.search.viewmodel.searchHistory.SearchedHistoryViewModelFactory
+import com.codingstudio.mutualtransfer.ui.state.viewmodel.StateViewModel
 import com.codingstudio.mutualtransfer.utils.Constants
+import com.codingstudio.mutualtransfer.utils.SharedPref
+import com.codingstudio.mutualtransfer.viewmodels.common.CommonViewModel
+import com.google.android.gms.common.internal.service.Common
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,6 +36,7 @@ class SearchActivity : AppCompatActivity() {
     private val TAG = "SearchActivity"
     private var searchType : String ?= null
     private var searchDistrictId : String ?= null
+    private var searchStateId : String ?= null
     private var _binding : ActivitySearchBinding ?= null
     private val binding get() = _binding!!
 
@@ -42,18 +47,10 @@ class SearchActivity : AppCompatActivity() {
     private var runnable : Runnable ?= null
     private val delay : Long = 500
 
-
-    /*private val districtViewModel : DistrictViewModel by viewModels {
-        DistrictViewModelFactory(application, (application as MainApplication).districtRepository, (application as MainApplication).historyRepository)
-    }*/
+    private val stateViewModel : StateViewModel by viewModels()
     private val districtViewModel : DistrictViewModel by viewModels()
-
-
-    /*private val blockViewModel : BlockViewModel by viewModels {
-        BlockViewModelFactory(application, (application as MainApplication).blockRepository)
-    }*/
     private val blockViewModel : BlockViewModel by viewModels ()
-
+    private val commonViewModel : CommonViewModel by viewModels ()
     private val searchedHistoryViewModel : SearchedHistoryViewModel by viewModels {
         SearchedHistoryViewModelFactory((application as MainApplication).historyRepository)
     }
@@ -66,6 +63,7 @@ class SearchActivity : AppCompatActivity() {
 
         searchType = intent.getStringExtra(SEARCH_TYPE)
         searchDistrictId = intent.getStringExtra(SEARCH_DISTRICT_ID)
+        searchStateId = intent.getStringExtra(SEARCH_STATE_ID)
 
         onEditTextTextChangeListener()
 
@@ -74,8 +72,10 @@ class SearchActivity : AppCompatActivity() {
         setRecyclerViewOfSearchResult()
 
         observeSearchedHistory()
+        observeStateListForSearchedText()
         observeDistrictListForSearchedText()
         observeBlockListForSearchedText()
+        observeDesignationListForSearchedText()
 
         searchType?.let {
             clickedSearchedText(it)
@@ -167,11 +167,17 @@ class SearchActivity : AppCompatActivity() {
 
                 runnable = Runnable {
 
-                    if (searchType == SEARCH_TYPE_DISTRICT) {
+                    if (searchType == SEARCH_TYPE_STATE) {
+                        getStateListFromSearchedText(s.toString())
+                    }
+                    else if (searchType == SEARCH_TYPE_DISTRICT) {
                         getDistrictListFromSearchedText(s.toString())
                     }
                     else if(searchType == SEARCH_TYPE_BLOCK){
                         getBlockListFromSearchedText(s.toString())
+                    }
+                    else if(searchType == SEARCH_TYPE_DESIGNATION){
+                        getDesignationFromSearchedText(s.toString())
                     }
                 }
 
@@ -218,16 +224,76 @@ class SearchActivity : AppCompatActivity() {
 
 
     /**
+     *  Get State List From Search And Observe
+     * */
+    private fun getStateListFromSearchedText(searchedText: String) {
+
+        stateViewModel.getStateByNameFun(searchedText)
+
+    }
+    private fun observeStateListForSearchedText() {
+
+        stateViewModel.getStateByNameObserver.observe(this, Observer { res ->
+
+            res.getContentIfNotHandled()?.let { response ->
+
+                when(response)
+                {
+                    is Resource.Success -> {
+                        hideProgressBar()
+
+                        response.data?.let { responseState ->
+
+                            if (responseState.status == 200){
+                                adapterForSearchResult.differ.submitList(responseState.toSearchResults())
+                                showSearchResultRecyclerView()
+                            }
+                            else{
+                                showSnackBarMessage(responseState.message)
+                            }
+                        }
+
+                    }
+                    is Resource.Error -> {
+                        hideProgressBar()
+
+                        response.message?.let { errorMessage ->
+                            when (errorMessage) {
+                                Constants.NO_INTERNET -> {
+                                    showSnackBarMessage("No internet connection")
+                                }
+                                else -> {
+                                    showSnackBarMessage(errorMessage)
+                                }
+                            }
+                        }
+
+                    }
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+
+            }
+
+
+        })
+
+    }
+
+
+    /**
      *  Get District List From Search And Observe
      * */
     private fun getDistrictListFromSearchedText(searchedText: String) {
 
-        districtViewModel.getDistrictByNameFun(searchedText)
+        //districtViewModel.getDistrictByNameFun(searchedText)
+        districtViewModel.getDistrictsByStateAndDistrictNameFun(searchedText, searchStateId ?: "")
 
     }
     private fun observeDistrictListForSearchedText() {
 
-        districtViewModel.getDistrictByNameObserver.observe(this, Observer { res ->
+        districtViewModel.getDistrictsByStateAndDistrictNameObserver.observe(this, Observer { res ->
 
             res.getContentIfNotHandled()?.let { response ->
 
@@ -336,6 +402,67 @@ class SearchActivity : AppCompatActivity() {
 
 
 
+    /**
+     *  Get Designation List From Search And Observe
+     * */
+    private fun getDesignationFromSearchedText(searchedText: String) {
+
+        val user_type_id = SharedPref().getStringPref(this, Constants.user_type_id)
+        commonViewModel.getCurrentRolesByUserTypeAndCurrentRoleNameFun(user_type_id ?: "", searchedText)
+
+    }
+    private fun observeDesignationListForSearchedText() {
+
+        commonViewModel.getCurrentRolesByUserTypeAndCurrentRoleNameObserver.observe(this, Observer { res ->
+
+            res.getContentIfNotHandled()?.let { response ->
+
+                when(response)
+                {
+                    is Resource.Success -> {
+                        hideProgressBar()
+
+                        response.data?.let { responseDesignation ->
+
+                            if (responseDesignation.status == 200){
+                                adapterForSearchResult.differ.submitList(responseDesignation.toSearchResults())
+                                showSearchResultRecyclerView()
+                            }
+                            else{
+                                showSnackBarMessage(responseDesignation.message)
+                            }
+                        }
+
+                    }
+                    is Resource.Error -> {
+                        hideProgressBar()
+
+                        response.message?.let { errorMessage ->
+                            when (errorMessage) {
+                                Constants.NO_INTERNET -> {
+                                    showSnackBarMessage("No internet connection")
+                                }
+                                else -> {
+                                    showSnackBarMessage(errorMessage)
+                                }
+                            }
+                        }
+
+                    }
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+
+            }
+
+
+        })
+
+    }
+
+
+
 
     private fun showProgressBar() {
         binding.relativeLayoutProgressBar.visibility = View.VISIBLE
@@ -361,10 +488,13 @@ class SearchActivity : AppCompatActivity() {
     companion object {
 
         const val SEARCH_TYPE = "SEARCH_TYPE"
+        const val SEARCH_TYPE_STATE = "STATE"
         const val SEARCH_TYPE_DISTRICT = "DISTRICT"
         const val SEARCH_TYPE_BLOCK = "BLOCK"
         const val SEARCH_TYPE_SCHOOL = "SCHOOL"
+        const val SEARCH_TYPE_DESIGNATION = "DESIGNATION"
         const val SEARCH_DISTRICT_ID = "DISTRICT_ID"
+        const val SEARCH_STATE_ID = "STATE_ID"
 
     }
 

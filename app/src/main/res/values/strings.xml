@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Mutual Transfer</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-4457216037877623/1407280237</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
     <string name="banner_ad_unit_id_real">ca-app-pub-4457216037877623/1407280237</string>
 
@@ -62,7 +62,7 @@
     <string name="share_profile">Share Profile</string>
     <string name="view_details">View Details</string>
     <string name="wallet">Wallet</string>
-    <string name="preferred_districts">Preferred Districts</string>
+    <string name="preferred_districts">Preferred Districts (Want To Go)</string>
     <string name="preferred_district_does_not_match">Preferred district does not match</string>
     <string name="preferred_district_red">Search results will be based on your preferred district. Your profile will appear in search results according to your preferred districts.</string>
     <string name="school_amalgamated">School Amalgamated</string>
@@ -71,4 +71,21 @@
     <string name="refresh_status">Refresh Status</string>
     <string name="contact_support">Contact Support</string>
     <string name="view_your_online_payments">View Your Online Payments</string>
+    <string name="green_square">Green Square</string>
+    <string name="message_text">Hi. How are you? Some random text here and here. I need spend more time for android dev</string>
+    <string name="send_button">Send Button</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="message">Message</string>
+    <string name="current_organisation">Current Organisation</string>
+    <string name="current_designation">Current Designation</string>
+    <string name="back_button_for_service_type">Back Button for Service Type</string>
+    <string name="service_details">Service Details</string>
+    <string name="department">Department</string>
+    <string name="zone_division">Zone / Division (Optional)</string>
+    <string name="service_type">Service Type</string>
+    <string name="employee_code">Employee Code</string>
+    <string name="employee_code_optional">Employee Code (Optional)</string>
+    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="change">Change</string>
+    <string name="free">Free</string>
 </resources>

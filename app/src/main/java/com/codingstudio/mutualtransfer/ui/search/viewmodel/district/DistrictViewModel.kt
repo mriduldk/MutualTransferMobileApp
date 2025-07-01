@@ -122,6 +122,31 @@ class DistrictViewModel @Inject constructor(
 
 
 
+    private val _getDistrictByStateNameObserver: MutableLiveData<EventWrapper<Resource<ResponseDistrict>>> =
+        MutableLiveData()
+    val getDistrictByStateNameObserver: LiveData<EventWrapper<Resource<ResponseDistrict>>>
+        get() = _getDistrictByStateNameObserver
+
+    fun getDistrictByStateNameFun(
+        state_name: String,
+    ) = viewModelScope.launch {
+
+        _getDistrictByStateNameObserver.postValue(EventWrapper(Resource.Loading()))
+
+        if (HasInternetConnection().check(application)) {
+
+            val response = districtRepository.getDistrictByStateName(
+                state_name = state_name
+            )
+            HandleNetworkResponse.Check(response, _getDistrictByStateNameObserver).process()
+        } else {
+            _getDistrictByStateNameObserver.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
+        }
+
+    }
+
+
+
 
 
 

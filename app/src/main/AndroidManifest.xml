@@ -79,6 +79,16 @@
             android:theme="@style/Theme.MutualTransfer"
             android:windowSoftInputMode="adjustResize"/>
         <activity
+            android:name=".ui.message.MessageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MutualTransfer"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.message.MessageTransactionActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MutualTransfer"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
             android:name=".ui.wallet.OnlinePaymentActivity"
             android:exported="false"
             android:theme="@style/Theme.MutualTransfer"
@@ -87,6 +97,18 @@
 
         <activity
             android:name=".ui.home.HomeNavigationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MutualTransfer"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".ui.home.UserHomeActivityNew"
+            android:exported="false"
+            android:theme="@style/Theme.MutualTransfer"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".ui.search.SearchResultPersonActivityNew"
             android:exported="false"
             android:theme="@style/Theme.MutualTransfer"
             android:windowSoftInputMode="adjustResize"/>

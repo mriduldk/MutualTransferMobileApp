@@ -1,10 +1,13 @@
 package com.codingstudio.mutualtransfer.api
 
 import com.codingstudio.mutualtransfer.model.auth.ResponseLogin
+import com.codingstudio.mutualtransfer.ui.translate.TranslateRequest
+import com.codingstudio.mutualtransfer.ui.translate.TranslateResponse
+import retrofit2.Call
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -28,6 +31,13 @@ interface RetrofitAuthAPI {
         @Field("phone")
         phone : String,
     ): Response<ResponseLogin>
+
+    @POST("language/translate/v2")
+    fun translateText(
+        @Query("key") apiKey: String,
+        @Body request: TranslateRequest
+    ): Call<TranslateResponse>
+
 
 
 }

@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.codingstudio.mutualtransfer.BuildConfig
 import com.codingstudio.mutualtransfer.R
 import com.codingstudio.mutualtransfer.databinding.ActivityBuyCoinsBinding
 import com.codingstudio.mutualtransfer.model.Resource
@@ -66,6 +67,17 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
     private val walletViewModel : WalletViewModel by viewModels()
     private var userDetails : UserDetails ?= null
 
+    private var amount1 = "50"
+    private var amount2 = "100"
+    private var amount3 = "200"
+    private var amount4 = "500"
+
+    private var coin1 = "60"
+    private var coin2 = "130"
+    private var coin3 = "300"
+    private var coin4 = "800"
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityBuyCoinsBinding.inflate(layoutInflater)
@@ -93,8 +105,8 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
             paymentOffersClick(1)
             enableBuyButton()
 
-            selectedAmount = "50"
-            selectedCoin = "60"
+            selectedAmount = amount1
+            selectedCoin = coin1
 
         }
         binding.linearLayout2.setOnClickListener {
@@ -102,24 +114,24 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
             paymentOffersClick(2)
             enableBuyButton()
 
-            selectedAmount = "100"
-            selectedCoin = "130"
+            selectedAmount = amount2
+            selectedCoin = coin2
         }
         binding.linearLayout3.setOnClickListener {
 
             paymentOffersClick(3)
             enableBuyButton()
 
-            selectedAmount = "200"
-            selectedCoin = "300"
+            selectedAmount = amount3
+            selectedCoin = coin3
         }
         binding.linearLayout4.setOnClickListener {
 
             paymentOffersClick(4)
             enableBuyButton()
 
-            selectedAmount = "500"
-            selectedCoin = "800"
+            selectedAmount = amount4
+            selectedCoin = coin4
         }
 
         binding.btnBuyInWalletViaWhatsapp.setOnClickListener {
@@ -217,6 +229,9 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
                                             binding.textViewWalletOfferPrice1.text = "₹${it[0].total_amount}.00"
                                             binding.textViewWalletOfferCoins1.text = "${it[0].total_coin} Coins ${it[0].message}"
 
+                                            amount1 = "${it[0].total_amount}"
+                                            coin1 = "${it[0].total_coin}"
+
                                             if (it[0].discount == 0){
                                                 binding.textViewWalletOfferDiscount1.visibility = View.GONE
                                             }
@@ -238,6 +253,9 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
 
                                             binding.textViewWalletOfferPrice2.text = "₹${it[1].total_amount}.00"
                                             binding.textViewWalletOfferCoins2.text = "${it[1].total_coin} Coins ${it[1].message}"
+
+                                            amount2 = "${it[1].total_amount}"
+                                            coin2 = "${it[1].total_coin}"
 
                                             if (it[1].discount == 0){
                                                 binding.textViewWalletOfferDiscount2.visibility = View.GONE
@@ -261,6 +279,9 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
                                             binding.textViewWalletOfferPrice3.text = "₹${it[2].total_amount}.00"
                                             binding.textViewWalletOfferCoins3.text = "${it[2].total_coin} Coins ${it[2].message}"
 
+                                            amount3 = "${it[2].total_amount}"
+                                            coin3 = "${it[2].total_coin}"
+
                                             if (it[2].discount == 0){
                                                 binding.textViewWalletOfferDiscount3.visibility = View.GONE
                                             }
@@ -283,6 +304,9 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
                                             binding.textViewWalletOfferPrice4.text = "₹${it[3].total_amount}.00"
                                             binding.textViewWalletOfferCoins4.text = "${it[3].total_coin} Coins ${it[3].message}"
 
+                                            amount4 = "${it[3].total_amount}"
+                                            coin4 = "${it[3].total_coin}"
+
                                             if (it[3].discount == 0){
                                                 binding.textViewWalletOfferDiscount4.visibility = View.GONE
                                             }
@@ -297,6 +321,8 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
                                                 binding.textViewWalletOfferRecommended4.visibility = View.GONE
                                             }
                                         }
+
+                                        binding.linearLayout2.performClick()
 
                                     }
                                     catch (ex: Exception) {
@@ -891,7 +917,7 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
 
         Checkout.preload(applicationContext)
         val checkout = Checkout()
-        checkout.setKeyID("rzp_test_poAXMhBwy9mqNZ")
+        checkout.setKeyID("rzp_live_3pXtkbx2UXqfQO") //BuildConfig.RAZORPAY_KEY_ID
 
         startPayment(checkout, order_id)
     }
@@ -905,12 +931,13 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
                 options.put("name","Mutual Transfer")
                 options.put("description","Buy Coins")
                 options.put("image","https://themutualtransfer.in/mt_logo.png")
-                options.put("theme.color", "#3399cc");
-                options.put("currency","INR");
+                options.put("theme.color", "#3399cc")
+                options.put("currency","INR")
                 options.put("order_id", order_id)
-                options.put("amount","${selectedAmount}00")
+                //options.put("amount","${selectedAmount}00")
+                options.put("amount", selectedAmount)
 
-                val retryObj = JSONObject();
+                val retryObj = JSONObject()
                 retryObj.put("enabled", true)
                 retryObj.put("max_count", 4)
                 options.put("retry", retryObj)
@@ -953,8 +980,8 @@ class BuyCoinActivity : AppCompatActivity(), PaymentResultWithDataListener {
 
     override fun onPaymentError(errorCode: Int, response: String?, paymentData: PaymentData?) {
 
-        /*Log.e(TAG, "onPaymentError: $errorCode $response" )
-        Log.e(TAG, "PaymentData: ${paymentData?.data} " )*/
+        Log.e(TAG, "onPaymentError: $errorCode $response" )
+        Log.e(TAG, "PaymentData: ${paymentData?.data} " )
 
         paymentFailedScreenChanges()
 

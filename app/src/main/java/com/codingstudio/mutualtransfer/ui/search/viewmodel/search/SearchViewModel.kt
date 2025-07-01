@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingstudio.mutualtransfer.model.Resource
 import com.codingstudio.mutualtransfer.model.search.ResponseSearchResult
+import com.codingstudio.mutualtransfer.model.search.ResponseSearchResultNew
 import com.codingstudio.mutualtransfer.model.search.ResponseSearchedPerson
+import com.codingstudio.mutualtransfer.model.search.ResponseSearchedPersonNew
 import com.codingstudio.mutualtransfer.repository.remote.SearchRepository
 import com.codingstudio.mutualtransfer.utils.Constants
 import com.codingstudio.mutualtransfer.utils.EventWrapper
@@ -27,7 +29,7 @@ class SearchViewModel(
         get() = _searchPersonObserver
 
     fun searchPersonFun(
-
+        school_address_state: String,
         school_address_district: String,
         user_id: String,
         school_address_block: String,
@@ -40,6 +42,7 @@ class SearchViewModel(
         if (HasInternetConnection().check(application)) {
 
             val response = searchRepository.searchPerson(
+                school_address_state = school_address_state,
                 school_address_district = school_address_district,
                 user_id = user_id,
                 school_address_block = school_address_block,
@@ -49,6 +52,40 @@ class SearchViewModel(
             HandleNetworkResponse.Check(response, _searchPersonObserver).process()
         } else {
             _searchPersonObserver.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
+        }
+
+    }
+
+
+    private val _searchPerson_v3Observer: MutableLiveData<EventWrapper<Resource<ResponseSearchResultNew>>> =
+        MutableLiveData()
+    val searchPerson_v3Observer: LiveData<EventWrapper<Resource<ResponseSearchResultNew>>>
+        get() = _searchPerson_v3Observer
+
+    fun searchPerson_v3Fun(
+        job_address_state: String,
+        job_address_district: String,
+        job_address_block: String,
+        department: String,
+        current_role: String,
+        user_id: String,
+    ) = viewModelScope.launch {
+
+        _searchPerson_v3Observer.postValue(EventWrapper(Resource.Loading()))
+
+        if (HasInternetConnection().check(application)) {
+
+            val response = searchRepository.searchPerson_v3(
+                job_address_state = job_address_state,
+                job_address_district = job_address_district,
+                job_address_block = job_address_block,
+                department = department,
+                current_role = current_role,
+                user_id = user_id
+            )
+            HandleNetworkResponse.Check(response, _searchPerson_v3Observer).process()
+        } else {
+            _searchPerson_v3Observer.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
         }
 
     }
@@ -76,6 +113,33 @@ class SearchViewModel(
             HandleNetworkResponse.Check(response, _viewPersonDetailsObserver).process()
         } else {
             _viewPersonDetailsObserver.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
+        }
+
+    }
+
+
+
+    private val _viewPersonDetails_v3Observer: MutableLiveData<EventWrapper<Resource<ResponseSearchedPersonNew>>> =
+        MutableLiveData()
+    val viewPersonDetails_v3Observer: LiveData<EventWrapper<Resource<ResponseSearchedPersonNew>>>
+        get() = _viewPersonDetails_v3Observer
+
+    fun viewPersonDetails_v3Fun(
+        person_user_id: String,
+        user_id: String,
+    ) = viewModelScope.launch {
+
+        _viewPersonDetails_v3Observer.postValue(EventWrapper(Resource.Loading()))
+
+        if (HasInternetConnection().check(application)) {
+
+            val response = searchRepository.viewPersonDetails_v3(
+                person_user_id = person_user_id,
+                user_id = user_id,
+            )
+            HandleNetworkResponse.Check(response, _viewPersonDetails_v3Observer).process()
+        } else {
+            _viewPersonDetails_v3Observer.postValue(EventWrapper(Resource.Error(Constants.NO_INTERNET)))
         }
 
     }
